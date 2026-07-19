@@ -37,6 +37,12 @@ const nav = [
 export default function App() {
   return (
     <div className="min-h-screen">
+      <div className="pointer-events-none fixed inset-0 -z-10 opacity-40">
+        <Suspense fallback={null}>
+          <SynapticShift color="#8b7cf6" speed={0.35} scale={0.55} complexity={12} breathing />
+        </Suspense>
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-qyl-bg/35 to-qyl-bg/70" />
+      </div>
       <header className="sticky top-0 z-20 border-b border-qyl-line bg-qyl-bg/85 backdrop-blur-md">
         <div className="mx-auto flex h-15 max-w-4xl items-center gap-7 px-6">
           <a href="/" className="text-xl font-bold tracking-wide">
@@ -58,12 +64,6 @@ export default function App() {
 
       <main className="mx-auto max-w-4xl px-6">
         <section className="relative py-22">
-          <div className="pointer-events-none absolute inset-x-0 -inset-y-10 -z-10 opacity-45">
-            <Suspense fallback={null}>
-              <SynapticShift color="#8b7cf6" speed={0.35} scale={0.55} complexity={12} breathing />
-            </Suspense>
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-qyl-bg" />
-          </div>
           <h1 className="text-5xl leading-[1.15] font-bold tracking-tight md:text-6xl">
             Observability,
             <br />
@@ -97,7 +97,7 @@ export default function App() {
             <a
               key={product.title}
               href={product.href}
-              className="block rounded-xl border border-qyl-line bg-qyl-panel p-5 transition-colors hover:border-qyl-accent"
+              className="block rounded-xl border border-qyl-line bg-qyl-panel/75 p-5 backdrop-blur-sm transition-colors hover:border-qyl-accent"
             >
               <h3 className="font-semibold">{product.title}</h3>
               <p className="mt-1.5 text-sm text-qyl-muted">{product.text}</p>
@@ -111,14 +111,14 @@ export default function App() {
             One command starts the local stack — collector, dashboard, and diagnostics — and can
             supervise an MCP server over stdio:
           </p>
-          <pre className="mt-4 overflow-x-auto rounded-lg border border-qyl-line bg-[#0f1117] p-4 text-[13.5px] leading-relaxed">
+          <pre className="mt-4 overflow-x-auto rounded-lg border border-qyl-line bg-[#0f1117]/85 p-4 backdrop-blur-sm text-[13.5px] leading-relaxed">
             <code>{`dotnet tool install -g qyl\nqyl up --mcp-stdio npx -y qyl-mcp-server --stdio`}</code>
           </pre>
           <p className="mt-4 max-w-2xl text-qyl-muted">
             Or connect an MCP client straight to the hosted endpoint — OAuth 2.1 with instant
             anonymous approval, no account needed:
           </p>
-          <pre className="mt-4 overflow-x-auto rounded-lg border border-qyl-line bg-[#0f1117] p-4 text-[13.5px] leading-relaxed">
+          <pre className="mt-4 overflow-x-auto rounded-lg border border-qyl-line bg-[#0f1117]/85 p-4 backdrop-blur-sm text-[13.5px] leading-relaxed">
             <code>claude mcp add --transport http qyl https://mcp.qyl.at/</code>
           </pre>
         </section>
