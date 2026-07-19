@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tracing — qyl</title>
+<meta name="description" content="OpenTelemetry-native distributed tracing: OTLP ingest, DuckDB storage, MCP query tools and an embedded trace explorer.">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a class="logo" href="/"><b>q</b>yl</a>
+    <nav>
+      <a href="/product/tracing/">Tracing</a>
+      <a href="/product/logs/">Logs</a>
+      <a href="/product/metrics/">Metrics</a>
+      <a href="/product/ci/">CI</a>
+      <a href="https://github.com/ANcpLua/qyl">GitHub</a>
+    </nav>
+  </div>
+</header>
+<main class="wrap">
+  <p class="crumb"><a href="/">qyl</a> / product / tracing</p>
+  <article class="product">
+    <h1>Tracing</h1>
+    <p>
+      Standard OTLP in, queryable traces out. The collector ingests
+      <code>/v1/traces</code> into DuckDB; your agent reads them back through
+      MCP tools instead of a dashboard tab.
+    </p>
+    <h2>What you get</h2>
+    <ul class="feat">
+      <li><code>list_traces</code> / <code>get_trace</code> — query traces and spans from any MCP client</li>
+      <li><code>display_traces</code> — an embedded trace-explorer MCP App for humans</li>
+      <li>OpenTelemetry semantic conventions, including the GenAI and <code>mcp.*</code> registries</li>
+      <li>Local (<code>qyl up</code>) and hosted (<code>mcp.qyl.at</code>) — same tools, same contract</li>
+    </ul>
+    <h2>Try it</h2>
+    <pre><code>qyl up
+# point any OTLP exporter at http://127.0.0.1:4318/v1/traces</code></pre>
+  </article>
+</main>
+<footer>
+  <div class="wrap">
+    <span>© 2026 qyl</span>
+    <a href="https://github.com/ANcpLua/qyl">GitHub</a>
+  </div>
+</footer>
+</body>
+</html>

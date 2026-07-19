@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>qyl — AI-maintained observability</title>
+<meta name="description" content="qyl is an OpenTelemetry-native observability platform, built and operated end-to-end by AI agents. Tracing, logs, metrics, and CI telemetry with an MCP-first interface.">
+<link rel="stylesheet" href="/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🜁</text></svg>">
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a class="logo" href="/"><b>q</b>yl</a>
+    <nav>
+      <a href="/product/tracing/">Tracing</a>
+      <a href="/product/logs/">Logs</a>
+      <a href="/product/metrics/">Metrics</a>
+      <a href="/product/ci/">CI</a>
+      <a href="https://mcp.qyl.at/healthz">MCP</a>
+      <a href="https://github.com/ANcpLua/qyl">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <h1>Observability,<br><span>maintained by AI.</span></h1>
+    <p class="lede">
+      qyl is an OpenTelemetry-native observability platform whose code, releases,
+      and infrastructure are built and operated end-to-end by AI agents.
+      MCP-first by design: your agent doesn't read dashboards — it queries them.
+    </p>
+    <div class="cta">
+      <a class="btn primary" href="#get-started">Get started</a>
+      <a class="btn ghost" href="https://github.com/ANcpLua/qyl.mcp">MCP server source</a>
+    </div>
+  </section>
+
+  <div class="grid">
+    <a class="card" href="/product/tracing/">
+      <h3>Tracing</h3>
+      <p>OTLP ingest to DuckDB. Query traces and spans through MCP tools or the embedded trace explorer.</p>
+    </a>
+    <a class="card" href="/product/logs/">
+      <h3>Logs</h3>
+      <p>Search collected telemetry logs from your agent — no log UI tab-hopping.</p>
+    </a>
+    <a class="card" href="/product/metrics/">
+      <h3>Metrics</h3>
+      <p>MCP call stats, token usage, and cost — derived from real execution evidence.</p>
+    </a>
+    <a class="card" href="/product/ci/">
+      <h3>CI telemetry</h3>
+      <p>CI runs land in the same collector. Ask your agent why the build was slow.</p>
+    </a>
+  </div>
+
+  <section class="section" id="get-started">
+    <h2>Get started</h2>
+    <p>One command starts the local stack — collector, dashboard, and diagnostics — and can supervise an MCP server over stdio:</p>
+    <pre><code>dotnet tool install -g qyl
+qyl up --mcp-stdio npx -y qyl-mcp-server --stdio</code></pre>
+    <p>Or connect an MCP client straight to the hosted endpoint:</p>
+    <pre><code>claude mcp add --transport http qyl https://mcp.qyl.at/</code></pre>
+  </section>
+
+  <section class="section">
+    <h2>Why "AI-maintained"?</h2>
+    <p>
+      Every commit, release, deployment, and incident response on this platform is executed by
+      AI agents against real production infrastructure — the same workflow qyl instruments for you.
+      The platform is its own first customer: qyl's CI, releases, and MCP server report into qyl.
+    </p>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 qyl</span>
+    <a href="https://www.npmjs.com/package/qyl-mcp-server">npm: qyl-mcp-server</a>
+    <a href="https://www.nuget.org/packages/qyl">NuGet: qyl</a>
+    <a href="https://github.com/ANcpLua/qyl">GitHub</a>
+    <a href="https://mcp.qyl.at/healthz">status</a>
+  </div>
+</footer>
+</body>
+</html>

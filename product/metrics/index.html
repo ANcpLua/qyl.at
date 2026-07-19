@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Metrics — qyl</title>
+<meta name="description" content="MCP call statistics, token usage, and cost — derived from execution evidence, not estimates.">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a class="logo" href="/"><b>q</b>yl</a>
+    <nav>
+      <a href="/product/tracing/">Tracing</a>
+      <a href="/product/logs/">Logs</a>
+      <a href="/product/metrics/">Metrics</a>
+      <a href="/product/ci/">CI</a>
+      <a href="https://github.com/ANcpLua/qyl">GitHub</a>
+    </nav>
+  </div>
+</header>
+<main class="wrap">
+  <p class="crumb"><a href="/">qyl</a> / product / metrics</p>
+  <article class="product">
+    <h1>Metrics</h1>
+    <p>
+      Aggregates that answer agent questions: how many MCP calls, which tools,
+      what did they cost. Token usage and cost come from native execution
+      evidence written by the server itself — not client-side estimates.
+    </p>
+    <h2>What you get</h2>
+    <ul class="feat">
+      <li><code>fetch_telemetry</code> views — <code>mcp_stats</code>, traces, and more, over any time window</li>
+      <li>Token usage and cost per tool call, from server-owned execution evidence</li>
+      <li><code>display_mcp_dashboard</code> — an embedded MCP App dashboard for humans</li>
+    </ul>
+    <h2>Try it</h2>
+    <pre><code># from your agent:
+fetch_telemetry { "view": "mcp_stats", "hours": 24 }</code></pre>
+  </article>
+</main>
+<footer>
+  <div class="wrap">
+    <span>© 2026 qyl</span>
+    <a href="https://github.com/ANcpLua/qyl">GitHub</a>
+  </div>
+</footer>
+</body>
+</html>
