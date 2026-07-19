@@ -61,11 +61,9 @@
     <p>One command starts the local stack — collector, dashboard, and diagnostics — and can supervise an MCP server over stdio:</p>
     <pre><code>dotnet tool install -g qyl
 qyl up --mcp-stdio npx -y qyl-mcp-server --stdio</code></pre>
-    <p>Or connect an MCP client to the hosted endpoint. Hosted access is
-    currently invite-only and needs a bearer token — the local stack above
-    needs none:</p>
-    <pre><code>claude mcp add --transport http qyl https://mcp.qyl.at/ \
-  --header "Authorization: Bearer &lt;your access token&gt;"</code></pre>
+    <p>Or connect an MCP client straight to the hosted endpoint — OAuth 2.1
+    with instant anonymous approval, no account needed:</p>
+    <pre><code>claude mcp add --transport http qyl https://mcp.qyl.at/</code></pre>
   </section>
 
   <section class="section">
