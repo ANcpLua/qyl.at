@@ -1,0 +1,6 @@
+node_modules
+dist
+.env.local
+# premium vendored source — never publish
+components/react-bits/
+SKILL.md

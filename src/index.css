@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@theme {
+  --color-qyl-bg: #0b0d12;
+  --color-qyl-panel: #12151d;
+  --color-qyl-line: #1f2430;
+  --color-qyl-text: #e8eaf0;
+  --color-qyl-muted: #9aa3b2;
+  --color-qyl-accent: #8b7cf6;
+  --color-qyl-accent2: #4fd1c5;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--color-qyl-bg);
+  color: var(--color-qyl-text);
+  -webkit-font-smoothing: antialiased;
+}
