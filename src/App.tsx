@@ -37,7 +37,7 @@ const nav = [
 export default function App() {
   return (
     <div className="min-h-screen">
-      <div className="pointer-events-none fixed inset-0 -z-10 opacity-55">
+      <div className="pointer-events-none fixed inset-x-0 top-0 -z-10 h-[100lvh] opacity-55">
         <Suspense fallback={null}>
           <SynapticShift className="absolute inset-0" color="#8b7cf6" speed={0.35} scale={0.55} complexity={12} breathing />
         </Suspense>
