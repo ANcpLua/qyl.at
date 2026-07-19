@@ -39,7 +39,7 @@ export default function App() {
     <div className="min-h-screen">
       <div className="pointer-events-none fixed inset-0 -z-10 opacity-55">
         <Suspense fallback={null}>
-          <SynapticShift color="#8b7cf6" speed={0.35} scale={0.55} complexity={12} breathing />
+          <SynapticShift className="absolute inset-0" color="#8b7cf6" speed={0.35} scale={0.55} complexity={12} breathing />
         </Suspense>
       </div>
       <header className="sticky top-0 z-20 border-b border-qyl-line bg-qyl-bg/85 backdrop-blur-md">
