@@ -1,4 +1,4 @@
-# qyl.at
+# 🜁 qyl.at
 
 Marketing site for [qyl](https://github.com/ANcpLua/qyl) — live at
 **https://qyl.at/** (GitHub Pages, `gh-pages` branch; source on `main`).

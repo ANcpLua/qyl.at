@@ -44,8 +44,9 @@ export default function App() {
       </div>
       <header className="sticky top-0 z-20 border-b border-qyl-line bg-qyl-bg/85 backdrop-blur-md">
         <div className="mx-auto flex h-15 max-w-4xl items-center gap-7 px-6">
-          <a href="/" className="text-xl font-bold tracking-wide">
-            <span className="text-qyl-accent">q</span>yl
+          <a href="/" className="flex items-center gap-2 text-xl font-bold tracking-wide">
+            <span aria-hidden className="text-qyl-accent">🜁</span>
+            <span><span className="text-qyl-accent">q</span>yl</span>
           </a>
           <nav className="ml-auto flex gap-5">
             {nav.map((item) => (
