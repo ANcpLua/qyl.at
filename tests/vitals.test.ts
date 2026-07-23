@@ -134,7 +134,8 @@ test("the Worker emits bounded OTLP log records through the owned collector boun
         resource: { attributes: Array<{ key: string }> };
         scopeLogs: Array<{
           logRecords: Array<{
-            body: { kvlistValue: { values: Array<{ key: string }> } };
+            attributes: Array<{ key: string }>;
+            body: { stringValue: string };
             eventName: string;
           }>;
         }>;
@@ -147,7 +148,8 @@ test("the Worker emits bounded OTLP log records through the owned collector boun
       "web.vitals.lcp",
     ]);
     assert.equal(resource.resource.attributes.some((attribute) => attribute.key === "browser.user_agent"), false);
-    assert.equal(resource.scopeLogs[0].logRecords.every((record) => record.body.kvlistValue.values.some((attribute) => attribute.key === "web.vital.value")), true);
+    assert.equal(resource.scopeLogs[0].logRecords.every((record) => record.body.stringValue === "Core Web Vital observed"), true);
+    assert.equal(resource.scopeLogs[0].logRecords.every((record) => record.attributes.some((attribute) => attribute.key === "web.vital.value")), true);
     assert.equal(capture.body.includes("userAgent"), false);
     assert.equal(capture.body.includes("Mcp-Param"), false);
   } finally {

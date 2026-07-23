@@ -94,7 +94,7 @@ async function exportVitals(payload: VitalPayload, env: Env): Promise<void> {
   for (const metric of payload.metrics) {
     const definition = vitalEvents[metric.name];
     logger.emit({
-      body: {
+      attributes: {
         ...(payload.browser.deviceMemory === undefined ? {} : { "browser.device_memory": payload.browser.deviceMemory }),
         "browser.language": payload.browser.language,
         "browser.viewport.height": payload.browser.viewportHeight,
@@ -106,6 +106,7 @@ async function exportVitals(payload: VitalPayload, env: Env): Promise<void> {
         "web.vital.unit": definition.unit,
         "web.vital.value": metric.value,
       },
+      body: "Core Web Vital observed",
       eventName: definition.name,
       severityText: "INFO",
     });
