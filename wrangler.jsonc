@@ -3,6 +3,12 @@
   "name": "qyl-at",
   "main": "worker/index.ts",
   "compatibility_date": "2026-07-23",
+  "routes": [
+    {
+      "pattern": "qyl.at",
+      "custom_domain": true
+    }
+  ],
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
