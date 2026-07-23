@@ -1,0 +1,119 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import TraceStage from "../components/TraceStage.astro";
+---
+
+<BaseLayout
+  title="qyl"
+  description="OTLP-native observability your AI agent can query through MCP, with local DuckDB storage and human investigation surfaces."
+  pageClass="marketing-page"
+>
+  <section class="hero">
+    <div class="site-shell hero__grid">
+      <div class="hero__copy">
+        <span class="eyebrow">Agent-ready observability</span>
+        <h1 class="display-title">Telemetry your agent can interrogate.</h1>
+        <p class="lede">
+          qyl collects traces and logs through OpenTelemetry, keeps them close in DuckDB, and puts
+          the evidence inside your agent’s working context through MCP.
+        </p>
+        <div class="hero__actions">
+          <a class="button button--light" href="/docs/getting-started/">Start locally</a>
+          <a class="button button--ghost" href="/docs/mcp/">Connect over MCP</a>
+        </div>
+        <div class="release-line" aria-label="Product characteristics">
+          <span>OpenTelemetry native</span>
+          <span>Local first</span>
+          <span>Beta</span>
+        </div>
+      </div>
+      <TraceStage />
+    </div>
+  </section>
+
+  <div class="proof-strip" aria-label="qyl architecture at a glance">
+    <div class="site-shell proof-grid">
+      <div class="proof-item"><strong>OTLP</strong><span>Standard trace and log ingestion over HTTP or gRPC.</span></div>
+      <div class="proof-item"><strong>DuckDB</strong><span>One local analytical store with explicit retention.</span></div>
+      <div class="proof-item"><strong>MCP ’26</strong><span>Real workbench connections pin the 2026-07-28 revision.</span></div>
+      <div class="proof-item"><strong>Evidence</strong><span>Errors stay errors; demo data is always explicit.</span></div>
+    </div>
+  </div>
+
+  <section class="editorial-section">
+    <div class="site-shell">
+      <div class="section-intro">
+        <div>
+          <span class="eyebrow">The useful loop</span>
+          <h2 class="section-title">Your agent should not need a screenshot of a dashboard.</h2>
+        </div>
+        <p class="lede">
+          Put the same traces, logs, sessions, and CI evidence in front of the agent that is already
+          debugging the code. Keep a human surface for judgment, not for copy-and-paste work.
+        </p>
+      </div>
+      <div class="feature-rows">
+        <article class="feature-row">
+          <span>01</span><h3>Collect without a proprietary agent</h3>
+          <p>Send standard OTLP from the qyl .NET SDK or any compliant OpenTelemetry exporter.</p>
+        </article>
+        <article class="feature-row">
+          <span>02</span><h3>Investigate in context</h3>
+          <p>List traces, read a complete trace, search logs, or open a correlated MCP App without leaving the conversation.</p>
+        </article>
+        <article class="feature-row">
+          <span>03</span><h3>Retain the execution evidence</h3>
+          <p>The workbench records requests, results, protocol timelines, approvals, tests, and evaluations instead of reducing a run to a green check.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="editorial-section editorial-section--raised">
+    <div class="site-shell">
+      <div class="section-intro">
+        <div>
+          <span class="eyebrow">Two commands</span>
+          <h2 class="section-title">A complete local product, not a hosted prerequisite.</h2>
+        </div>
+        <p class="lede">
+          The dotnet tool carries the collector and dashboard. The separate MCP workbench connects
+          to real servers and keeps its own local evidence on loopback.
+        </p>
+      </div>
+      <div class="command-stage">
+        <pre><code><b>$</b> dotnet tool install --global qyl --prerelease
+<b>$</b> qyl up
+
+  dashboard    http://127.0.0.1:5100
+  OTLP/HTTP    http://127.0.0.1:4318
+  OTLP/gRPC    http://127.0.0.1:4317
+
+<b>$</b> npx -y qyl-mcp-server --stdio</code></pre>
+        <div class="command-notes">
+          <div class="command-note"><strong>Local data</strong><span>DuckDB storage under your control.</span></div>
+          <div class="command-note"><strong>Native AOT collector</strong><span>Packaged for six desktop and server RIDs.</span></div>
+          <div class="command-note"><strong>No silent fixtures</strong><span>Demo mode requires an explicit QYL_DEMO=1.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="editorial-section">
+    <div class="site-shell">
+      <div class="section-intro">
+        <div>
+          <span class="eyebrow">What qyl exposes</span>
+          <h2 class="section-title">Four evidence paths. One investigation.</h2>
+        </div>
+        <p class="lede">Every page below describes a shipped route through the collector or MCP server.</p>
+      </div>
+      <div class="docs-index-grid">
+        <a class="docs-index-card" href="/product/tracing/"><span>01 · PRODUCT</span><h2>Tracing</h2><p>Query a waterfall or open it as an embedded MCP App.</p></a>
+        <a class="docs-index-card" href="/product/logs/"><span>02 · PRODUCT</span><h2>Logs</h2><p>Search the records correlated with the run you are debugging.</p></a>
+        <a class="docs-index-card" href="/product/metrics/"><span>03 · PRODUCT</span><h2>MCP evidence</h2><p>Inspect calls, protocol frames, approvals, tests, and explicit usage evidence.</p></a>
+        <a class="docs-index-card" href="/product/ci/"><span>04 · PRODUCT</span><h2>CI telemetry</h2><p>Read qyl’s build runs as telemetry instead of a separate archaeology exercise.</p></a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,24 @@
+---
+import DocsLayout from "../../layouts/DocsLayout.astro";
+import { docsNavigation } from "../../data/site";
+
+const descriptions = [
+  "Install the self-contained local product and send the first OTLP signals.",
+  "Connect real MCP servers, inspect negotiated capabilities, and retain execution evidence.",
+  "Authenticate to the hosted qyl Resource Server through a standard client.",
+  "Understand the pinned modern era and the intentional absence of legacy fallback.",
+  "Trace the boundaries between OTLP ingestion, Qyl reads, and MCP execution evidence.",
+];
+---
+
+<DocsLayout title="Documentation" description="Run qyl locally, connect the MCP workbench, and understand the protocol and telemetry boundaries.">
+  <div class="docs-index-grid">
+    {docsNavigation.map((item, index) => (
+      <a class="docs-index-card" href={item.href}>
+        <span>{String(index + 1).padStart(2, "0")} · GUIDE</span>
+        <h2>{item.label}</h2>
+        <p>{descriptions[index]}</p>
+      </a>
+    ))}
+  </div>
+</DocsLayout>

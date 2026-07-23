@@ -1,0 +1,19 @@
+---
+import ProductPage from "../../components/ProductPage.astro";
+---
+
+<ProductPage
+  title="CI telemetry"
+  eyebrow="Product · CI"
+  intro="A build run is another distributed operation. Keep it in the same evidence system as the code it validates."
+  heading="Ask why the build was slow."
+  description="qyl’s own release and verification paths export CI phases as OpenTelemetry spans. The MCP server reads that stored evidence through a dedicated tool instead of scraping provider HTML or inventing a second CI contract."
+  capabilities={[
+    { name: "ci_log", description: "Read recent qyl CI runs, their phases, outcomes, duration, and failure evidence." },
+    { name: "QYL_CI_*", description: "Configure the first-party smoke emitter with an OTLP endpoint, run id, leg, and optional collector key." },
+    { name: "span status", description: "Failed phases carry their error as telemetry status rather than a presentation-only badge." },
+    { name: "dogfood path", description: "qyl’s own package and release gates exercise the same collector and MCP read surfaces." },
+  ]}
+  command={`# from an MCP client:
+ci_log { }`}
+/>

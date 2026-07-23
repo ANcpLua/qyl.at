@@ -1,0 +1,16 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Page not found" description="The requested qyl page does not exist." announcement={false} hideFooter={true}>
+  <section class="site-shell not-found">
+    <p class="not-found__code">HTTP 404 · ROUTE NOT FOUND</p>
+    <h1>The trace ends here.</h1>
+    <p>This route produced no evidence. Return to the product, open the docs, or start a local collector.</p>
+    <div class="not-found__routes">
+      <a href="/"><span>01 · Return</span><strong>qyl home →</strong></a>
+      <a href="/docs/"><span>02 · Read</span><strong>Documentation →</strong></a>
+      <a href="/docs/getting-started/"><span>03 · Run</span><strong>Getting started →</strong></a>
+    </div>
+  </section>
+</BaseLayout>

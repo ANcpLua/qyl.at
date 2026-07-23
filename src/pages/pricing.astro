@@ -1,0 +1,37 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Pricing" description="qyl is free during its public beta, with the complete local collector, dashboard, workbench, and hosted MCP read surface included.">
+  <section class="page-hero">
+    <div class="site-shell pricing-shell">
+      <div>
+        <span class="eyebrow">One plan · every shipped feature</span>
+        <h1 class="page-title">Free while qyl is in beta.</h1>
+        <p class="lede">No feature matrix and no pretend enterprise tier. Install the local product or authenticate your MCP client to the hosted read surface.</p>
+      </div>
+      <article class="pricing-card" aria-labelledby="beta-plan">
+        <div class="pricing-card__head">
+          <span>Public beta</span>
+          <div class="price"><strong>€0</strong><small>today</small></div>
+        </div>
+        <div class="pricing-card__body">
+          <ul class="check-list">
+            <li>Native AOT collector and embedded dashboard</li>
+            <li>OTLP trace and log ingestion</li>
+            <li>Local MCP workbench and evaluation evidence</li>
+            <li>Hosted MCP endpoint with OAuth 2.1</li>
+            <li>Tracing and MCP dashboard apps</li>
+          </ul>
+          <a class="button button--light" href="/docs/getting-started/" id="beta-plan">Install qyl</a>
+        </div>
+      </article>
+    </div>
+  </section>
+  <section class="editorial-section editorial-section--raised">
+    <div class="site-shell section-intro">
+      <div><span class="eyebrow">The plain answer</span><h2 class="section-title">No billing system is hidden behind this page.</h2></div>
+      <p class="lede">qyl is solo-developed beta software. If that changes, pricing and limits will be published before anyone is charged. The local product remains useful without a hosted account.</p>
+    </div>
+  </section>
+</BaseLayout>

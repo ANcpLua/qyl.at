@@ -1,0 +1,15 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "qyl-at",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-07-23",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    "run_worker_first": ["/_qyl/vitals"]
+  },
+  "vars": {
+    "QYL_OTLP_LOGS_ENDPOINT": "https://api.qyl.at/v1/logs"
+  }
+}

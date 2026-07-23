@@ -1,0 +1,55 @@
+---
+title: Getting started
+description: Install the self-contained qyl tool, start the local collector and dashboard, and send your first OTLP traces and logs.
+order: 1
+---
+
+## What starts locally
+
+qyl ships as a prerelease .NET tool. The package contains the native collector and embedded dashboard for your current runtime identifier; it does not clone a repository or require Node.js.
+
+```bash
+dotnet tool install --global qyl --prerelease
+qyl up
+```
+
+Open `http://127.0.0.1:5100`. The fixed local surface is:
+
+| Port | Purpose |
+| --- | --- |
+| `5100` | Product API and embedded dashboard |
+| `4317` | OTLP/gRPC receiver |
+| `4318` | OTLP/HTTP receiver |
+| `5200` | Isolated diagnostics collector |
+| `18889` | qyl host resource API |
+
+The separate MCP workbench owns loopback port `18888`.
+
+## Instrument a .NET application
+
+Add the first-party SDK and call `AddQyl()` during application setup:
+
+```bash
+dotnet add package Qyl.Sdk
+```
+
+```csharp
+builder.AddQyl();
+```
+
+The SDK discovers a local `qyl up` collector, applies the supported compile-time instrumentation, propagates `session.id`, and exports through the OpenTelemetry SDK. Standard `OTEL_*` settings still take precedence.
+
+## Send from any OpenTelemetry SDK
+
+Point an OTLP exporter at the local HTTP receiver:
+
+```bash
+export OTEL_EXPORTER_OTLP_ENDPOINT=http://127.0.0.1:4318
+export OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
+```
+
+qyl stores traces and logs. Metric exports are accepted and acknowledged for wire compatibility but are not retained by the current collector. Profiles are not supported.
+
+## Stop cleanly
+
+Press `Ctrl-C` in the terminal running `qyl up`. The host owns its child processes and shuts down the product collector, dashboard, and diagnostics collector together.

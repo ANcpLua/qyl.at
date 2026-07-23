@@ -1,0 +1,33 @@
+<p class="visually-hidden">A qyl trace investigation showing a timeout correlated with a database call and three log records.</p>
+<div class="trace-stage" aria-hidden="true">
+  <div class="trace-stage__atmosphere" aria-hidden="true"></div>
+  <div class="trace-window">
+    <div class="window-bar" aria-hidden="true"><i></i><i></i><i></i><span>trace · 7f3b…91c2</span></div>
+    <div class="trace-overview">
+      <div class="trace-summary">
+        <div><small>Duration</small><b>842 ms</b></div>
+        <em>✓ correlated</em>
+      </div>
+      <div class="trace-panel">
+        <small>Span waterfall</small>
+        <div class="trace-bars">
+          <div class="trace-row"><span>agent.run</span><span style="width: 92%"></span><span>842</span></div>
+          <div class="trace-row"><span>tools/call</span><span></span><span>531</span></div>
+          <div class="trace-row"><span>search_logs</span><span></span><span>209</span></div>
+          <div class="trace-row"><span>db.query</span><span></span><span>113</span></div>
+          <div class="trace-row"><span>http.client</span><span></span><span>68</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tool-result">
+    <small>MCP result · search_logs</small>
+    <div class="tool-result__title">The timeout starts in the database call.<span>read-only</span></div>
+    <dl class="tool-result__details">
+      <div><dt>trace_id</dt><dd>7f3b…91c2</dd></div>
+      <div><dt>span</dt><dd>db.query</dd></div>
+      <div><dt>status</dt><dd>deadline_exceeded</dd></div>
+      <div><dt>context</dt><dd>3 correlated log records</dd></div>
+    </dl>
+  </div>
+</div>

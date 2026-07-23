@@ -1,0 +1,28 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Privacy" description="The small, explicit telemetry boundary used by qyl.at.">
+  <section class="page-hero">
+    <div class="reading-shell">
+      <span class="eyebrow">Privacy · qyl.at</span>
+      <h1 class="page-title">Measure the page, not the person.</h1>
+      <p class="lede">qyl.at uses no advertising pixels, cross-site trackers, or analytics cookies. Its only browser telemetry is a bounded same-origin Core Web Vitals event.</p>
+    </div>
+  </section>
+  <section class="editorial-section editorial-section--raised">
+    <article class="reading-shell docs-content">
+      <h2>What is recorded</h2>
+      <p>LCP, INP, and CLS measurements may be sent with the current pathname, navigation type, viewport dimensions, browser language, and the coarse device-memory value when the browser exposes it. These records are used to evaluate the site’s real-world loading and interaction quality.</p>
+
+      <h2>What is excluded</h2>
+      <p>The event does not include URL queries, page or form content, request or response bodies, arbitrary HTTP headers, credentials, account identity, or MCP tool arguments. Unknown fields are rejected by the Worker before export.</p>
+
+      <h2>Where it goes</h2>
+      <p>The browser posts to <code>/_qyl/vitals</code> on this origin. A Cloudflare Worker validates the closed payload and forwards an official OTLP log record to the qyl collector. The collector credential remains server-side. qyl’s normal trace and log retention policy applies; the performance scoreboard uses rolling 28-day aggregates.</p>
+
+      <h2>Source and questions</h2>
+      <p>The site and collector are open source. Implementation questions or deletion requests can be raised through the <a href="https://github.com/ANcpLua/qyl.at/issues">qyl.at issue tracker</a>.</p>
+    </article>
+  </section>
+</BaseLayout>

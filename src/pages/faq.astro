@@ -1,0 +1,36 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const questions = [
+  ["What does qyl store?", "The collector retains OTLP traces and logs in DuckDB. Metrics are accepted for wire compatibility and acknowledged, but the current collector does not retain them. Profiles are not supported."],
+  ["Do I need the hosted MCP server?", "No. qyl up runs the collector and embedded dashboard locally. qyl.mcp also runs a loopback workbench for connecting to local or remote MCP servers."],
+  ["What is the difference between qyl and qyl.mcp?", "qyl owns telemetry ingestion, storage, the product read API, and the collector dashboard. qyl.mcp owns MCP runtime behavior, the workbench, local MCP process supervision, and MCP Apps."],
+  ["Does the workbench fall back to old MCP revisions?", "No. User-configured stdio and Streamable HTTP connections pin 2026-07-28 and fail when the peer cannot negotiate it. The built-in server uses an internal legacy-only in-memory transport that is not user configurable or network facing."],
+  ["Can an MCP tool run without confirmation?", "Only when its annotations consistently mark it read-only, non-destructive, and closed-world. Missing or contradictory safety hints require review of the exact call."],
+  ["Does live mode invent demo data when the collector is unavailable?", "No. Collector failures remain errors. Generated telemetry is available only with the explicit QYL_DEMO=1 setting and every demo result is labelled."],
+  ["How is the hosted endpoint authenticated?", "qyl is an OAuth 2.1 Resource Server backed by Auth0. The MCP client performs Authorization Code with PKCE and requests qyl:read for the exact resource https://mcp.qyl.at/mcp."],
+] as const;
+---
+
+<BaseLayout title="FAQ" description="Direct answers about qyl storage, local operation, MCP protocol support, safety, demo data, and hosted authentication.">
+  <section class="page-hero">
+    <div class="site-shell">
+      <span class="eyebrow">FAQ</span>
+      <h1 class="page-title">Questions worth answering precisely.</h1>
+      <p class="lede">No roadmap theatre. These answers describe the software that exists now.</p>
+    </div>
+  </section>
+  <section class="editorial-section">
+    <div class="site-shell faq-layout">
+      <div><span class="eyebrow">Current beta</span><h2 class="section-title">The operating model, without the brochure.</h2></div>
+      <div class="faq-list">
+        {questions.map(([question, answer], index) => (
+          <details open={index === 0}>
+            <summary><span class="faq-number">Q{index + 1}</span><span>{question}</span><span class="faq-toggle" aria-hidden="true"></span></summary>
+            <div class="faq-answer"><p>{answer}</p></div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

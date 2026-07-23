@@ -1,0 +1,18 @@
+export const routes = [
+  "/",
+  "/pricing/",
+  "/faq/",
+  "/auth/",
+  "/privacy/",
+  "/docs/",
+  "/docs/getting-started/",
+  "/docs/workbench/",
+  "/docs/mcp/",
+  "/docs/protocol-2026-07-28/",
+  "/docs/telemetry/",
+  "/product/tracing/",
+  "/product/logs/",
+  "/product/metrics/",
+  "/product/ci/",
+  "/404.html",
+] as const;

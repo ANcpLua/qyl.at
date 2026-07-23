@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://qyl.at/</loc></url>
+  <url><loc>https://qyl.at/pricing/</loc></url>
+  <url><loc>https://qyl.at/faq/</loc></url>
+  <url><loc>https://qyl.at/auth/</loc></url>
+  <url><loc>https://qyl.at/privacy/</loc></url>
+  <url><loc>https://qyl.at/docs/</loc></url>
+  <url><loc>https://qyl.at/docs/getting-started/</loc></url>
+  <url><loc>https://qyl.at/docs/workbench/</loc></url>
+  <url><loc>https://qyl.at/docs/mcp/</loc></url>
+  <url><loc>https://qyl.at/docs/protocol-2026-07-28/</loc></url>
+  <url><loc>https://qyl.at/docs/telemetry/</loc></url>
+  <url><loc>https://qyl.at/product/tracing/</loc></url>
+  <url><loc>https://qyl.at/product/logs/</loc></url>
+  <url><loc>https://qyl.at/product/metrics/</loc></url>
+  <url><loc>https://qyl.at/product/ci/</loc></url>
+</urlset>

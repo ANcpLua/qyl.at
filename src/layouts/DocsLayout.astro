@@ -1,0 +1,35 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import DocsSearch from "../components/DocsSearch.astro";
+import { docsNavigation } from "../data/site";
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+const pathname = Astro.url.pathname;
+---
+
+<BaseLayout title={title} description={description} announcement={false} pageClass="docs-page">
+  <div class="docs-frame">
+    <aside class="docs-sidebar">
+      <DocsSearch />
+      <strong>Documentation</strong>
+      <nav aria-label="Documentation navigation">
+        {docsNavigation.map((item) => <a href={item.href} aria-current={pathname === item.href ? "page" : undefined}>{item.label}</a>)}
+      </nav>
+    </aside>
+    <article class="docs-main" data-pagefind-body>
+      <header>
+        <span class="eyebrow">qyl docs</span>
+        <h1 class="docs-title" data-pagefind-meta="title">{title}</h1>
+        <p>{description}</p>
+      </header>
+      <div class="docs-content">
+        <slot />
+      </div>
+    </article>
+  </div>
+</BaseLayout>

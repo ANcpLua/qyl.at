@@ -1,0 +1,25 @@
+---
+title: Protocol 2026-07-28
+description: How qyl.mcp uses the MCP v2 beta packages and deliberately pins the 2026-07-28 protocol revision for real connections.
+order: 4
+---
+
+## Pinned, not probed
+
+Every user-configured stdio and Streamable HTTP workbench connection pins `2026-07-28`. A peer that cannot negotiate that revision fails the connection. qyl does not probe and fall back to a 2025-era handshake.
+
+That decision keeps recorded protocol evidence unambiguous and removes the compatibility shim from the product path.
+
+## Modern request model
+
+The 2026 revision is per request. Each request carries its protocol revision, client identity, and capabilities in the reserved `_meta` envelope. A server must not rely on a prior request over the same connection to establish that context.
+
+The modern HTTP entry is `createMcpHandler(factory)`. qyl creates a fresh server from the factory for each request and adapts the Web Standard handler to Node through `toNodeHandler()`.
+
+## No initialize exchange
+
+Modern negotiation begins with `server/discover`; it does not run the legacy `initialize` exchange. qyl’s Streamable HTTP conformance test asserts the discover opening, the modern server identity, and the absence of initialize.
+
+## Beta status
+
+The MCP TypeScript SDK v2 packages and the `2026-07-28` specification are release-candidate software. qyl pins the exact current beta and protocol revision, verifies the wire behavior, and will revalidate as the final artifacts land. See the upstream [2026-07-28 support guide](https://ts.sdk.modelcontextprotocol.io/v2/migration/support-2026-07-28.html) for the revision-level SDK behavior.

@@ -1,0 +1,47 @@
+---
+title: Hosted MCP
+description: Connect a standard MCP client to qyl’s hosted Streamable HTTP endpoint through OAuth 2.1 Authorization Code with PKCE.
+order: 3
+---
+
+## Endpoint
+
+The canonical hosted MCP resource is:
+
+```text
+https://mcp.qyl.at/mcp
+```
+
+The root `https://mcp.qyl.at/` is a product page, not a second protocol endpoint. `/healthz` is the platform health check.
+
+## Add it from a client
+
+For Claude Code:
+
+```bash
+claude mcp add --transport http qyl https://mcp.qyl.at/mcp
+```
+
+A compatible client discovers the protected-resource metadata, dynamically registers where supported, opens Authorization Code with PKCE, and requests the `qyl:read` permission for the exact resource `https://mcp.qyl.at/mcp`.
+
+## Authentication boundary
+
+qyl acts only as an OAuth 2.1 Resource Server. Auth0 at `https://qyl-eu.eu.auth0.com/` owns authorization and token issuance. The qyl server verifies:
+
+- the exact issuer;
+- the exact resource audience;
+- the `qyl:read` scope;
+- expiry and the RFC 9068 access-token profile;
+- the token signature through the issuer’s JWKS.
+
+There is no proprietary static bearer-token path and no embedded anonymous authorization server.
+
+## Local alternative
+
+For a same-machine client, run the published server over stdio:
+
+```bash
+npx -y qyl-mcp-server --stdio
+```
+
+The stdio server exposes the same Qyl read tools and MCP Apps without creating an Internet-facing listener.

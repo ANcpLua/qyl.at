@@ -1,0 +1,20 @@
+---
+import ProductPage from "../../components/ProductPage.astro";
+---
+
+<ProductPage
+  title="Logs"
+  eyebrow="Product · logs"
+  intro="Search the records around a failure without leaving the code or losing the trace that led you there."
+  heading="Runtime evidence, correlated before it reaches the agent."
+  description="Logs share the collector and product contract with traces. Search stays read-only, bounded, and credential-redacted; live collector failure remains a real error rather than switching to generated data."
+  capabilities={[
+    { name: "search_logs", description: "Search collected telemetry by text, severity, session, trace, or time window." },
+    { name: "list_sessions", description: "Find session-scoped runs and their explicit token or cost evidence where the source reports it." },
+    { name: "GET /api/v1/logs", description: "Use the generated Qyl read contract directly when MCP is not the right consumer." },
+    { name: "OTLP /v1/logs", description: "Ingest official OTLP protobuf or JSON with optional gzip compression." },
+  ]}
+  command={`qyl up
+# from an MCP client:
+search_logs { "query": "deadline_exceeded" }`}
+/>

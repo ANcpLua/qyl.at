@@ -1,0 +1,52 @@
+---
+import Wordmark from "./Wordmark.astro";
+import { primaryNavigation } from "../data/site";
+
+interface Props {
+  announcement?: boolean;
+}
+
+const { announcement = true } = Astro.props;
+const pathname = Astro.url.pathname;
+const isCurrent = (href: string) => href === "/" ? pathname === href : pathname.startsWith(href);
+---
+
+{
+  announcement && (
+    <div class="announcement">
+      <div class="site-shell announcement__inner">
+        <span><b>Protocol 2026-07-28.</b> Real workbench connections are pinned, with no legacy fallback.</span>
+        <a href="/docs/protocol-2026-07-28/">Read the protocol note</a>
+      </div>
+    </div>
+  )
+}
+<header class="site-header">
+  <div class="site-shell site-header__inner">
+    <a class="brand-link" href="/" aria-label="qyl home">
+      <Wordmark />
+    </a>
+    <nav class="desktop-nav" aria-label="Primary navigation">
+      {
+        primaryNavigation.map((item) => (
+          <a href={item.href} aria-current={isCurrent(item.href) ? "page" : undefined}>{item.label}</a>
+        ))
+      }
+    </nav>
+    <div class="site-header__actions">
+      <a class="text-link desktop-only" href="/auth/">Authentication</a>
+      <a class="button button--light button--small" href="/docs/getting-started/">Get qyl</a>
+      <details class="mobile-nav">
+        <summary aria-label="Open navigation"><span></span><span></span></summary>
+        <nav aria-label="Mobile navigation">
+          {
+            primaryNavigation.map((item) => (
+              <a href={item.href} aria-current={isCurrent(item.href) ? "page" : undefined}>{item.label}</a>
+            ))
+          }
+          <a href="/auth/">Authentication</a>
+        </nav>
+      </details>
+    </div>
+  </div>
+</header>

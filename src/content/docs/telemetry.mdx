@@ -1,0 +1,37 @@
+---
+title: Telemetry
+description: Understand qyl’s OTLP ingest boundary, generated read contract, MCP telemetry, redaction, and explicit demo behavior.
+order: 5
+---
+
+## Three owned boundaries
+
+qyl keeps protocol ownership explicit:
+
+1. OpenTelemetry owns OTLP ingestion and the telemetry vocabulary.
+2. `qyl-api-schema` owns every Qyl read request, response, stream event, and error.
+3. The MCP SDK owns JSON-RPC, transport, tool-result, and resource-result envelopes.
+
+The collector maps internal DuckDB rows into generated Qyl contracts before data crosses an HTTP, streaming, MCP, or generated-client boundary.
+
+## Ingestion
+
+The collector accepts official OTLP protobuf or JSON for traces, logs, and metrics. Trace and log exports are retained. Metrics receive a valid OTLP acknowledgement but are discarded by the current storage product.
+
+In production, the OTLP receiver requires `x-otlp-api-key`. Local development defaults to unsecured loopback listeners.
+
+## MCP operation telemetry
+
+qyl.mcp records client and server operation spans and duration histograms using the pinned OpenTelemetry MCP semantic vocabulary. Standard W3C trace context and baggage travel in MCP `params._meta`; inbound server spans use valid remote context as their parent.
+
+The workbench does not record opt-in prompt variables, tool arguments, or tool results as span attributes because they may contain credentials or user content. Durable execution payloads pass through the shared redactor.
+
+## Explicit demo mode
+
+Live collector errors remain errors. To run the fixture-backed demonstration deliberately:
+
+```bash
+QYL_DEMO=1 npm run start:runner
+```
+
+Every generated tool result carries `mode: "demo"`, so the presentation can label it rather than presenting a fixture as collector evidence.

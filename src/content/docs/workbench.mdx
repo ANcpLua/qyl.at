@@ -1,0 +1,38 @@
+---
+title: MCP workbench
+description: Run the loopback workbench, connect stdio or Streamable HTTP servers, and preserve real protocol and execution evidence.
+order: 2
+---
+
+## Start the workbench
+
+The workbench lives in the separate `qyl.mcp` repository and requires Node.js 22.12 or newer.
+
+```bash
+git clone https://github.com/ANcpLua/qyl.mcp.git
+cd qyl.mcp
+npm ci
+npm run build
+npm run start:runner
+```
+
+Open `http://127.0.0.1:18888`. The browser, runner API, and managed child processes run with the local user’s permissions, so the runner binds only to loopback.
+
+## Add a server
+
+User-created connections support:
+
+- **Streamable HTTP** with a credential-free endpoint plus header references to environment variables.
+- **stdio** with an executable, one argument per line, an optional working directory, and environment-variable mappings.
+
+Only environment-variable names reach the browser or durable state. The runner resolves their values at connection time and registers them with the shared redactor.
+
+## Review before execution
+
+MCP annotations are safety hints, not authorization. A tool runs without confirmation only when it is explicitly read-only, non-destructive, and closed-world. Missing, contradictory, mutating, destructive, or open-world hints require approval of the exact call.
+
+## Keep the evidence
+
+Every persisted execution includes its request, result or typed error, lifecycle, duration, retries, cancellation, redacted JSON-RPC timeline, and correlated qyl evidence. Tests and suites invoke real tools and retain their assertions. Completed runs can be compared and exported as contract-validated JSON or Markdown.
+
+Workbench state defaults to `~/.qyl/mcp-workbench.json` and uses atomic replacement with private filesystem modes.

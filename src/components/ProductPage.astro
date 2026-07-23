@@ -1,0 +1,52 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { productNavigation } from "../data/site";
+
+interface Capability {
+  name: string;
+  description: string;
+}
+
+interface Props {
+  title: string;
+  description: string;
+  eyebrow: string;
+  intro: string;
+  heading: string;
+  capabilities: Capability[];
+  command: string;
+}
+
+const { title, description, eyebrow, intro, heading, capabilities, command } = Astro.props;
+const pathname = Astro.url.pathname;
+---
+
+<BaseLayout title={title} description={description}>
+  <section class="page-hero">
+    <div class="site-shell">
+      <span class="eyebrow">{eyebrow}</span>
+      <h1 class="page-title">{title}</h1>
+      <p class="lede">{intro}</p>
+    </div>
+  </section>
+  <section class="editorial-section">
+    <div class="site-shell product-layout">
+      <aside class="product-index">
+        <p>Product</p>
+        <nav aria-label="Product navigation">
+          {productNavigation.map((item) => <a href={item.href} aria-current={pathname === item.href ? "page" : undefined}>{item.label}</a>)}
+        </nav>
+      </aside>
+      <article class="product-copy">
+        <h2>{heading}</h2>
+        <p>{description}</p>
+        <div class="capability-list">
+          {capabilities.map((capability) => (
+            <div class="capability"><code>{capability.name}</code><p>{capability.description}</p></div>
+          ))}
+        </div>
+        <pre class="code-card"><code>{command}</code></pre>
+      </article>
+    </div>
+  </section>
+</BaseLayout>

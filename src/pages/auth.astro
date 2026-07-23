@@ -1,0 +1,36 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Authentication" description="How a compatible MCP client authenticates to qyl through Auth0 using OAuth 2.1 Authorization Code with PKCE.">
+  <section class="page-hero">
+    <div class="site-shell">
+      <span class="eyebrow">OAuth 2.1 · MCP</span>
+      <h1 class="page-title">Sign in from the client already doing the work.</h1>
+      <p class="lede">qyl does not host a second account form here. Add the endpoint to a compatible MCP client; the client discovers Auth0, opens the PKCE flow, and returns with a scoped access token.</p>
+      <div class="hero__actions">
+        <a class="button button--light" href="/docs/mcp/">Connection guide</a>
+        <a class="button button--ghost" href="https://mcp.qyl.at/">Open MCP endpoint page</a>
+      </div>
+    </div>
+  </section>
+  <section class="editorial-section editorial-section--raised">
+    <div class="site-shell">
+      <div class="section-intro">
+        <div><span class="eyebrow">The exchange</span><h2 class="section-title">Authorization belongs to the issuer. Evidence belongs to qyl.</h2></div>
+        <p class="lede">The hosted server verifies the issuer, resource audience, expiry, RFC 9068 token profile, and qyl:read scope. It never mints a token and has no proprietary static-token fallback.</p>
+      </div>
+      <div class="auth-flow">
+        <article class="auth-step"><span>01 · DISCOVER</span><h2>Add the MCP URL</h2><p>The client reads the protected-resource metadata for the canonical endpoint.</p></article>
+        <article class="auth-step"><span>02 · AUTHORIZE</span><h2>Complete PKCE</h2><p>Auth0 authenticates the person and returns a token for this resource and scope.</p></article>
+        <article class="auth-step"><span>03 · CONNECT</span><h2>Negotiate 2026</h2><p>The client presents the token and performs the pinned 2026-07-28 MCP opening.</p></article>
+      </div>
+      <div class="fact-grid">
+        <div class="fact"><span>Resource</span><code>https://mcp.qyl.at/mcp</code></div>
+        <div class="fact"><span>Scope</span><code>qyl:read</code></div>
+        <div class="fact"><span>Issuer</span><code>https://qyl-eu.eu.auth0.com/</code></div>
+        <div class="fact"><span>Token profile</span><strong>RFC 9068 · RS256</strong></div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

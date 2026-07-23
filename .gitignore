@@ -1,6 +1,14 @@
 node_modules
 dist
+.astro
+.wrangler
+.playwright
+.playwright-cli
+playwright-report
+test-results
+output
 .env.local
 # premium vendored source — never publish
 components/react-bits/
+components/blocks/
 SKILL.md

@@ -1,0 +1,19 @@
+---
+import ProductPage from "../../components/ProductPage.astro";
+---
+
+<ProductPage
+  title="MCP evidence"
+  eyebrow="Product · executions"
+  intro="Keep the protocol timeline, approval, result, test, and evaluation attached to the tool call that produced them."
+  heading="More than an aggregate counter."
+  description="The local workbench retains complete execution evidence, including typed errors and redacted JSON-RPC frames. Explicit token usage and cost are preserved only when the tool reports them; qyl does not infer them from prose, latency, or payload size."
+  capabilities={[
+    { name: "display_mcp_dashboard", description: "Open the shipped MCP traffic dashboard for latency, failures, and call evidence." },
+    { name: "execution record", description: "Retain request, result, lifecycle, duration, attempts, cancellation, and the redacted protocol timeline." },
+    { name: "tests + suites", description: "Run exact, partial, JSON Schema, pattern, and latency assertions against real tool invocations." },
+    { name: "evaluations", description: "Compare completed runs and export contract-validated JSON or Markdown evidence." },
+  ]}
+  command={`npm run start:runner
+# open http://127.0.0.1:18888`}
+/>

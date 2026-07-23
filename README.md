@@ -1,18 +1,49 @@
-# 🜁 qyl.at
+# qyl.at
 
-Marketing site for [qyl](https://github.com/ANcpLua/qyl) — live at
-**https://qyl.at/** (GitHub Pages, `gh-pages` branch; source on `main`).
-Related surfaces: [mcp.qyl.at](https://mcp.qyl.at/healthz) ·
-[api.qyl.at](https://api.qyl.at/health) ·
-[npm qyl-mcp-server](https://www.npmjs.com/package/qyl-mcp-server) ·
-[NuGet qyl](https://www.nuget.org/packages/qyl).
+The public marketing and documentation site for [qyl](https://github.com/ANcpLua/qyl),
+served at [qyl.at](https://qyl.at/).
 
-Vite + React + Tailwind v4. `components/react-bits/` is licensed React Bits Pro
-source — gitignored, never committed; reinstall with
-`npx shadcn@latest add @reactbits-starter/synaptic-shift-tw`
-(`REACTBITS_LICENSE_KEY` from the macOS keychain). Product pages are static
-HTML in `public/`.
+The site is Astro 7 with static output, MDX documentation, build-time Shiki syntax
+highlighting, Tailwind CSS 4, and on-demand Pagefind search. Cloudflare Workers Static
+Assets serves the generated files and handles the same-origin Core Web Vitals endpoint.
+There is no React runtime or client router in the production bundle.
 
-Deploy: `npm run build`, push `dist/` to `gh-pages` (`public/CNAME` rides
-along). Rules: no vaporware — a `/product/*` page exists only for shipped
-tools; URL structure mirrors sentry.io; subdomains are services, not pages.
+## Local development
+
+```bash
+npm ci
+npm run dev
+```
+
+## Verify
+
+Install Chromium once, then run the complete release-equivalent local gate:
+
+```bash
+npx playwright install chromium
+npm test
+npx wrangler deploy --dry-run
+```
+
+`npm test` checks TypeScript and Astro, dependency policy, static artifacts and payload
+budgets, all routes with and without JavaScript, same-origin requests, deployed header
+behavior, accessibility, documentation search, and the fixed 4G/4× CPU performance
+harness. Lighthouse, PageSpeed Insights, Catchpoint, edge-cache TTFB, and field Core Web
+Vitals remain out-of-band deployed release evidence.
+
+## Deploy
+
+Authenticate Wrangler with the qyl Cloudflare account and provision the Worker secret
+used to forward bounded OTLP log records:
+
+```bash
+npx wrangler secret put QYL_API_KEY
+npm run deploy
+```
+
+The browser never receives the collector credential. Core Web Vitals initialize only
+on the `qyl.at` hostname and post to the same-origin `/_qyl/vitals` Worker route.
+
+Licensed React Bits Pro source is design reference only and remains gitignored. The
+committed site contains the resulting Astro presentation, not licensed source or its
+runtime dependencies.

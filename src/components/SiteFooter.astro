@@ -1,0 +1,34 @@
+---
+import Wordmark from "./Wordmark.astro";
+import { docsNavigation, externalLinks, productNavigation } from "../data/site";
+---
+
+<footer class="site-footer">
+  <div class="site-shell site-footer__statement">
+    <p>Every signal.<br /><span>One agent-ready surface.</span></p>
+    <a class="button button--light" href="/docs/getting-started/">Start locally</a>
+  </div>
+  <div class="site-shell footer-grid">
+    <div class="footer-brand">
+      <a href="/" aria-label="qyl home"><Wordmark /></a>
+      <p>OTLP-native observability for humans and the agents working beside them.</p>
+      <small>© 2026 qyl · Beta software</small>
+    </div>
+    <nav aria-label="Product links">
+      <strong>Product</strong>
+      {productNavigation.map((item) => <a href={item.href}>{item.label}</a>)}
+    </nav>
+    <nav aria-label="Documentation links">
+      <strong>Docs</strong>
+      {docsNavigation.slice(0, 4).map((item) => <a href={item.href}>{item.label}</a>)}
+    </nav>
+    <nav aria-label="Project links">
+      <strong>Project</strong>
+      <a href={externalLinks.github}>qyl on GitHub</a>
+      <a href={externalLinks.mcpGithub}>qyl.mcp on GitHub</a>
+      <a href={externalLinks.nuget}>NuGet</a>
+      <a href={externalLinks.npm}>npm</a>
+      <a href="/privacy/">Privacy</a>
+    </nav>
+  </div>
+</footer>
