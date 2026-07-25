@@ -10,6 +10,8 @@ There is no React runtime or client router in the production bundle.
 
 ## Local development
 
+Use Node.js 24 LTS.
+
 ```bash
 npm ci
 npm run dev

@@ -24,7 +24,11 @@ In production, the OTLP receiver requires `x-otlp-api-key`. Local development de
 
 qyl.mcp records client and server operation spans and duration histograms using the pinned OpenTelemetry MCP semantic vocabulary. Standard W3C trace context and baggage travel in MCP `params._meta`; inbound server spans use valid remote context as their parent.
 
-The workbench does not record opt-in prompt variables, tool arguments, or tool results as span attributes because they may contain credentials or user content. Durable execution payloads pass through the shared redactor.
+The workbench does not record prompt variables, tool arguments, tool results, or
+arbitrary HTTP headers as span attributes. Operation logs and the live protocol
+journal are metadata-only unless content capture is enabled explicitly. The
+collector persists only a small positive allowlist of known-safe HTTP header
+attributes and always rejects credentials, cookies, and `Mcp-Param-*`.
 
 ## Explicit demo mode
 

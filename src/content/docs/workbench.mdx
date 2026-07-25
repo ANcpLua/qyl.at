@@ -6,7 +6,8 @@ order: 2
 
 ## Start the workbench
 
-The workbench lives in the separate `qyl.mcp` repository and requires Node.js 22.12 or newer.
+The workbench lives in the separate `qyl.mcp` repository. Development and CI use
+Node.js 24 LTS; maintained Node.js releases from 22 onward are supported.
 
 ```bash
 git clone https://github.com/ANcpLua/qyl.mcp.git
@@ -33,6 +34,11 @@ MCP annotations are safety hints, not authorization. A tool runs without confirm
 
 ## Keep the evidence
 
-Every persisted execution includes its request, result or typed error, lifecycle, duration, retries, cancellation, redacted JSON-RPC timeline, and correlated qyl evidence. Tests and suites invoke real tools and retain their assertions. Completed runs can be compared and exported as contract-validated JSON or Markdown.
+Every persisted execution includes its request, result or typed error, lifecycle,
+duration, retries, cancellation, and correlated qyl evidence. The live protocol
+journal is metadata-only by default; redacted, bounded JSON-RPC bodies require
+`QYL_MCP_CAPTURE_CONTENT=1`. Tests and suites invoke real tools and retain their
+assertions. Completed runs can be compared and exported as contract-validated JSON
+or Markdown.
 
 Workbench state defaults to `~/.qyl/mcp-workbench.json` and uses atomic replacement with private filesystem modes.
