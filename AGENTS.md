@@ -15,7 +15,7 @@ visible to the outside, so it uses the canonical 1.0.0 names and no others:
 `qyl.mcp/server`, `qyl.mcp/workbench`, `qyl.mcp/dashboard`. `Qyl.Sdk` is
 retired and must not appear.
 
-The full ledger lives in `qyl-workspace/AGENTS.md` — that file is binding.
+The full ledger lives in `qyl/ARCHITECTURE-1.0.0.md` — that document is normative.
 
 Two consequences specific to a public site: the URL structure becomes a
 redirect obligation the moment it is launched (including the dated
