@@ -5,6 +5,23 @@ site deployed through Cloudflare Workers Static Assets. `README.md` is the build
 verification, and deployment runbook. Infrastructure ownership remains in the
 workspace-level `../AGENTS.md`.
 
+## Place in the 1.0.0 taxonomy
+
+qyl.at is not one of the nine runtime components — it is the public surface
+that *describes* them. That makes it the one place where wrong names are
+visible to the outside, so it uses the canonical 1.0.0 names and no others:
+`Qyl.Telemetry.SemanticConventions`, `Qyl.Telemetry(.AutoInstrumentation
+/.Hosting)`, `Qyl.Collector.*`, `Qyl.Cli`, `Qyl.Run.Workload`, `qyl.dashboard`,
+`qyl.mcp/server`, `qyl.mcp/workbench`, `qyl.mcp/dashboard`. `Qyl.Sdk` is
+retired and must not appear.
+
+The full ledger lives in `qyl-workspace/AGENTS.md` — that file is binding.
+
+Two consequences specific to a public site: the URL structure becomes a
+redirect obligation the moment it is launched (including the dated
+`/docs/protocol-2026-07-28/`), and a `/product/*` page may only exist for a
+shipped capability.
+
 ## Scope
 
 - Public routes are the landing page, pricing, FAQ, authentication, privacy,
