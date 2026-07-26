@@ -4,6 +4,9 @@ on:
   push:
     branches: [main]
   pull_request:
+  # Manual trigger so the Worker can be redeployed without an empty commit —
+  # needed to re-verify after a Cloudflare token is rolled or re-scoped.
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -30,7 +33,9 @@ jobs:
   # silently drift from main.
   deploy:
     needs: verify
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-latest
     timeout-minutes: 15
     environment: production
