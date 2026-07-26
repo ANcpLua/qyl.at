@@ -16,7 +16,7 @@
     "test": "npm run build && npm run test:gates",
     "smoke": "npm test",
     "preview": "wrangler dev",
-    "deploy": "npm test && wrangler deploy",
+    "deploy": "npm test && wrangler deploy --var QYL_SERVICE_VERSION:$(git rev-parse --short HEAD)",
     "deploy:dry": "npm run build && wrangler deploy --dry-run"
   },
   "dependencies": {

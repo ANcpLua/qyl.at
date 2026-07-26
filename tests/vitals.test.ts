@@ -120,6 +120,7 @@ test("the Worker emits bounded OTLP log records through the owned collector boun
         ASSETS: { fetch: async () => new Response(null, { status: 404 }) },
         QYL_API_KEY: "collector-test-key",
         QYL_OTLP_LOGS_ENDPOINT: `http://127.0.0.1:${address.port}/v1/logs`,
+        QYL_SERVICE_VERSION: "deadbee",
       },
       { waitUntil: (promise) => { exportTask = promise; } },
     );
@@ -131,7 +132,7 @@ test("the Worker emits bounded OTLP log records through the owned collector boun
     assert.equal(capture.key, "collector-test-key");
     const envelope = JSON.parse(capture.body) as {
       resourceLogs: Array<{
-        resource: { attributes: Array<{ key: string }> };
+        resource: { attributes: Array<{ key: string; value: { stringValue?: string } }> };
         scopeLogs: Array<{
           logRecords: Array<{
             attributes: Array<{ key: string }>;
@@ -148,6 +149,12 @@ test("the Worker emits bounded OTLP log records through the owned collector boun
       "web.vitals.lcp",
     ]);
     assert.equal(resource.resource.attributes.some((attribute) => attribute.key === "browser.user_agent"), false);
+    // service.version must carry the deployed commit, not a hardcoded constant —
+    // otherwise a vitals regression cannot be attributed to a deploy.
+    assert.equal(
+      resource.resource.attributes.find((attribute) => attribute.key === "service.version")?.value.stringValue,
+      "deadbee",
+    );
     assert.equal(resource.scopeLogs[0].logRecords.every((record) => record.body.stringValue === "Core Web Vital observed"), true);
     assert.equal(resource.scopeLogs[0].logRecords.every((record) => record.attributes.some((attribute) => attribute.key === "web.vital.value")), true);
     assert.equal(capture.body.includes("userAgent"), false);

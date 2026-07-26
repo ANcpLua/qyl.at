@@ -16,6 +16,12 @@
     "run_worker_first": ["/_qyl/vitals"]
   },
   "vars": {
-    "QYL_OTLP_LOGS_ENDPOINT": "https://api.qyl.at/v1/logs"
+    "QYL_OTLP_LOGS_ENDPOINT": "https://api.qyl.at/v1/logs",
+    // Default only. Every real deploy overrides this with the commit SHA via
+    // `wrangler deploy --var QYL_SERVICE_VERSION:<sha>` (see package.json and
+    // .github/workflows/ci.yml), so telemetry can attribute a regression to a
+    // deploy. If you ever see service.version="dev" in the collector, something
+    // deployed outside those two paths.
+    "QYL_SERVICE_VERSION": "dev"
   }
 }

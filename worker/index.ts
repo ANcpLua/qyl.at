@@ -10,6 +10,9 @@ interface Env {
   ASSETS: AssetsBinding;
   QYL_API_KEY?: string;
   QYL_OTLP_LOGS_ENDPOINT: string;
+  // Commit SHA of the deployed build, injected by `wrangler deploy --var`.
+  // Falls back to "dev" so a local `wrangler dev` never reports a real version.
+  QYL_SERVICE_VERSION?: string;
 }
 
 interface WorkerContext {
@@ -87,7 +90,7 @@ async function exportVitals(payload: VitalPayload, env: Env): Promise<void> {
     processors: [processor],
     resource: resourceFromAttributes({
       "service.name": "qyl.at",
-      "service.version": "1.0.0",
+      "service.version": env.QYL_SERVICE_VERSION ?? "dev",
     }),
   });
   const logger = provider.getLogger("qyl.web-vitals", "1.0.0");

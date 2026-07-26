@@ -24,3 +24,45 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: npm test
       - run: npx wrangler deploy --dry-run
+
+  # Deploy only after verify passes, and only for main. Without this job the
+  # live Worker is whatever was last pushed by hand from a laptop, which can
+  # silently drift from main.
+  deploy:
+    needs: verify
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: production
+    concurrency:
+      group: deploy-qyl-at
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24
+          cache: npm
+
+      # Fail with a readable message rather than a cryptic wrangler auth error.
+      # Deliberately a hard failure, not a skip: a silently skipped deploy is
+      # the exact drift this job exists to prevent.
+      - name: Require Cloudflare credentials
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
+            echo "::error::CLOUDFLARE_API_TOKEN is not set. Add it under Settings > Environments > production. Until then qyl.at is deployed only by hand and can drift from main."
+            exit 1
+          fi
+
+      - run: npm ci
+      - run: npm run build:site
+
+      # service.version is stamped with the deployed commit so a vitals
+      # regression in the collector can be traced back to a specific deploy.
+      - run: npx wrangler deploy --var QYL_SERVICE_VERSION:"${GITHUB_SHA::7}"
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
