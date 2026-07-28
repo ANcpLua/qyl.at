@@ -8,15 +8,28 @@
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
 
+# The asset header engine `set`s a header for the first matching rule and
+# `append`s it for every later one, so without the `! Cache-Control` detach these
+# blocks would emit `max-age=0, s-maxage=600, …, max-age=31536000, immutable` —
+# and RFC 9111 §5.2 makes the recipient honour the *first* occurrence, so a
+# year-cacheable asset would be revalidated on every navigation. Detach first,
+# then set: `unset` is applied before `set` within the same matching block, so
+# the append lands on an empty header and the served value is exactly the
+# immutable one. tests/surface.spec.ts and scripts/check-artifacts.mjs both
+# assert that exact merged string, not a substring of it.
+
 /_astro/*
+  ! Cache-Control
   Cache-Control: public, max-age=31536000, immutable
   ! Link
 
 /fonts/*
+  ! Cache-Control
   Cache-Control: public, max-age=31536000, immutable
   ! Link
 
 /pagefind/*
+  ! Cache-Control
   Cache-Control: public, max-age=31536000, immutable
   ! Link
 
