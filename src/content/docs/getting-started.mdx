@@ -27,17 +27,19 @@ The separate MCP workbench owns loopback port `18888`.
 
 ## Instrument a .NET application
 
-Add the first-party SDK and call `AddQyl()` during application setup:
+Add the qyl instrumentation packages to the host project:
 
 ```bash
-dotnet add package Qyl.Sdk
+dotnet add package Qyl.Telemetry.Hosting
 ```
+
+The package changes nothing on its own. `AddQyl()` is the activation line, and it belongs in application setup:
 
 ```csharp
 builder.AddQyl();
 ```
 
-The SDK discovers a local `qyl up` collector, applies the supported compile-time instrumentation, propagates `session.id`, and exports through the OpenTelemetry SDK. Standard `OTEL_*` settings still take precedence.
+That call discovers a local `qyl up` collector, applies the supported compile-time instrumentation, propagates `session.id`, and exports through the OpenTelemetry SDK. Standard `OTEL_*` settings still take precedence.
 
 ## Send from any OpenTelemetry SDK
 
