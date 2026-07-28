@@ -8,7 +8,7 @@ interface Props {
 
 const { announcement = true } = Astro.props;
 const pathname = Astro.url.pathname;
-const isCurrent = (href: string) => href === "/" ? pathname === href : pathname.startsWith(href);
+const isCurrent = (section: string) => section === "/" ? pathname === section : pathname.startsWith(section);
 ---
 
 {
@@ -29,7 +29,7 @@ const isCurrent = (href: string) => href === "/" ? pathname === href : pathname.
     <nav class="desktop-nav" aria-label="Primary navigation">
       {
         primaryNavigation.map((item) => (
-          <a href={item.href} aria-current={isCurrent(item.href) ? "page" : undefined}>{item.label}</a>
+          <a href={item.href} aria-current={isCurrent(item.section) ? "page" : undefined}>{item.label}</a>
         ))
       }
     </nav>
@@ -41,7 +41,7 @@ const isCurrent = (href: string) => href === "/" ? pathname === href : pathname.
         <nav aria-label="Mobile navigation">
           {
             primaryNavigation.map((item) => (
-              <a href={item.href} aria-current={isCurrent(item.href) ? "page" : undefined}>{item.label}</a>
+              <a href={item.href} aria-current={isCurrent(item.section) ? "page" : undefined}>{item.label}</a>
             ))
           }
           <a href="/auth/">Authentication</a>

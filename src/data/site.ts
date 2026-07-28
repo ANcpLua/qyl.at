@@ -1,8 +1,12 @@
+// `section` is the URL prefix the entry represents, which is not always its own
+// href: "Product" links into /product/tracing/ but owns all of /product/. Marking
+// the current item by prefix-matching the href left /product/logs/, /metrics/ and
+// /ci/ with no aria-current and no active underline anywhere in the header.
 export const primaryNavigation = [
-  { href: "/product/tracing/", label: "Product" },
-  { href: "/docs/", label: "Docs" },
-  { href: "/pricing/", label: "Pricing" },
-  { href: "/faq/", label: "FAQ" },
+  { href: "/product/tracing/", label: "Product", section: "/product/" },
+  { href: "/docs/", label: "Docs", section: "/docs/" },
+  { href: "/pricing/", label: "Pricing", section: "/pricing/" },
+  { href: "/faq/", label: "FAQ", section: "/faq/" },
 ] as const;
 
 export const docsNavigation = [
