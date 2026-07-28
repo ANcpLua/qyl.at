@@ -1,0 +1,8 @@
+# The URL structure is a redirect obligation from launch onward (AGENTS.md).
+# /welcome/ was a live, indexed URL on the GitHub Pages site whose whole job was
+# to point at the homepage; the Astro rebuild deleted the stub, so without this
+# rule every existing link, bookmark and search result for it lands on the 404
+# page. 301 rather than 302 because the move is permanent and the canonical
+# signal that used to live in the stub has to be restored.
+/welcome/ / 301
+/welcome  / 301
