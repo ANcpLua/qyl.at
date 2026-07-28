@@ -1,7 +1,8 @@
 # qyl.at
 
 The public marketing and documentation site for [qyl](https://github.com/ANcpLua/qyl),
-served at [qyl.at](https://qyl.at/).
+live at [qyl.at](https://qyl.at/). This is production: qyl 1.0.0 is released, and the
+URL structure is a standing redirect obligation rather than a draft.
 
 The site is Astro 7 with static output, MDX documentation, build-time Shiki syntax
 highlighting, Tailwind CSS 4, and on-demand Pagefind search. Cloudflare Workers Static
@@ -35,8 +36,13 @@ Vitals remain out-of-band deployed release evidence.
 
 ## Deploy
 
-Authenticate Wrangler with the qyl Cloudflare account and provision the Worker secret
-used to forward bounded OTLP log records:
+CI owns the deploy. A push to `main` runs the verify job and, only if it passes, deploys
+the Worker from that commit; `workflow_dispatch` redeploys without an empty commit. A
+missing Cloudflare token fails the job rather than skipping it, because a silently
+skipped deploy leaves the live site on whatever was last pushed by hand.
+
+The manual path below is for first provisioning and recovery. The Worker secret carries
+the collector credential used to forward bounded OTLP log records:
 
 ```bash
 npx wrangler secret put QYL_API_KEY
