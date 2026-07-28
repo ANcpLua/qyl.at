@@ -47,5 +47,10 @@ export function startVitals(): void {
   onCLS(record);
   onINP(record);
   onLCP(record);
-  window.addEventListener("pagehide", flush, { once: true });
+  // Not `{ once: true }`. CLS and INP are finalized by web-vitals only at hide
+  // time, and a bfcache restore makes it report a fresh set for the restored
+  // visit — with a one-shot listener every back/forward visit would contribute
+  // an LCP-only record and bias the CLS and INP distributions towards
+  // first-visit traffic.
+  window.addEventListener("pagehide", flush);
 }
