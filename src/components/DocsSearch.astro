@@ -20,9 +20,15 @@
     data(): Promise<PagefindData>;
   }
 
+  interface PagefindSearchResults {
+    results: PagefindResult[];
+  }
+
   interface PagefindModule {
     init(): Promise<void>;
-    search(term: string): Promise<{ results: PagefindResult[] }>;
+    search(term: string): Promise<PagefindSearchResults>;
+    // Resolves null when a later call supersedes this one during the debounce.
+    debouncedSearch(term: string, options?: unknown, debounceTimeoutMs?: number): Promise<PagefindSearchResults | null>;
   }
 
   const dialog = document.querySelector<HTMLDialogElement>("[data-search-dialog]");
@@ -49,8 +55,17 @@
     results.replaceChildren(Object.assign(document.createElement("p"), { textContent: "Start typing to search the static documentation index." }));
   }
 
+  // Pagefind loads a separate index fragment per term, so completion order is not
+  // call order: a slower earlier query used to resolve last and repopulate the
+  // panel with results for a term no longer in the box. debouncedSearch collapses
+  // a burst of keystrokes into one query, and the sequence number discards any
+  // response — including the per-result data() fetches — that is no longer the
+  // one the input is waiting for.
+  let latestSearch = 0;
+
   async function runSearch(): Promise<void> {
     if (!input || !results) return;
+    const sequence = ++latestSearch;
     const term = input.value.trim();
     if (term.length < 2) {
       results.replaceChildren(Object.assign(document.createElement("p"), { textContent: "Enter at least two characters." }));
@@ -58,8 +73,11 @@
     }
 
     const engine = await loadPagefind();
-    const response = await engine.search(term);
+    if (sequence !== latestSearch) return;
+    const response = await engine.debouncedSearch(term, undefined, 300);
+    if (response === null || sequence !== latestSearch) return;
     const records = await Promise.all(response.results.slice(0, 8).map((result) => result.data()));
+    if (sequence !== latestSearch) return;
     if (records.length === 0) {
       results.replaceChildren(Object.assign(document.createElement("p"), { textContent: "No documentation matched." }));
       return;
