@@ -54,6 +54,22 @@ response bodies, arbitrary headers, credentials, or MCP `Mcp-Param-*` values. Br
 HTTP or MCP content capture belongs to the instrumentation or protocol owner and needs
 its own explicit policy.
 
+## Cloudflare skills
+
+This site is the one repo that deploys a Worker and owns a browser surface, so
+all three Cloudflare skills apply here — they retrieve from current Cloudflare
+docs instead of answering from pre-trained memory, which is the whole reason to
+load one before acting.
+
+- `/cloudflare:wrangler` — **before running any `wrangler` command.** Deploys,
+  secrets, and the `vars` block in `wrangler.jsonc` go through this CLI, and
+  its flags change between versions.
+- `/cloudflare:web-perf` — for LCP/INP/CLS work. The vitals this site forwards
+  to `api.qyl.at` are a product claim; measure with the skill rather than
+  asserting an improvement.
+- `/cloudflare:cloudflare` — for the platform around the Worker: zone settings,
+  DNS, custom domains, cache and header behavior, WAF.
+
 ## Verification
 
 ```bash
