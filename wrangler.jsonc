@@ -9,6 +9,15 @@
       "custom_domain": true
     }
   ],
+  // Must be stated explicitly. `wrangler deploy` PATCHes observability to
+  // `{enabled: false}` whenever the key is absent ("if the user hasn't specified
+  // observability assume that they want it disabled"), so an omitted block does
+  // not mean "leave it alone" — it silently turns Workers Logs off on every CI
+  // deploy and reverts any dashboard-side enable. The vitals path logs collector
+  // export failures via console.error; without this they go nowhere.
+  "observability": {
+    "enabled": true
+  },
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",

@@ -1,0 +1,8 @@
+# Everything under dist/ is uploaded verbatim by `wrangler deploy`, including
+# dotfiles, so anything non-content that reaches the build output would be
+# published at qyl.at. Finder metadata leaks local folder and window state;
+# scripts/check-artifacts.mjs writes its budget evidence outside dist/ for the
+# same reason, and fails the build if either ever reappears in the upload.
+.DS_Store
+Thumbs.db
+evidence/

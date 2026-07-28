@@ -1,5 +1,8 @@
 node_modules
 dist
+# Per-route budget evidence from scripts/check-artifacts.mjs. Outside dist/ on
+# purpose: everything in dist/ is uploaded and served by the Worker.
+evidence
 .astro
 .wrangler
 .playwright
