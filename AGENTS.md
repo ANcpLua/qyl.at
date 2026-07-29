@@ -5,6 +5,12 @@ site deployed through Cloudflare Workers Static Assets. `README.md` is the build
 verification, and deployment runbook. Infrastructure ownership remains in the
 workspace-level `../AGENTS.md`.
 
+## Verified concern status
+
+| Concern | Status | Evidence / concrete remainder |
+| --- | --- | --- |
+| [`QYL-PUBLIC-SITE`](https://github.com/ANcpLua/dedupe-28th-july/blob/main/concerns/07-public-site-production-evidence.md) | `IN_PROGRESS` | Vitals/bfcache lifecycle code, Worker/unit/Playwright gates, and CI deployment are tracked; a real-browser persisted-bfcache regression and post-deploy Cloudflare observability/readback gate remain. |
+
 ## Place in the 1.0.0 taxonomy
 
 qyl.at is not one of the nine runtime components — it is the public surface
