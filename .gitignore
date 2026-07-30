@@ -14,4 +14,4 @@ output
 # premium vendored source — never publish
 components/react-bits/
 components/blocks/
-SKILL.md
+/SKILL.md
