@@ -50,6 +50,9 @@ shipped capability.
   variable WOFF2 and its SIL Open Font License.
 - The CSP and cache policy in `public/_headers` are release behavior, not examples.
   Pagefind's WebAssembly requires the narrow `wasm-unsafe-eval` CSP token.
+- TypeScript is pinned to 6.x, not the workspace-wide 7.x: `astro check`'s language
+  server needs the programmatic tsc API that TypeScript 7's native compiler does not
+  ship yet (withastro/roadmap#1321). Re-test on Astro/TS releases; verified 2026-07-30.
 
 ## Telemetry boundary
 
