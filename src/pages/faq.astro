@@ -8,7 +8,7 @@ const questions = [
   ["Does the workbench fall back to old MCP revisions?", "No. User-configured stdio and Streamable HTTP connections pin 2026-07-28 and fail when the peer cannot negotiate it. The built-in server uses an internal legacy-only in-memory transport that is not user configurable or network facing."],
   ["Can an MCP tool run without confirmation?", "Only when its annotations consistently mark it read-only, non-destructive, and closed-world. Missing or contradictory safety hints require review of the exact call."],
   ["Does live mode invent demo data when the collector is unavailable?", "No. Collector failures remain errors. Generated telemetry is available only with the explicit QYL_DEMO=1 setting and every demo result is labelled."],
-  ["How is the hosted endpoint authenticated?", "qyl is an OAuth 2.1 Resource Server backed by Auth0. The MCP client performs Authorization Code with PKCE and requests qyl:read for the exact resource https://mcp.qyl.at/mcp."],
+  ["How is the hosted endpoint authenticated?", "qyl is an OAuth 2.1 Resource Server backed by Auth0. The MCP client performs Authorization Code with PKCE for https://mcp.qyl.at/mcp. qyl:read is required for normal access; qyl:control additionally enables approval-gated workflow controls."],
 ] as const;
 ---
 

@@ -2,13 +2,13 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
-<BaseLayout title="Pricing" description="qyl is free during its public beta, with the complete local collector, dashboard, workbench, and hosted MCP read surface included.">
+<BaseLayout title="Pricing" description="qyl is free during its public beta, with the complete local collector, dashboard, workbench, and hosted MCP access included.">
   <section class="page-hero">
     <div class="site-shell pricing-shell">
       <div>
         <span class="eyebrow">One plan · every shipped feature</span>
         <h1 class="page-title">Free while qyl is in beta.</h1>
-        <p class="lede">No feature matrix and no pretend enterprise tier. Install the local product or authenticate your MCP client to the hosted read surface.</p>
+        <p class="lede">No feature matrix and no pretend enterprise tier. Install the local product or authenticate your MCP client for hosted telemetry access and workflow controls.</p>
       </div>
       <article class="pricing-card" aria-labelledby="beta-plan">
         <div class="pricing-card__head">
@@ -20,7 +20,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
             <li>Native AOT collector and embedded dashboard</li>
             <li>OTLP trace and log ingestion</li>
             <li>Local MCP workbench and evaluation evidence</li>
-            <li>Hosted MCP endpoint with OAuth 2.1</li>
+            <li>Hosted MCP with <code>qyl:read</code> access and <code>qyl:control</code> workflow controls</li>
             <li>Tracing and MCP dashboard apps</li>
           </ul>
           <a class="button button--light" href="/docs/getting-started/" id="beta-plan">Install qyl</a>

@@ -15,3 +15,4 @@ output
 components/react-bits/
 components/blocks/
 /SKILL.md
+.DS_Store
