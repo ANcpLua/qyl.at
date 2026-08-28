@@ -1,7 +1,7 @@
 # qyl.at
 
 The public marketing and documentation site for [qyl](https://github.com/ANcpLua/qyl),
-live at [qyl.at](https://qyl.at/). This is production: qyl 1.0.0 is released, and the
+live at [qyl.at](https://qyl.at/). This is production: qyl is released, and the
 URL structure is a standing redirect obligation rather than a draft.
 
 The site is Astro 7 with static output, MDX documentation, build-time Shiki syntax
