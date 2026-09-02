@@ -2,7 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 
 const questions = [
-  ["What does qyl store?", "The collector retains OTLP traces and logs in DuckDB. Metrics are accepted for wire compatibility and acknowledged, but the current collector does not retain them. Profiles are not supported."],
+  ["What does qyl store?", "The collector retains OTLP traces, logs and metrics in DuckDB. Profiles are not supported."],
   ["Do I need the hosted MCP server?", "No. qyl up runs the collector and embedded dashboard locally. qyl.mcp also runs a loopback workbench for connecting to local or remote MCP servers."],
   ["What is the difference between qyl and qyl.mcp?", "qyl owns telemetry ingestion, storage, the product read API, and the collector dashboard. qyl.mcp owns MCP runtime behavior, the workbench, local MCP process supervision, and MCP Apps."],
   ["Does the workbench fall back to old MCP revisions?", "No. User-configured stdio and Streamable HTTP connections pin 2026-07-28 and fail when the peer cannot negotiate it. The built-in server uses an internal legacy-only in-memory transport that is not user configurable or network facing."],

@@ -16,7 +16,7 @@ The collector maps internal DuckDB rows into generated Qyl contracts before data
 
 ## Ingestion
 
-The collector accepts official OTLP protobuf or JSON for traces, logs, and metrics. Trace and log exports are retained. Metrics receive a valid OTLP acknowledgement but are discarded by the current storage product.
+The collector accepts official OTLP protobuf or JSON for traces, logs and metrics, and retains all three in DuckDB. Profiles are not supported.
 
 In production, the OTLP receiver requires `x-otlp-api-key`. Local development defaults to unsecured loopback listeners.
 

@@ -19,7 +19,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       <p>The event does not include URL queries, page or form content, request or response bodies, arbitrary HTTP headers, credentials, account identity, or MCP tool arguments. Unknown fields are rejected by the Worker before export.</p>
 
       <h2>Where it goes</h2>
-      <p>The browser posts to <code>/_qyl/vitals</code> on this origin. A Cloudflare Worker validates the closed payload and forwards an official OTLP log record to the qyl collector. The collector credential remains server-side. qyl’s normal trace and log retention policy applies; the performance scoreboard uses rolling 28-day aggregates.</p>
+      <p>The browser posts to <code>/_qyl/vitals</code> on this origin. A Cloudflare Worker validates the closed payload and forwards an official OTLP log record to the qyl collector. The collector credential remains server-side. qyl’s normal telemetry retention policy applies; the performance scoreboard uses rolling 28-day aggregates.</p>
 
       <h2>Source and questions</h2>
       <p>The site and collector are open source. Implementation questions or deletion requests can be raised through the <a href="https://github.com/ANcpLua/qyl.at/issues">qyl.at issue tracker</a>.</p>
