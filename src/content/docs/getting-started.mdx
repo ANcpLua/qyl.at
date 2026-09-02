@@ -1,6 +1,6 @@
 ---
 title: Getting started
-description: Install the self-contained qyl tool, start the local collector and dashboard, and send your first OTLP traces and logs.
+description: Start the local qyl collector, point any OpenTelemetry SDK at it, and ask your agent about the traces, logs and metrics it captured.
 order: 1
 ---
 
@@ -25,9 +25,26 @@ Open `http://127.0.0.1:5100`. The fixed local surface is:
 
 The separate MCP workbench owns loopback port `18888`.
 
-## Instrument a .NET application
+## Hello world from any OpenTelemetry SDK
 
-Add the qyl instrumentation packages to the host project:
+Nothing about the collector is language specific. Any compliant OTLP exporter — Python, Go, Java, Node.js, Rust, .NET — reaches it through the two standard environment variables:
+
+```bash
+export OTEL_EXPORTER_OTLP_ENDPOINT=http://127.0.0.1:4318
+export OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
+```
+
+Run the application, then connect an MCP client and ask your agent about the run rather than reading a dashboard yourself:
+
+```bash
+npx -y qyl-mcp-server --stdio
+```
+
+Three steps: `qyl up`, point `OTEL_EXPORTER_OTLP_ENDPOINT` at it, ask your agent.
+
+## The .NET fast path
+
+For a .NET host there is a shorter route that needs no environment variables. Add the instrumentation package:
 
 ```bash
 dotnet add package Qyl.Telemetry.Hosting
@@ -39,18 +56,13 @@ The package changes nothing on its own. `AddQyl()` is the activation line, and i
 builder.AddQyl();
 ```
 
-That call discovers a local `qyl up` collector, applies the supported compile-time instrumentation, propagates `session.id`, and exports through the OpenTelemetry SDK. Standard `OTEL_*` settings still take precedence.
+That call discovers a local `qyl up` collector, applies the supported compile-time instrumentation, propagates `session.id`, and exports through the OpenTelemetry SDK. Standard `OTEL_*` settings still take precedence, so the fast path and the generic path never disagree.
 
-## Send from any OpenTelemetry SDK
+Current published versions of the instrumentation packages are listed on NuGet: [Qyl.Telemetry.Hosting](https://www.nuget.org/packages/Qyl.Telemetry.Hosting), [Qyl.Telemetry.AutoInstrumentation](https://www.nuget.org/packages/Qyl.Telemetry.AutoInstrumentation), and [Qyl.Telemetry.SemanticConventions](https://www.nuget.org/packages/Qyl.Telemetry.SemanticConventions). They are stable releases; no `--prerelease` flag is required.
 
-Point an OTLP exporter at the local HTTP receiver:
+## What is retained
 
-```bash
-export OTEL_EXPORTER_OTLP_ENDPOINT=http://127.0.0.1:4318
-export OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
-```
-
-qyl stores traces and logs. Metric exports are accepted and acknowledged for wire compatibility but are not retained by the current collector. Profiles are not supported.
+qyl stores traces, logs and metrics. Profiles are not supported.
 
 ## Stop cleanly
 
