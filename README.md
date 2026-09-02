@@ -52,6 +52,3 @@ npm run deploy
 The browser never receives the collector credential. Core Web Vitals initialize only
 on the `qyl.at` hostname and post to the same-origin `/_qyl/vitals` Worker route.
 
-Licensed React Bits Pro source is design reference only and remains gitignored. The
-committed site contains the resulting Astro presentation, not licensed source or its
-runtime dependencies.

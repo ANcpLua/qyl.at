@@ -11,8 +11,11 @@ playwright-report
 test-results
 output
 .env.local
-# premium vendored source — never publish
-components/react-bits/
-components/blocks/
+# Guard only: no React source or vendored premium component lives in this site
+# any more, and the runtime gate in scripts/check-artifacts.mjs fails the build
+# if one reappears in the output. These entries stop a re-vendored copy from
+# being committed in the first place.
+components/
 /SKILL.md
+tsconfig.tsbuildinfo
 .DS_Store
