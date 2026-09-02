@@ -30,9 +30,20 @@ npx wrangler deploy --dry-run
 
 `npm test` checks TypeScript and Astro, dependency policy, static artifacts and payload
 budgets, all routes with and without JavaScript, same-origin requests, deployed header
-behavior, accessibility, documentation search, and the fixed 4G/4× CPU performance
-harness. Lighthouse, PageSpeed Insights, Catchpoint, edge-cache TTFB, and field Core Web
-Vitals remain out-of-band deployed release evidence.
+behavior, accessibility, and documentation search.
+
+The fixed 4G/4× CPU performance harness is not part of that gate. It measures wall-clock
+LCP, INP and long tasks against hard thresholds, which a shared CI runner's noisy
+neighbour can fail without the site having changed, so it runs weekly and on demand
+(`.github/workflows/performance.yml`) where a failure is worth reading rather than
+re-running. Locally it is one command:
+
+```bash
+npm run build:site && npm run test:perf
+```
+
+Lighthouse, PageSpeed Insights, Catchpoint, edge-cache TTFB, and field Core Web Vitals
+remain out-of-band deployed release evidence.
 
 ## Deploy
 
@@ -51,6 +62,7 @@ npm run deploy
 
 The browser never receives the collector credential. Core Web Vitals initialize only
 on the `qyl.at` hostname and post to the same-origin `/_qyl/vitals` Worker route.
+
 ## Dependency pins
 
 `astro`, `@astrojs/mdx` and `vite` are pinned to exact versions: they decide the emitted

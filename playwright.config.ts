@@ -8,6 +8,16 @@ export default defineConfig({
   // OTLP exporters, their timers -- executed alongside the browser work and
   // competed with it. `npm run test:unit` owns that file and runs it separately.
   testMatch: /.*\.spec\.ts$/,
+  // Two projects, because the two suites have different costs and different
+  // audiences. `surface` is deterministic and cheap, so it stays on the PR
+  // gate. `performance` throttles to a fixed 4G / 4x CPU profile and measures
+  // wall-clock LCP, INP and long tasks: on a shared GitHub runner that reads
+  // the noise of a neighbouring workload as a site regression, so it runs on a
+  // schedule and on demand (.github/workflows/performance.yml), never on a PR.
+  projects: [
+    { name: "surface", testMatch: /surface\.spec\.ts$/ },
+    { name: "performance", testMatch: /performance\.spec\.ts$/ },
+  ],
   fullyParallel: false,
   workers: 1,
   timeout: 120_000,

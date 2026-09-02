@@ -1,0 +1,41 @@
+name: Performance
+
+# The fixed 4G / 4x CPU harness is off the pull-request gate on purpose. It
+# measures wall-clock LCP, INP and long tasks against hard thresholds, and a
+# shared GitHub runner sharing a host with a noisy neighbour fails it without
+# the site having changed. A red PR that a re-run turns green teaches everyone
+# to re-run rather than to read the number, so the harness runs on a schedule
+# and on demand instead, where a failure is a signal worth investigating.
+on:
+  schedule:
+    # Mondays 04:17 UTC. Off the hour so it does not queue behind the
+    # every-scheduler-on-the-hour crowd.
+    - cron: "17 4 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: performance
+  cancel-in-progress: true
+
+jobs:
+  harness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+
+      # The harness runs against the Worker serving dist/, the same path the
+      # deployed site takes, so the build has to happen first.
+      - run: npm run build:site
+      - run: npm run test:perf
