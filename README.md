@@ -51,4 +51,10 @@ npm run deploy
 
 The browser never receives the collector credential. Core Web Vitals initialize only
 on the `qyl.at` hostname and post to the same-origin `/_qyl/vitals` Worker route.
+## Dependency pins
 
+`astro`, `@astrojs/mdx` and `vite` are pinned to exact versions: they decide the emitted
+HTML and asset graph that the byte budgets in `scripts/check-artifacts.mjs` measure, so
+each upgrade has to arrive as its own reviewable Renovate PR that re-clears the gate
+rather than riding along inside a lockfile-maintenance bump. Everything else floats on a
+caret range.
