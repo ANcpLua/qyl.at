@@ -1,6 +1,6 @@
 ---
 title: Protocol 2026-07-28
-description: How qyl.mcp uses the MCP v2 beta packages and deliberately pins the 2026-07-28 protocol revision for real connections.
+description: How qyl.mcp pins the MCP TypeScript SDK v2 packages and the 2026-07-28 protocol revision for real connections.
 order: 4
 ---
 
@@ -20,6 +20,6 @@ The modern HTTP entry is `createMcpHandler(factory)`. qyl creates a fresh server
 
 Modern negotiation begins with `server/discover`; it does not run the legacy `initialize` exchange. qyl’s Streamable HTTP conformance test asserts the discover opening, the modern server identity, and the absence of initialize.
 
-## Beta status
+## Pinned versions
 
-The MCP TypeScript SDK v2 packages and the `2026-07-28` specification are release-candidate software. qyl pins the exact current beta and protocol revision, verifies the wire behavior, and will revalidate as the final artifacts land. See the upstream [2026-07-28 support guide](https://ts.sdk.modelcontextprotocol.io/v2/migration/support-2026-07-28.html) for the revision-level SDK behavior.
+qyl.mcp depends on `@modelcontextprotocol/core`, `@modelcontextprotocol/server` and `@modelcontextprotocol/client` at exactly `2.0.0`, and pins the `2026-07-28` protocol revision. The conformance tests verify that wire behavior on every build. See the upstream [2026-07-28 support guide](https://ts.sdk.modelcontextprotocol.io/v2/migration/support-2026-07-28.html) for the revision-level SDK behavior.
