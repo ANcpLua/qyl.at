@@ -22,7 +22,7 @@ For Claude Code:
 claude mcp add --transport http qyl https://mcp.qyl.at/mcp
 ```
 
-A compatible client discovers the protected-resource metadata, dynamically registers where supported, and opens Authorization Code with PKCE for the exact resource `https://mcp.qyl.at/mcp`. Normal hosted access requires `qyl:read`; `qyl:control` additionally enables the approval-gated `control_workflow_run` tool for steering, interrupting, and resuming runs.
+A compatible client discovers the protected-resource metadata, dynamically registers where supported, and opens Authorization Code with PKCE for the exact resource `https://mcp.qyl.at/mcp`. Hosted access requires `qyl:read`.
 
 ## Authentication boundary
 

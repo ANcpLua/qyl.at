@@ -18,7 +18,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     <div class="site-shell">
       <div class="section-intro">
         <div><span class="eyebrow">The exchange</span><h2 class="section-title">Authorization belongs to the issuer. Evidence belongs to qyl.</h2></div>
-        <p class="lede">The hosted server requires qyl:read for normal access and verifies the issuer, resource audience, expiry, and RFC 9068 token profile. The qyl:control scope additionally enables approval-gated workflow controls.</p>
+        <p class="lede">The hosted server requires qyl:read and verifies the issuer, resource audience, expiry, and RFC 9068 token profile.</p>
       </div>
       <div class="auth-flow">
         <article class="auth-step"><span>01 · DISCOVER</span><h2>Add the MCP URL</h2><p>The client reads the protected-resource metadata for the canonical endpoint.</p></article>
@@ -27,7 +27,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       </div>
       <div class="fact-grid">
         <div class="fact"><span>Resource</span><code>https://mcp.qyl.at/mcp</code></div>
-        <div class="fact"><span>Scopes</span><code>qyl:read · qyl:control</code></div>
+        <div class="fact"><span>Scope</span><code>qyl:read</code></div>
         <div class="fact"><span>Issuer</span><code>https://qyl-eu.eu.auth0.com/</code></div>
         <div class="fact"><span>Token profile</span><strong>RFC 9068 · RS256</strong></div>
       </div>
