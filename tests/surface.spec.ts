@@ -1,20 +1,49 @@
 import AxeBuilder from "@axe-core/playwright";
-import { expect, test, type APIRequestContext } from "@playwright/test";
+import { expect, test, type APIRequestContext, type Page } from "@playwright/test";
 import pixelmatch from "pixelmatch";
 import { PNG } from "pngjs";
 import { routes } from "./routes";
 
 test.describe.configure({ mode: "serial" });
 
+// `wrangler dev` exits on its own if its ProxyWorker ever fails to reach the
+// UserWorker, and Playwright stops watching the process once it has answered
+// on `url` (see playwright.config.ts). A suite that keeps loading pages from
+// the dead port then fails on whatever it happens to be asserting: a run that
+// lost the server *between* tests reports `page.goto: net::ERR_CONNECTION_REFUSED`,
+// and a run that lost it *during* the no-JS comparison reports a 2.8% pixel
+// difference, because the stylesheet and the font of one context never
+// arrived. Neither names the fault. These are the transport errors that mean
+// the server is gone rather than that a load was superseded -- ERR_ABORTED is
+// deliberately absent, since the browser aborts prefetches and speculation
+// candidates as a matter of course.
+const SERVER_GONE = /ERR_CONNECTION_REFUSED|ERR_CONNECTION_RESET|ERR_CONNECTION_CLOSED|ERR_EMPTY_RESPONSE|ERR_SOCKET_NOT_CONNECTED/u;
+
+/**
+ * Collects requests the preview server dropped, so a dead server is asserted
+ * as a dead server. Failing on the collected list -- rather than retrying the
+ * navigation -- keeps the real fault in the report next to wrangler's own
+ * output instead of hiding it behind a second attempt.
+ */
+function recordDroppedRequests(page: Page, label: string, into: string[]): void {
+  page.on("requestfailed", (request) => {
+    const error = request.failure()?.errorText ?? "";
+    if (SERVER_GONE.test(error)) into.push(`${label}: ${request.method()} ${request.url()} — ${error}`);
+  });
+}
+
 for (const route of routes) {
   test(`${route} has no serious accessibility or cross-origin runtime defect`, async ({ page, baseURL }) => {
     const externalRequests: string[] = [];
+    const dropped: string[] = [];
+    recordDroppedRequests(page, "page", dropped);
     page.on("request", (request) => {
       if (new URL(request.url()).origin !== new URL(baseURL!).origin) externalRequests.push(request.url());
     });
     const response = await page.goto(route, { waitUntil: "networkidle" });
     expect(response?.status()).toBeLessThan(400);
     await page.waitForTimeout(2_200);
+    expect(dropped, "the preview server dropped requests: it exited mid-test, so this run proves nothing about the site").toEqual([]);
     expect(externalRequests).toEqual([]);
     expect(await page.locator("h1").count()).toBe(1);
     expect(await page.locator("nav a[href]").count()).toBeGreaterThan(4);
@@ -43,13 +72,18 @@ for (const route of routes) {
       reducedMotion: "reduce",
       viewport: { width: 1280, height: 900 },
     });
+    const dropped: string[] = [];
     try {
       const enabled = await enabledContext.newPage();
       const disabled = await disabledContext.newPage();
-      await Promise.all([
+      recordDroppedRequests(enabled, "javascript enabled", dropped);
+      recordDroppedRequests(disabled, "javascript disabled", dropped);
+      const [enabledResponse, disabledResponse] = await Promise.all([
         enabled.goto(route, { waitUntil: "networkidle" }),
         disabled.goto(route, { waitUntil: "networkidle" }),
       ]);
+      expect(enabledResponse?.status()).toBeLessThan(400);
+      expect(disabledResponse?.status()).toBeLessThan(400);
 
       const enabledHeading = await enabled.locator("h1").innerText();
       const disabledHeading = await disabled.locator("h1").innerText();
@@ -65,6 +99,9 @@ for (const route of routes) {
         enabled.screenshot({ fullPage: true, animations: "disabled" }),
         disabled.screenshot({ fullPage: true, animations: "disabled" }),
       ]);
+      // Before the pixel comparison, so a run that lost its stylesheet or font
+      // to a dead server reports that instead of a visual regression.
+      expect(dropped, "the preview server dropped requests: it exited mid-test, so this comparison is not a visual regression").toEqual([]);
       const enabledPng = PNG.sync.read(enabledImage);
       const disabledPng = PNG.sync.read(disabledImage);
       expect({ width: disabledPng.width, height: disabledPng.height }).toEqual({ width: enabledPng.width, height: enabledPng.height });

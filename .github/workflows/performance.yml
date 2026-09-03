@@ -38,4 +38,21 @@ jobs:
       # The harness runs against the Worker serving dist/, the same path the
       # deployed site takes, so the build has to happen first.
       - run: npm run build:site
+
+      # Same webServer, same failure mode as the verify job: keep wrangler's
+      # debug log inside the workspace so a preview server that exits mid-run
+      # is readable here too. See .github/workflows/ci.yml.
       - run: npm run test:perf
+        env:
+          WRANGLER_LOG_PATH: ${{ github.workspace }}/wrangler-logs
+
+      - name: Upload harness evidence
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: performance-evidence
+          path: |
+            wrangler-logs/
+            test-results/
+          if-no-files-found: ignore
+          retention-days: 7

@@ -25,7 +25,30 @@ jobs:
 
       - run: npm ci
       - run: npx playwright install --with-deps chromium
+
+      # `wrangler dev` -- the Playwright webServer -- exits by itself when its
+      # ProxyWorker fails to reach the UserWorker, and it renders that fault as
+      # a bare `✘ [ERROR]` with an empty message. The only readable description
+      # lives in its debug log, which defaults to a path outside the workspace
+      # ($XDG_CONFIG_HOME/.wrangler/logs) and so was thrown away with the
+      # runner. Point it inside the workspace so the step below can publish it:
+      # a failure has to be diagnosable from the run that produced it, not from
+      # a re-run that passes.
       - run: npm test
+        env:
+          WRANGLER_LOG_PATH: ${{ github.workspace }}/wrangler-logs
+
+      - name: Upload verify evidence
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: verify-evidence
+          path: |
+            wrangler-logs/
+            test-results/
+          if-no-files-found: ignore
+          retention-days: 7
+
       - run: npx wrangler deploy --dry-run
 
   # Deploy only after verify passes, and only for main. Without this job the
