@@ -9,6 +9,9 @@ evidence
 .playwright-cli
 playwright-report
 test-results
+# WRANGLER_LOG_PATH in the CI workflows points wrangler's debug log here so a
+# preview server that exits mid-run stays diagnosable; it is evidence, not source.
+wrangler-logs
 output
 .env.local
 # Guard only: no React source or vendored premium component lives in this site

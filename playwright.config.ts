@@ -37,5 +37,16 @@ export default defineConfig({
     url: "http://127.0.0.1:4173",
     reuseExistingServer: false,
     timeout: 120_000,
+    // Playwright races the process against `url` only while the server is
+    // starting; once it answers once, nothing watches the child again. When
+    // `wrangler dev` exits mid-run -- its ProxyWorker reports a failed fetch to
+    // the UserWorker ("Network connection lost.") to the ProxyController, which
+    // treats it as fatal -- the suite therefore keeps running against a dead
+    // port. Wrangler renders that fault as a bare `✘ [ERROR]` with an empty
+    // message, and the detail exists only in its debug log, so `pipe` is what
+    // puts wrangler's request log next to the failing test in the job output.
+    // The debug log itself is uploaded by .github/workflows/ci.yml.
+    stdout: "pipe",
+    stderr: "pipe",
   },
 });
