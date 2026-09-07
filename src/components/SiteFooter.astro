@@ -1,6 +1,6 @@
 ---
 import Wordmark from "./Wordmark.astro";
-import { docsNavigation, externalLinks, productNavigation } from "../data/site";
+import { docsNavigation, externalLinks, headline, productNavigation, releaseWave } from "../data/site";
 ---
 
 <footer class="site-footer">
@@ -30,5 +30,9 @@ import { docsNavigation, externalLinks, productNavigation } from "../data/site";
       <a href={externalLinks.npm}>npm</a>
       <a href="/privacy/">Privacy</a>
     </nav>
+  </div>
+  <div class="site-shell release-bar">
+    <strong>Release wave {releaseWave}</strong>
+    <ul>{headline.map((entry) => <li>{entry}</li>)}</ul>
   </div>
 </footer>

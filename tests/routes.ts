@@ -10,6 +10,7 @@ export const routes = [
   "/docs/mcp/",
   "/docs/protocol-2026-07-28/",
   "/docs/telemetry/",
+  "/docs/api-sdk/",
   "/product/tracing/",
   "/product/logs/",
   "/product/metrics/",

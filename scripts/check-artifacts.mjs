@@ -17,6 +17,7 @@ const routes = [
   "/docs/mcp/",
   "/docs/protocol-2026-07-28/",
   "/docs/telemetry/",
+  "/docs/api-sdk/",
   "/product/tracing/",
   "/product/logs/",
   "/product/metrics/",
@@ -92,6 +93,60 @@ for (const route of routes) {
 }
 
 const files = allFiles(dist);
+
+// Link gate. Every internal href in the built site has to resolve to something
+// this deploy actually publishes -- a file, a directory index, or a `_redirects`
+// rule. A broken internal link is invisible to the route list above, because
+// that only proves the pages it names were built, not that the pages point at
+// each other correctly; and it is invisible to the Playwright suite, which
+// visits routes rather than following links. Redirect rules count as resolved
+// because the asset worker answers them, and the surface suite proves the one
+// that exists still 301s.
+const published = new Set(
+  files.flatMap((file) => {
+    const url = `/${path.relative(dist, file).split(path.sep).join("/")}`;
+    return url.endsWith("/index.html") ? [url, url.slice(0, -"index.html".length)] : [url];
+  }),
+);
+const redirectSources = new Set(
+  fs
+    .readFileSync(path.join(dist, "_redirects"), "utf8")
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => line !== "" && !line.startsWith("#"))
+    .map((line) => line.split(/\s+/u)[0]),
+);
+
+const brokenLinks = [];
+for (const file of files.filter((entry) => entry.endsWith(".html"))) {
+  const source = fs.readFileSync(file, "utf8");
+  for (const match of source.matchAll(/<a\b[^>]*\bhref=(?:"([^"]*)"|'([^']*)')/gi)) {
+    const href = match[1] ?? match[2];
+    // Only same-origin paths are this gate's business. A protocol-relative URL
+    // (`//host/path`) is external despite the leading slash.
+    if (!href.startsWith("/") || href.startsWith("//")) continue;
+    const target = href.split(/[?#]/u, 1)[0];
+    if (target === "") continue;
+    const resolved =
+      published.has(target) ||
+      published.has(`${target}/`) ||
+      published.has(`${target}index.html`) ||
+      published.has(`${target}/index.html`) ||
+      redirectSources.has(target);
+    if (!resolved) brokenLinks.push(`${path.relative(dist, file)} -> ${href}`);
+  }
+}
+if (brokenLinks.length > 0) fail(`link gate: ${brokenLinks.length} unresolvable internal link(s): ${[...new Set(brokenLinks)].join(", ")}`);
+
+// The sitemap is hand-maintained in public/, so it drifts silently when a page
+// is added or removed. It is a published claim about what exists: hold it to
+// the same standard as a link.
+const sitemap = [...fs.readFileSync(path.join(dist, "sitemap.xml"), "utf8").matchAll(/<loc>([^<]+)<\/loc>/gu)].map((match) => new URL(match[1]).pathname);
+const sitemapExtra = sitemap.filter((pathname) => !published.has(pathname));
+const sitemapMissing = routes.filter((route) => route !== "/404.html" && !sitemap.includes(route));
+if (sitemapExtra.length > 0) fail(`sitemap gate: lists unpublished ${sitemapExtra.join(", ")}`);
+if (sitemapMissing.length > 0) fail(`sitemap gate: does not list ${sitemapMissing.join(", ")}`);
+
 const woff2 = files.filter((file) => file.endsWith(".woff2"));
 if (woff2.length !== 1 || path.relative(dist, woff2[0]) !== "fonts/geist-sans-variable.woff2") {
   fail(`font gate: expected one Geist WOFF2, found ${woff2.map((file) => path.relative(dist, file)).join(", ")}`);

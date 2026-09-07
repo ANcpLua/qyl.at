@@ -1283,6 +1283,26 @@ details[open] .faq-toggle::before {
   background: var(--panel);
 }
 
+/* The release table is the widest content on the site: three columns, one of
+   them a 40-character package id. It scrolls inside itself rather than pushing
+   the page into a horizontal scrollbar. */
+.release-table {
+  display: block;
+  overflow-x: auto;
+}
+
+.release-table caption {
+  margin-bottom: 0.75rem;
+  color: var(--muted);
+  font-size: 0.78rem;
+  text-align: left;
+}
+
+.release-table td:nth-child(2) {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
 .docs-index-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -1519,6 +1539,40 @@ details[open] .faq-toggle::before {
 
 .footer-grid nav a:hover {
   color: var(--text);
+}
+
+/* The wave the whole site describes, stated on every page. It sits below the
+   footer navigation rather than in it, because it is a fact about the release
+   the page documents, not a place to go. */
+.release-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 1.4rem;
+  padding-block: 1.1rem 2.4rem;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+
+.release-bar strong {
+  color: var(--muted-strong);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.release-bar ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.release-bar li {
+  font-variant-numeric: tabular-nums;
 }
 
 @media (max-width: 900px) {

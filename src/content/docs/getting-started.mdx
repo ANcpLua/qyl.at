@@ -4,6 +4,8 @@ description: Start the local qyl collector, point any OpenTelemetry SDK at it, a
 order: 1
 ---
 
+import ReleaseTable from "../../components/ReleaseTable.astro";
+
 ## What starts locally
 
 qyl ships as a .NET tool. The package contains the native collector and embedded dashboard for your current runtime identifier; it does not clone a repository or require Node.js.
@@ -58,7 +60,19 @@ builder.AddQyl();
 
 That call discovers a local `qyl up` collector, applies the supported compile-time instrumentation, propagates `session.id`, and exports through the OpenTelemetry SDK. Standard `OTEL_*` settings still take precedence, so the fast path and the generic path never disagree.
 
-Current published versions of the instrumentation packages are listed on NuGet: [Qyl.Telemetry.Hosting](https://www.nuget.org/packages/Qyl.Telemetry.Hosting), [Qyl.Telemetry.AutoInstrumentation](https://www.nuget.org/packages/Qyl.Telemetry.AutoInstrumentation), and [Qyl.Telemetry.SemanticConventions](https://www.nuget.org/packages/Qyl.Telemetry.SemanticConventions). They are stable releases; no `--prerelease` flag is required.
+## The published versions
+
+<ReleaseTable />
+
+The three semantic-conventions ids move together, and `Qyl.Telemetry.Hosting` ships in lockstep with `Qyl.Telemetry.AutoInstrumentation`. Pin the versions above rather than a floating range: the collector's attribute mapping is generated from the same registry release as the constants the instrumentation writes.
+
+## Build an API on the same stack
+
+`Qyl.Api.Sdk` is an MSBuild SDK for a Native AOT ASP.NET Core API. One line registers validation, problem details and the OpenAPI document; see [API SDK](/docs/api-sdk/).
+
+```xml
+<Project Sdk="Qyl.Api.Sdk/4.0.0">
+```
 
 ## What is retained
 

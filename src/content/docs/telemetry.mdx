@@ -14,6 +14,20 @@ qyl keeps protocol ownership explicit:
 
 The collector maps internal DuckDB rows into generated Qyl contracts before data crosses an HTTP, streaming, MCP, or generated-client boundary.
 
+## One registry, generated everything
+
+The telemetry vocabulary has a single source: one Weaver registry that resolves the upstream OpenTelemetry semantic conventions, the gen-ai conventions, and qyl's own attributes as YAML in the same registry. There is no second vocabulary and no merge step after Weaver.
+
+The C# constants are emitted from that registry by Weaver templates and committed to the repository, so what the compiler sees is diffable and CI fails on a stale regeneration rather than on a mismatch at runtime.
+
+Three rules follow, and each has exactly one owner:
+
+- **The instrumentation never normalizes.** It writes only constants the generator produced. A vendor key travels as a tag; the application does not rename it. That is also what makes the collector viable under Native AOT, where a runtime rewrite table has nowhere to live.
+- **The collector renames and drops** according to the `AttributeMapping` generated from the same registry, and counts every drop on `qyl.collector.attributes.dropped`. A missing attribute is a number you can query, not silence.
+- **Nothing invents keys.** The mapping may only point at attributes the registry defines, and Weaver's live-check judges the telemetry qyl actually emits against the registry's own `.weaver.toml` and advice policies.
+
+New term, new span, new vendor: registry YAML, instrumentation, mapping table. One place each.
+
 ## Ingestion
 
 The collector accepts official OTLP protobuf or JSON for traces, logs and metrics, and retains all three in DuckDB. Profiles are not supported.

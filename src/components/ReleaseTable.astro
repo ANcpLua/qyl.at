@@ -1,0 +1,22 @@
+---
+// The published versions of the current wave, rendered from `src/data/site.ts`
+// so this table and the footer release bar cannot disagree. Every row links to
+// the registry that serves it: the site states a version, the feed proves it.
+import { release, releaseWave } from "../data/site";
+---
+
+<table class="release-table">
+  <caption>Release wave {releaseWave}. Every version below is published and indexed.</caption>
+  <thead>
+    <tr><th scope="col">Package</th><th scope="col">Version</th><th scope="col">What it is</th></tr>
+  </thead>
+  <tbody>
+    {release.map((entry) => (
+      <tr>
+        <th scope="row"><a href={entry.registry}><code>{entry.name}</code></a></th>
+        <td>{entry.version}</td>
+        <td>{entry.summary}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>

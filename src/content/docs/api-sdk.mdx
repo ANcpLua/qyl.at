@@ -1,0 +1,56 @@
+---
+title: API SDK
+description: Build a Native AOT ASP.NET Core API with Qyl.Api.Sdk 4.0.0 — validation, problem details, the OpenAPI document and XML output behind one AddQylApi call.
+order: 6
+---
+
+## What it is
+
+`Qyl.Api.Sdk` 4.0.0 is an MSBuild SDK, not an ordinary package reference. It carries the Native AOT ASP.NET Core template, compile-time validation, the OpenAPI document, and the `[GenerateXml]` XML writer. It ships with `qyl` 4.0.0 and is its first release.
+
+```xml
+<Project Sdk="Qyl.Api.Sdk/4.0.0">
+```
+
+## One call
+
+Everything the SDK registers is mandatory, so none of it is presented as a choice. There is no `With*` chain and no SDK options type:
+
+```csharp
+var builder = WebApplication.CreateSlimBuilder(args);
+
+builder.Services.AddQylApi(AppJsonSerializerContext.Default);
+builder.Services.AddSingleton<TodoStore>();
+
+var app = builder.Build();
+app.MapTodos();
+app.Run();
+```
+
+`AddQylApi` registers, in a fixed order: the consumer's JSON serializer contexts, the problem-details JSON context, validation, the problem-details service, and the OpenAPI document. Reflection is off under Native AOT, so a serializer context is a parameter rather than a setting — an API without one does not run.
+
+Overrides go through the framework's own options, not through an SDK type: `Configure<ValidationOptions>` and `Configure<OpenApiOptions>("v1", …)` after the call.
+
+## Compiled into the consumer, deliberately
+
+The .NET validation generator and the OpenAPI XML-comment generator intercept the `AddValidation()` and `AddOpenApi()` calls **inside the compilation that makes them**, and discover validatable types and XML comments from that compilation only. A compiled DLL calling the same methods would validate nothing and document nothing. `AddQylApi` therefore ships as linked source; the runtime around it — the typed results, the problem-details context — is the compiled `Qyl.Api` assembly.
+
+## XML without a serializer
+
+`[GenerateXml]` generates an `XmlWriter` implementation for a type. No `XmlSerializer`, no runtime reflection, and the generated tree matches what `XmlSerializer` would have produced for the same attributes or the build fails.
+
+```csharp
+[GenerateXml]
+[XmlRoot("todo")]
+internal sealed partial record Todo(
+    [property: XmlAttribute("id")] int Id,
+    [property: XmlElement("title")] string? Title);
+```
+
+Returning `QylResults.Xml(todo)` attaches the XML response shape to the endpoint, so the committed OpenAPI contract describes the XML body rather than an opaque string.
+
+## The contract is committed
+
+The OpenAPI version is one MSBuild property, `QylOpenApiVersion` (default `OpenApi3_1`). It is passed to the build-time document generator and written into the compilation, so the served document and the committed contract move together; a gate fails if they ever differ.
+
+The worked example is `samples/qyl.sample` in the [qyl repository](https://github.com/ANcpLua/qyl).

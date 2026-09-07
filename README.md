@@ -63,6 +63,16 @@ npm run deploy
 The browser never receives the collector credential. Core Web Vitals initialize only
 on the `qyl.at` hostname and post to the same-origin `/_qyl/vitals` Worker route.
 
+## The versions the site states
+
+`src/data/site.ts` holds the release wave and every published version the site
+shows: the footer release bar renders the headline list on every page, and the
+getting-started table renders the full one with a registry link per row. A
+release wave edits that file; no page carries a version of its own, so no page
+can fall behind the feeds while another is current. `npm test` fails on an
+internal link that does not resolve and on a `public/sitemap.xml` that disagrees
+with the built routes.
+
 ## Dependency pins
 
 `astro`, `@astrojs/mdx` and `vite` are pinned to exact versions: they decide the emitted

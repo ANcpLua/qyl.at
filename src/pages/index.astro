@@ -25,6 +25,7 @@ import TraceStage from "../components/TraceStage.astro";
         <div class="release-line" aria-label="Product characteristics">
           <span>OpenTelemetry native</span>
           <span>Local first</span>
+          <span>qyl 4.0.0</span>
         </div>
       </div>
       <TraceStage />
@@ -33,7 +34,7 @@ import TraceStage from "../components/TraceStage.astro";
 
   <div class="proof-strip" aria-label="qyl architecture at a glance">
     <div class="site-shell proof-grid">
-      <div class="proof-item"><strong>OTLP</strong><span>Standard trace, log and metric ingestion over HTTP or gRPC.</span></div>
+      <div class="proof-item"><strong>OTLP</strong><span>Standard trace, log and metric ingestion over HTTP or gRPC, on a generated vocabulary.</span></div>
       <div class="proof-item"><strong>DuckDB</strong><span>One local analytical store with explicit retention.</span></div>
       <div class="proof-item"><strong>MCP ’26</strong><span>Real workbench connections pin the 2026-07-28 revision.</span></div>
       <div class="proof-item"><strong>Evidence</strong><span>Errors stay errors; demo data is always explicit.</span></div>
@@ -64,6 +65,10 @@ import TraceStage from "../components/TraceStage.astro";
         <article class="feature-row">
           <span>03</span><h3>Retain the execution evidence</h3>
           <p>The workbench records requests, results, protocol timelines, approvals, tests, and evaluations instead of reducing a run to a green check.</p>
+        </article>
+        <article class="feature-row">
+          <span>04</span><h3>One vocabulary, generated</h3>
+          <p>One Weaver registry emits the attribute constants the instrumentation writes and the rename table the collector applies. The application never normalizes, the collector counts every dropped attribute, and live-check judges the result against the same registry.</p>
         </article>
       </div>
     </div>
