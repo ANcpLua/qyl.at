@@ -6,15 +6,16 @@ order: 2
 
 ## Start the workbench
 
-The workbench lives in the separate `qyl.mcp` repository. Development and CI use
-Node.js 24 LTS; maintained Node.js releases from 22 onward are supported.
+The workbench lives in the separate `qyl.mcp` repository. Bun 1.4 is the runtime
+and the only package manager there — one `bun.lock`, no npm install path — and
+the repository runs on Node.js 24.
 
 ```bash
 git clone https://github.com/ANcpLua/qyl.mcp.git
 cd qyl.mcp
-npm ci
-npm run build
-npm run start:runner
+bun install --frozen-lockfile
+bun run build
+bun run start:workbench
 ```
 
 Open `http://127.0.0.1:18888`. The browser, runner API, and managed child processes run with the local user’s permissions, so the runner binds only to loopback.
