@@ -22,7 +22,7 @@ The C# constants are emitted from that registry by Weaver templates and committe
 
 Three rules follow, and each has exactly one owner:
 
-- **The instrumentation never normalizes.** It writes only constants the generator produced. A vendor key travels as a tag; the application does not rename it. That is also what makes the collector viable under Native AOT, where a runtime rewrite table has nowhere to live.
+- **The instrumentation never normalizes.** It writes only constants the generator produced. A vendor key travels as a tag; the application does not rename it. That is also what keeps an instrumented application Native AOT-safe: a runtime rewrite table would need reflection the trimmed binary does not carry.
 - **The collector renames and drops** according to the `AttributeMapping` generated from the same registry, and counts every drop on `qyl.collector.attributes.dropped`. A missing attribute is a number you can query, not silence.
 - **Nothing invents keys.** The mapping may only point at attributes the registry defines, and Weaver's live-check judges the telemetry qyl actually emits against the registry's own `.weaver.toml` and advice policies.
 

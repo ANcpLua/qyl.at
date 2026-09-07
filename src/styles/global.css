@@ -1192,15 +1192,20 @@ details[open] .faq-toggle::before {
 .docs-content > section,
 .docs-content > h2,
 .docs-content > h3,
-.docs-content > p,
-.docs-content > ul,
-.docs-content > ol,
-.docs-content > pre,
-.docs-content > blockquote,
-.docs-content > table {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 22rem;
-}
+/* `content-visibility: auto` with `contain-intrinsic-size: auto 22rem` used to
+   sit on every block in here. The 22rem was a guess applied to elements that are
+   nothing like 22rem: an unrendered 25px paragraph reserved 352px. Below the
+   length where the deferral starts to bite, that is invisible; above it, it is
+   not. /docs/getting-started/ reported 6880px of scroll for 4450px of content --
+   2430px of phantom page -- and the deferred region painted or did not paint
+   depending on when the capture happened to run, which is what failed the no-JS
+   comparison on CI while passing locally.
+
+   Nothing here is expensive enough to defer: the heaviest docs page is 86KB and
+   4450px tall, and its code blocks are highlighted at build time by Shiki, not in
+   the browser. The optimization bought no measurable paint and cost an honest
+   scrollbar and a deterministic render, so it is gone rather than retuned -- a
+   correct `contain-intrinsic-size` cannot be written for arbitrary prose. */
 
 .docs-content h2,
 .docs-content h3 {
