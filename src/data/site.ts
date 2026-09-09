@@ -34,8 +34,10 @@ export const externalLinks = {
 
 // One release wave, one place. Every version the site states comes from here:
 // the footer release bar renders `headline`, the getting-started table renders
-// `release`. A wave that bumps a package edits this array and nothing else, so
-// a page cannot fall behind the feeds while another page is current.
+// `release`, and prose asks `versionOf` below. A wave that bumps a package edits
+// this array and nothing else, so a page cannot fall behind the feeds while
+// another page is current. The three literals no expression can replace are
+// held here by `scripts/check-versions.mjs`, which runs in `npm run check`.
 export const releaseWave = "2026-09-07" as const;
 
 export const release = [
@@ -113,3 +115,16 @@ export const headline = [
   "Qyl.Api.Contracts 10.0.0",
   "qyl-mcp-server 5.0.0",
 ] as const;
+
+// Prose states a version by asking for it here instead of repeating it. Before
+// this, `release` was imported by exactly two components and every other version
+// on the site was a hand-kept literal, so a wave moved the table and the footer
+// and left the sentences behind. The three places that still hold a literal --
+// an MDX frontmatter `description`, and the two `<Project Sdk="…">` code
+// examples, none of which can hold an expression -- are held to this array by
+// `scripts/check-versions.mjs` instead.
+export function versionOf(name: (typeof release)[number]["name"]): string {
+  const entry = release.find((candidate) => candidate.name === name);
+  if (entry === undefined) throw new Error(`site.ts: no release entry named ${name}`);
+  return entry.version;
+}

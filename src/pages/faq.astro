@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { releaseWave, versionOf } from "../data/site";
 
 const questions = [
   ["What does qyl store?", "The collector retains OTLP traces, logs and metrics in DuckDB. Profiles are not supported."],
@@ -9,9 +10,9 @@ const questions = [
   ["Can an MCP tool run without confirmation?", "Only when its annotations consistently mark it read-only, non-destructive, and closed-world. Missing or contradictory safety hints require review of the exact call."],
   ["Does live mode invent demo data when the collector is unavailable?", "No. Collector failures remain errors. Generated telemetry is available only with the explicit QYL_DEMO=1 setting and every demo result is labelled."],
   ["How is the hosted endpoint authenticated?", "qyl is an OAuth 2.1 Resource Server backed by Auth0. The MCP client performs Authorization Code with PKCE for https://mcp.qyl.at/mcp. qyl:read is the only required scope."],
-  ["Which versions does this site describe?", "The 2026-09-07 wave: qyl 4.0.0, Qyl.Api.Sdk 4.0.0, Qyl.Telemetry.AutoInstrumentation and Qyl.Telemetry.Hosting 14.0.1, the three Qyl.Telemetry.SemanticConventions ids at 9.1.0, Qyl.Api.Contracts and @ancplua/qyl-api-schema 10.0.0, and qyl-mcp-server 5.0.0. Every page carries the wave in its footer, and the getting-started table links each version to the feed that serves it."],
+  ["Which versions does this site describe?", `The ${releaseWave} wave: qyl ${versionOf("qyl")}, Qyl.Api.Sdk ${versionOf("Qyl.Api.Sdk")}, Qyl.Telemetry.AutoInstrumentation and Qyl.Telemetry.Hosting ${versionOf("Qyl.Telemetry.AutoInstrumentation")}, the three Qyl.Telemetry.SemanticConventions ids at ${versionOf("Qyl.Telemetry.SemanticConventions")}, Qyl.Api.Contracts and @ancplua/qyl-api-schema ${versionOf("Qyl.Api.Contracts")}, and qyl-mcp-server ${versionOf("qyl-mcp-server")}. Every page carries the wave in its footer, and the getting-started table links each version to the feed that serves it.`],
   ["Where do the telemetry attribute names come from?", "One Weaver registry holding the upstream OpenTelemetry conventions, the gen-ai conventions and qyl\u2019s own attributes as YAML. Weaver templates emit the C# constants, which are committed. The instrumentation writes only those constants and never renames anything; the collector applies the rename table generated from the same registry and counts every dropped attribute on qyl.collector.attributes.dropped."],
-  ["Is there a Qyl.Api.Sdk without Native AOT?", "No. Qyl.Api.Sdk 4.0.0 is an MSBuild SDK for a Native AOT ASP.NET Core API. AddQylApi registers validation, problem details and the OpenAPI document in one call, and XML output is generated at compile time behind [GenerateXml] rather than reflected at runtime."],
+  ["Is there a Qyl.Api.Sdk without Native AOT?", `No. Qyl.Api.Sdk ${versionOf("Qyl.Api.Sdk")} is an MSBuild SDK for a Native AOT ASP.NET Core API. AddQylApi registers validation, problem details and the OpenAPI document in one call, and XML output is generated at compile time behind [GenerateXml] rather than reflected at runtime.`],
 ] as const;
 ---
 
