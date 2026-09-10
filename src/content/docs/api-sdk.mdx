@@ -1,6 +1,6 @@
 ---
 title: API SDK
-description: Build a Native AOT ASP.NET Core API with Qyl.Api.Sdk 4.0.0 — validation, problem details, the OpenAPI document and XML output behind one AddQylApi call.
+description: Build a Native AOT ASP.NET Core API with Qyl.Api.Sdk 5.0.0 — validation, problem details, the OpenAPI document and XML output behind one AddQylApi call.
 order: 6
 ---
 
@@ -11,7 +11,7 @@ import { versionOf } from "../../data/site";
 `Qyl.Api.Sdk` {versionOf("Qyl.Api.Sdk")} is an MSBuild SDK, not an ordinary package reference. It carries the Native AOT ASP.NET Core template, compile-time validation, the OpenAPI document, and the `[GenerateXml]` XML writer. It ships with `qyl` {versionOf("qyl")} and is its first release.
 
 ```xml
-<Project Sdk="Qyl.Api.Sdk/4.0.0">
+<Project Sdk="Qyl.Api.Sdk/5.0.0">
 ```
 
 ## One call
@@ -21,7 +21,7 @@ Everything the SDK registers is mandatory, so none of it is presented as a choic
 ```csharp
 var builder = WebApplication.CreateSlimBuilder(args);
 
-builder.Services.AddQylApi(AppJsonSerializerContext.Default);
+builder.AddQylApi(AppJsonSerializerContext.Default);
 builder.Services.AddSingleton<TodoStore>();
 
 var app = builder.Build();
@@ -29,9 +29,31 @@ app.MapTodos();
 app.Run();
 ```
 
-`AddQylApi` registers, in a fixed order: the consumer's JSON serializer contexts, the problem-details JSON context, validation, the problem-details service, and the OpenAPI document. Reflection is off under Native AOT, so a serializer context is a parameter rather than a setting — an API without one does not run.
+`AddQylApi` extends `IHostApplicationBuilder`, not `IServiceCollection`: it registers services *and* wires the host, so it is called on `builder`. In a fixed order it registers the consumer's JSON serializer contexts, the problem-details JSON context, validation, the problem-details service, the `v1` OpenAPI document, and last `AddQyl()` — auto-instrumentation, ASP.NET Core spans and OTLP export. Reflection is off under Native AOT, so a serializer context is a parameter rather than a setting — an API without one does not run.
 
 Overrides go through the framework's own options, not through an SDK type: `Configure<ValidationOptions>` and `Configure<OpenApiOptions>("v1", …)` after the call.
+
+## Telemetry is not a choice
+
+There is no `WithTelemetry`, no options type and no way to opt out, exactly as there is no way to
+opt out of validation. `AddQyl()` is the last thing `AddQylApi` registers, because it is the
+composition step: everything above it is already registered when telemetry is wired.
+
+Two things ride on that registration.
+
+**The contract revision is on the resource.** Every span a Qyl API emits carries the revision of the
+committed OpenAPI document it was built from. A binary that cannot name its contract does not start:
+`AddQylApi` throws when the revision is empty, which is the case that survives a tampered-with build
+rather than a routine one — the SDK's targets already fail the build when the committed document is
+missing or stale.
+
+**A `baggage` request header carries the session.** `baggage: session.id=<id>` becomes `session.id`
+on the server span, and the session processor copies it to every descendant span in that process. An
+agent that sends the header finds everything it triggered under one session in the collector. The
+startup filter that stamps it is registered after `AddQyl` on purpose: startup filters wrap the
+pipeline outermost-first, and the span being stamped is created by the filter `AddQyl` registers, so
+a filter ahead of it would tag the wrong activity or none. The tag is a span tag and does not cross a
+process boundary — a downstream service reads the header, not the tag.
 
 ## Compiled into the consumer, deliberately
 

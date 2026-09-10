@@ -38,48 +38,48 @@ export const externalLinks = {
 // this array and nothing else, so a page cannot fall behind the feeds while
 // another page is current. The three literals no expression can replace are
 // held here by `scripts/check-versions.mjs`, which runs in `npm run check`.
-export const releaseWave = "2026-09-07" as const;
+export const releaseWave = "2026-09-09" as const;
 
 export const release = [
   {
     name: "qyl",
-    version: "4.0.0",
+    version: "5.0.0",
     registry: "https://www.nuget.org/packages/qyl",
     summary: "The dotnet tool: native collector, embedded dashboard, product API.",
   },
   {
     name: "Qyl.Api.Sdk",
-    version: "4.0.0",
+    version: "5.0.0",
     registry: "https://www.nuget.org/packages/Qyl.Api.Sdk",
     summary: "MSBuild SDK for a Native AOT ASP.NET Core API behind one AddQylApi call.",
   },
   {
     name: "Qyl.Telemetry.AutoInstrumentation",
-    version: "14.0.1",
+    version: "21.0.1",
     registry: "https://www.nuget.org/packages/Qyl.Telemetry.AutoInstrumentation",
     summary: "Compile-time .NET instrumentation; writes generated constants only.",
   },
   {
     name: "Qyl.Telemetry.Hosting",
-    version: "14.0.1",
+    version: "21.0.1",
     registry: "https://www.nuget.org/packages/Qyl.Telemetry.Hosting",
     summary: "The AddQyl() activation line and the attribute-stamping processor.",
   },
   {
     name: "Qyl.Telemetry.SemanticConventions",
-    version: "9.1.0",
+    version: "9.3.0",
     registry: "https://www.nuget.org/packages/Qyl.Telemetry.SemanticConventions",
     summary: "Weaver-generated attribute and metric constants, committed to the repository.",
   },
   {
     name: "Qyl.Telemetry.SemanticConventions.Incubating",
-    version: "9.1.0",
+    version: "9.3.0",
     registry: "https://www.nuget.org/packages/Qyl.Telemetry.SemanticConventions.Incubating",
     summary: "The same generation for conventions upstream has not stabilised.",
   },
   {
     name: "Qyl.Telemetry.SemanticConventions.Analyzers",
-    version: "9.1.0",
+    version: "9.3.0",
     registry: "https://www.nuget.org/packages/Qyl.Telemetry.SemanticConventions.Analyzers",
     summary: "Compile-time diagnostics against the generated vocabulary.",
   },
@@ -108,10 +108,10 @@ export const release = [
 // not ten: the three semantic-conventions ids share a version, and Hosting
 // ships in lockstep with AutoInstrumentation.
 export const headline = [
-  "qyl 4.0.0",
-  "Qyl.Api.Sdk 4.0.0",
-  "Qyl.Telemetry.AutoInstrumentation 14.0.1",
-  "Qyl.Telemetry.SemanticConventions 9.1.0",
+  "qyl 5.0.0",
+  "Qyl.Api.Sdk 5.0.0",
+  "Qyl.Telemetry.AutoInstrumentation 21.0.1",
+  "Qyl.Telemetry.SemanticConventions 9.3.0",
   "Qyl.Api.Contracts 10.0.0",
   "qyl-mcp-server 5.0.0",
 ] as const;

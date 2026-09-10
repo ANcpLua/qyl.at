@@ -58,7 +58,7 @@ The package changes nothing on its own. `AddQyl()` is the activation line, and i
 builder.AddQyl();
 ```
 
-That call discovers a local `qyl up` collector, applies the supported compile-time instrumentation, propagates `session.id`, and exports through the OpenTelemetry SDK. Standard `OTEL_*` settings still take precedence, so the fast path and the generic path never disagree.
+That call discovers a local `qyl up` collector, applies the supported compile-time instrumentation, copies `session.id` from a span to every descendant span in the same process, and exports through the OpenTelemetry SDK. Standard `OTEL_*` settings still take precedence, so the fast path and the generic path never disagree.
 
 ## The published versions
 
@@ -68,10 +68,10 @@ The three semantic-conventions ids move together, and `Qyl.Telemetry.Hosting` sh
 
 ## Build an API on the same stack
 
-`Qyl.Api.Sdk` is an MSBuild SDK for a Native AOT ASP.NET Core API. One line registers validation, problem details and the OpenAPI document; see [API SDK](/docs/api-sdk/).
+`Qyl.Api.Sdk` is an MSBuild SDK for a Native AOT ASP.NET Core API. One line registers validation, problem details, the OpenAPI document and the telemetry above; see [API SDK](/docs/api-sdk/).
 
 ```xml
-<Project Sdk="Qyl.Api.Sdk/4.0.0">
+<Project Sdk="Qyl.Api.Sdk/5.0.0">
 ```
 
 ## What is retained
