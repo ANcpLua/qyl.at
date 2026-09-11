@@ -3,17 +3,17 @@ import ProductPage from "../../components/ProductPage.astro";
 ---
 
 <ProductPage
-  title="MCP evidence"
-  eyebrow="Product · executions"
-  intro="Keep the protocol timeline, approval, result, test, and evaluation attached to the tool call that produced them."
-  heading="More than an aggregate counter."
-  description="The local workbench retains complete execution evidence, including typed errors and redacted JSON-RPC frames. Explicit token usage and cost are preserved only when the tool reports them; qyl does not infer them from prose, latency, or payload size."
+  title="Metrics"
+  eyebrow="Product · metrics"
+  intro="Standard OTLP in. Every series kept, every query aggregated server-side—through an MCP tool or the dashboard's metrics view."
+  heading="Series you can ask about, not points you have to sum yourself."
+  description="The collector retains metric points in DuckDB as a series index plus a point table. A query names a metric, matches attributes, bounds a time range and picks a step, and gets buckets back—never raw points. Percentiles need a histogram; OTLP summary points are declined with a partial_success that names the instrument, because pre-computed quantiles cannot be re-aggregated over a window or merged across series."
   capabilities={[
-    { name: "display_mcp_dashboard", description: "Open the shipped MCP traffic dashboard for latency, failures, and call evidence." },
-    { name: "execution record", description: "Retain request, result, lifecycle, duration, attempts, cancellation, and the redacted protocol timeline." },
-    { name: "tests + suites", description: "Run exact, partial, JSON Schema, pattern, and latency assertions against real tool invocations." },
-    { name: "evaluations", description: "Compare completed runs and export contract-validated JSON or Markdown evidence." },
+    { name: "list_metrics", description: "List the metric descriptors recorded for a project: name, instrument, unit." },
+    { name: "get_metric_series", description: "List the distinct attribute streams recorded under one metric name." },
+    { name: "query_metric", description: "Aggregate one metric over a time range into buckets of step_ms, with attribute matchers." },
+    { name: "OTLP /v1/metrics", description: "Ingest binary protobuf or OTLP JSON over HTTP, plus the official OTLP gRPC service." },
   ]}
-  command={`bun run start:workbench
-# open http://127.0.0.1:18888`}
+  command={`qyl up
+# point an OTLP exporter at http://127.0.0.1:4318`}
 />
