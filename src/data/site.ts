@@ -44,61 +44,61 @@ export const releaseWave = "2026-09-11" as const;
 export const release = [
   {
     name: "qyl",
-    version: "5.0.1",
+    version: "5.1.0",
     registry: "https://www.nuget.org/packages/qyl",
     summary: "The dotnet tool: native collector, embedded dashboard, product API.",
   },
   {
     name: "Qyl.Api.Sdk",
-    version: "5.0.1",
+    version: "5.1.0",
     registry: "https://www.nuget.org/packages/Qyl.Api.Sdk",
     summary: "MSBuild SDK for a Native AOT ASP.NET Core API behind one AddQylApi call.",
   },
   {
     name: "Qyl.Telemetry.AutoInstrumentation",
-    version: "21.0.1",
+    version: "21.1.0",
     registry: "https://www.nuget.org/packages/Qyl.Telemetry.AutoInstrumentation",
     summary: "Compile-time .NET instrumentation; writes generated constants only.",
   },
   {
     name: "Qyl.Telemetry.Hosting",
-    version: "21.0.1",
+    version: "21.1.0",
     registry: "https://www.nuget.org/packages/Qyl.Telemetry.Hosting",
     summary: "The AddQyl() activation line and the attribute-stamping processor.",
   },
   {
     name: "Qyl.Telemetry.SemanticConventions",
-    version: "9.3.0",
+    version: "9.4.0",
     registry: "https://www.nuget.org/packages/Qyl.Telemetry.SemanticConventions",
     summary: "Weaver-generated attribute and metric constants, committed to the repository.",
   },
   {
     name: "Qyl.Telemetry.SemanticConventions.Incubating",
-    version: "9.3.0",
+    version: "9.4.0",
     registry: "https://www.nuget.org/packages/Qyl.Telemetry.SemanticConventions.Incubating",
     summary: "The same generation for conventions upstream has not stabilised.",
   },
   {
     name: "Qyl.Telemetry.SemanticConventions.Analyzers",
-    version: "9.3.0",
+    version: "9.4.0",
     registry: "https://www.nuget.org/packages/Qyl.Telemetry.SemanticConventions.Analyzers",
     summary: "Compile-time diagnostics against the generated vocabulary.",
   },
   {
     name: "Qyl.Api.Contracts",
-    version: "10.0.0",
+    version: "10.0.1",
     registry: "https://www.nuget.org/packages/Qyl.Api.Contracts",
     summary: "The generated .NET read contract for every Qyl request and response.",
   },
   {
     name: "@ancplua/qyl-api-schema",
-    version: "10.0.0",
+    version: "10.0.1",
     registry: "https://www.npmjs.com/package/@ancplua/qyl-api-schema",
     summary: "The same contract for TypeScript consumers, with its Zod export.",
   },
   {
     name: "qyl-mcp-server",
-    version: "5.0.0",
+    version: "5.1.0",
     registry: "https://www.npmjs.com/package/qyl-mcp-server",
     summary: "The MCP server: stdio locally, Streamable HTTP hosted.",
   },
@@ -109,12 +109,12 @@ export const release = [
 // not ten: the three semantic-conventions ids share a version, and Hosting
 // ships in lockstep with AutoInstrumentation.
 export const headline = [
-  "qyl 5.0.1",
-  "Qyl.Api.Sdk 5.0.1",
-  "Qyl.Telemetry.AutoInstrumentation 21.0.1",
-  "Qyl.Telemetry.SemanticConventions 9.3.0",
-  "Qyl.Api.Contracts 10.0.0",
-  "qyl-mcp-server 5.0.0",
+  "qyl 5.1.0",
+  "Qyl.Api.Sdk 5.1.0",
+  "Qyl.Telemetry.AutoInstrumentation 21.1.0",
+  "Qyl.Telemetry.SemanticConventions 9.4.0",
+  "Qyl.Api.Contracts 10.0.1",
+  "qyl-mcp-server 5.1.0",
 ] as const;
 
 // Prose states a version by asking for it here instead of repeating it. Before
