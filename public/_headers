@@ -36,3 +36,7 @@
 /speculation-rules.json
   Content-Type: application/speculationrules+json
   ! Link
+
+/schemas/*
+  Content-Type: text/yaml; charset=utf-8
+  ! Link
