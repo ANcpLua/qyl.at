@@ -38,18 +38,18 @@ export const externalLinks = {
 // this array and nothing else, so a page cannot fall behind the feeds while
 // another page is current. The three literals no expression can replace are
 // held here by `scripts/check-versions.mjs`, which runs in `npm run check`.
-export const releaseWave = "2026-09-09" as const;
+export const releaseWave = "2026-09-11" as const;
 
 export const release = [
   {
     name: "qyl",
-    version: "5.0.0",
+    version: "5.0.1",
     registry: "https://www.nuget.org/packages/qyl",
     summary: "The dotnet tool: native collector, embedded dashboard, product API.",
   },
   {
     name: "Qyl.Api.Sdk",
-    version: "5.0.0",
+    version: "5.0.1",
     registry: "https://www.nuget.org/packages/Qyl.Api.Sdk",
     summary: "MSBuild SDK for a Native AOT ASP.NET Core API behind one AddQylApi call.",
   },
@@ -108,8 +108,8 @@ export const release = [
 // not ten: the three semantic-conventions ids share a version, and Hosting
 // ships in lockstep with AutoInstrumentation.
 export const headline = [
-  "qyl 5.0.0",
-  "Qyl.Api.Sdk 5.0.0",
+  "qyl 5.0.1",
+  "Qyl.Api.Sdk 5.0.1",
   "Qyl.Telemetry.AutoInstrumentation 21.0.1",
   "Qyl.Telemetry.SemanticConventions 9.3.0",
   "Qyl.Api.Contracts 10.0.0",
