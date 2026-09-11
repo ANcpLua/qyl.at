@@ -175,7 +175,7 @@ for (const [route, expected] of [
   ["/product/tracing/", "Product"],
   ["/product/logs/", "Product"],
   ["/product/metrics/", "Product"],
-  ["/product/evidence/", "Product"],
+  ["/product/mcp-evidence/", "Product"],
   ["/product/ci/", "Product"],
   ["/docs/getting-started/", "Docs"],
   ["/pricing/", "Pricing"],

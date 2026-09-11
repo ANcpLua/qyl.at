@@ -22,7 +22,7 @@ export const productNavigation = [
   { href: "/product/tracing/", label: "Tracing" },
   { href: "/product/logs/", label: "Logs" },
   { href: "/product/metrics/", label: "Metrics" },
-  { href: "/product/evidence/", label: "MCP evidence" },
+  { href: "/product/mcp-evidence/", label: "MCP evidence" },
   { href: "/product/ci/", label: "CI telemetry" },
 ] as const;
 

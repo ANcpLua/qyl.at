@@ -21,6 +21,7 @@ const routes = [
   "/product/tracing/",
   "/product/logs/",
   "/product/metrics/",
+  "/product/mcp-evidence/",
   "/product/ci/",
   "/404.html",
 ];

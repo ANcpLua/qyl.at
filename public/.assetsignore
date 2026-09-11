@@ -5,4 +5,6 @@
 # same reason, and fails the build if either ever reappears in the upload.
 .DS_Store
 Thumbs.db
-evidence/
+# The budget-evidence folder at the root only; a page URL must never share the name
+# (a bare `evidence/` also matched dist/product/evidence/ and hid a page).
+/evidence/

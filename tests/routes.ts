@@ -14,7 +14,7 @@ export const routes = [
   "/product/tracing/",
   "/product/logs/",
   "/product/metrics/",
-  "/product/evidence/",
+  "/product/mcp-evidence/",
   "/product/ci/",
   "/404.html",
 ] as const;
