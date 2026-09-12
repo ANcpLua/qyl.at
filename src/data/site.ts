@@ -98,7 +98,7 @@ export const release = [
   },
   {
     name: "qyl-mcp-server",
-    version: "5.1.0",
+    version: "5.2.0",
     registry: "https://www.npmjs.com/package/qyl-mcp-server",
     summary: "The MCP server: stdio locally, Streamable HTTP hosted.",
   },
@@ -114,7 +114,7 @@ export const headline = [
   "Qyl.Telemetry.AutoInstrumentation 21.1.0",
   "Qyl.Telemetry.SemanticConventions 9.4.0",
   "Qyl.Api.Contracts 10.0.1",
-  "qyl-mcp-server 5.1.0",
+  "qyl-mcp-server 5.2.0",
 ] as const;
 
 // Prose states a version by asking for it here instead of repeating it. Before
