@@ -42,6 +42,8 @@ Run the application, then connect an MCP client and ask your agent about the run
 npx -y qyl-mcp-server --stdio
 ```
 
+The server speaks MCP revision `2026-07-28` only; a host on the 2025 handshake, Claude Code included, is refused with `-32022`.
+
 Three steps: `qyl up`, point `OTEL_EXPORTER_OTLP_ENDPOINT` at it, ask your agent.
 
 ## The .NET fast path

@@ -45,3 +45,5 @@ npx -y qyl-mcp-server --stdio
 ```
 
 The stdio server exposes the same Qyl read tools and MCP Apps without creating an Internet-facing listener.
+
+Both transports speak MCP revision `2026-07-28` only. A host that opens with the 2025 `initialize` handshake is refused with `-32022` naming that revision; Claude Code's stdio client is one such host. The MCP TypeScript SDK client connects with `versionNegotiation: { mode: "auto" }`.
