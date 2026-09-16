@@ -11,11 +11,12 @@ There is no React runtime or client router in the production bundle.
 
 ## Local development
 
-Use Node.js 24 LTS.
+Use Node.js 24 LTS. Bun is the package manager, pinned by `packageManager` in
+package.json and read by CI through setup-bun.
 
 ```bash
-npm ci
-npm run dev
+bun install --frozen-lockfile
+bun run dev
 ```
 
 ## Verify
@@ -23,12 +24,12 @@ npm run dev
 Install Chromium once, then run the complete release-equivalent local gate:
 
 ```bash
-npx playwright install chromium
-npm test
-npx wrangler deploy --dry-run
+bunx playwright install chromium
+bun run test
+bunx wrangler deploy --dry-run
 ```
 
-`npm test` checks TypeScript and Astro, dependency policy, static artifacts and payload
+`bun run test` checks TypeScript and Astro, dependency policy, static artifacts and payload
 budgets, all routes with and without JavaScript, same-origin requests, deployed header
 behavior, accessibility, and documentation search.
 
@@ -39,7 +40,7 @@ neighbour can fail without the site having changed, so it runs weekly and on dem
 re-running. Locally it is one command:
 
 ```bash
-npm run build:site && npm run test:perf
+bun run build:site && bun run test:perf
 ```
 
 Lighthouse, PageSpeed Insights, Catchpoint, edge-cache TTFB, and field Core Web Vitals
@@ -56,8 +57,8 @@ The manual path below is for first provisioning and recovery. The Worker secret 
 the collector credential used to forward bounded OTLP log records:
 
 ```bash
-npx wrangler secret put QYL_API_KEY
-npm run deploy
+bunx wrangler secret put QYL_API_KEY
+bun run deploy
 ```
 
 The browser never receives the collector credential. Core Web Vitals initialize only
@@ -69,7 +70,7 @@ on the `qyl.at` hostname and post to the same-origin `/_qyl/vitals` Worker route
 shows: the footer release bar renders the headline list on every page, and the
 getting-started table renders the full one with a registry link per row. A
 release wave edits that file; no page carries a version of its own, so no page
-can fall behind the feeds while another is current. `npm test` fails on an
+can fall behind the feeds while another is current. `bun run test` fails on an
 internal link that does not resolve and on a `public/sitemap.xml` that disagrees
 with the built routes.
 
