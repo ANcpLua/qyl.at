@@ -30,19 +30,22 @@ jobs:
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: 24
-          cache: npm
 
-      - run: npm ci
-      - run: npx playwright install --with-deps chromium
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+
+      - run: bun install --frozen-lockfile
+      - run: bunx playwright install --with-deps chromium
 
       # The harness runs against the Worker serving dist/, the same path the
       # deployed site takes, so the build has to happen first.
-      - run: npm run build:site
+      - run: bun run build:site
 
       # Same webServer, same failure mode as the verify job: keep wrangler's
       # debug log inside the workspace so a preview server that exits mid-run
       # is readable here too. See .github/workflows/ci.yml.
-      - run: npm run test:perf
+      - run: bun run test:perf
         env:
           WRANGLER_LOG_PATH: ${{ github.workspace }}/wrangler-logs
 
