@@ -21,9 +21,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
-        with:
-          bun-version-file: package.json
+      - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
 
       - run: bun install --frozen-lockfile
       # astro check + tsc --noEmit: typechecking was defined but never gated.
@@ -40,9 +38,7 @@ jobs:
         with:
           node-version: 24
 
-      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
-        with:
-          bun-version-file: package.json
+      - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
 
       - run: bun install --frozen-lockfile
       - run: bunx playwright install --with-deps chromium
@@ -93,9 +89,7 @@ jobs:
         with:
           node-version: 24
 
-      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
-        with:
-          bun-version-file: package.json
+      - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
 
       # Fail with a readable message rather than a cryptic wrangler auth error.
       # Deliberately a hard failure, not a skip: a silently skipped deploy is
