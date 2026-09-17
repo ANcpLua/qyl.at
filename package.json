@@ -19,7 +19,8 @@
     "smoke": "bun run test",
     "preview": "wrangler dev",
     "deploy": "bun run test && wrangler deploy --var QYL_SERVICE_VERSION:$(git rev-parse --short HEAD)",
-    "deploy:dry": "bun run build && wrangler deploy --dry-run"
+    "deploy:dry": "bun run build && wrangler deploy --dry-run",
+    "lint": "oxlint ."
   },
   "dependencies": {
     "@opentelemetry/api": "^1.9.1",
@@ -38,6 +39,8 @@
     "@types/pngjs": "^6.0.5",
     "astro": "7.3.1",
     "fontaine": "^0.8.1",
+    "oxlint": "^1.83.0",
+    "oxlint-tsgolint": "^7.0.2001",
     "pagefind": "^1.5.2",
     "pixelmatch": "^7.2.0",
     "pngjs": "^7.0.0",

@@ -96,6 +96,9 @@ export function validPayload(value: unknown): value is VitalPayload {
   if (!value || typeof value !== "object") return false;
   const payload = value as Partial<VitalPayload>;
   if (!hasOnlyKeys(value, ["browser", "metrics", "navigationType", "route"])) return false;
+  // The control-character class is the reject list this guard exists to
+  // enforce, not a stray escape.
+  // oxlint-disable-next-line no-control-regex
   if (typeof payload.route !== "string" || !payload.route.startsWith("/") || payload.route.length > 256 || /[?#\u0000-\u001f\u007f]/u.test(payload.route)) return false;
   if (payload.navigationType !== "navigate" && payload.navigationType !== "reload" && payload.navigationType !== "back_forward") return false;
   if (!payload.browser || typeof payload.browser !== "object") return false;
