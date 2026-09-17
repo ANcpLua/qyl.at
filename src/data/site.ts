@@ -44,13 +44,13 @@ export const releaseWave = "2026-09-17" as const;
 export const release = [
   {
     name: "qyl",
-    version: "7.0.0",
+    version: "7.1.0",
     registry: "https://www.nuget.org/packages/qyl",
     summary: "The dotnet tool: native collector, embedded dashboard, product API.",
   },
   {
     name: "Qyl.Api.Sdk",
-    version: "7.0.0",
+    version: "7.1.0",
     registry: "https://www.nuget.org/packages/Qyl.Api.Sdk",
     summary: "MSBuild SDK for a Native AOT ASP.NET Core API behind one AddQylApi call.",
   },
@@ -86,19 +86,19 @@ export const release = [
   },
   {
     name: "Qyl.Api.Contracts",
-    version: "11.1.0",
+    version: "11.2.0",
     registry: "https://www.nuget.org/packages/Qyl.Api.Contracts",
     summary: "The generated .NET read contract for every Qyl request and response.",
   },
   {
     name: "@ancplua/qyl-api-schema",
-    version: "11.1.0",
+    version: "11.2.0",
     registry: "https://www.npmjs.com/package/@ancplua/qyl-api-schema",
     summary: "The same contract for TypeScript consumers, with its Zod export.",
   },
   {
     name: "qyl-mcp-server",
-    version: "6.2.0",
+    version: "7.0.0",
     registry: "https://www.npmjs.com/package/qyl-mcp-server",
     summary: "The MCP server: stdio locally, Streamable HTTP hosted.",
   },
@@ -109,12 +109,12 @@ export const release = [
 // not ten: the three semantic-conventions ids share a version, and Hosting
 // ships in lockstep with AutoInstrumentation.
 export const headline = [
-  "qyl 7.0.0",
-  "Qyl.Api.Sdk 7.0.0",
+  "qyl 7.1.0",
+  "Qyl.Api.Sdk 7.1.0",
   "Qyl.Telemetry.AutoInstrumentation 21.1.0",
   "Qyl.Telemetry.SemanticConventions 9.4.0",
-  "Qyl.Api.Contracts 11.1.0",
-  "qyl-mcp-server 6.2.0",
+  "Qyl.Api.Contracts 11.2.0",
+  "qyl-mcp-server 7.0.0",
 ] as const;
 
 // Prose states a version by asking for it here instead of repeating it. Before
