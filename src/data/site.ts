@@ -86,13 +86,13 @@ export const release = [
   },
   {
     name: "Qyl.Api.Contracts",
-    version: "11.0.1",
+    version: "11.1.0",
     registry: "https://www.nuget.org/packages/Qyl.Api.Contracts",
     summary: "The generated .NET read contract for every Qyl request and response.",
   },
   {
     name: "@ancplua/qyl-api-schema",
-    version: "11.0.1",
+    version: "11.1.0",
     registry: "https://www.npmjs.com/package/@ancplua/qyl-api-schema",
     summary: "The same contract for TypeScript consumers, with its Zod export.",
   },
@@ -113,7 +113,7 @@ export const headline = [
   "Qyl.Api.Sdk 7.0.0",
   "Qyl.Telemetry.AutoInstrumentation 21.1.0",
   "Qyl.Telemetry.SemanticConventions 9.4.0",
-  "Qyl.Api.Contracts 11.0.1",
+  "Qyl.Api.Contracts 11.1.0",
   "qyl-mcp-server 6.2.0",
 ] as const;
 
