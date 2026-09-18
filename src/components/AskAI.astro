@@ -1,0 +1,22 @@
+<!-- Same hosted widget as https://github.com/thomhurst/TUnit/blob/main/docs/docusaurus.config.ts. -->
+<script>
+  // Keep configuration and loading together so the async widget cannot race it.
+  Object.assign(window, {
+    tlumaConfig: {
+      source: "ANcpLua/qyl",
+      theme: "dark",
+      brandColor: "slate",
+      button: "bottom-right",
+      welcomePulse: false,
+      edgePadding: "1rem",
+      autoOpen: false,
+      desktopFullscreenByDefault: false,
+      preloadAfterMs: false,
+    },
+  });
+
+  const widget = document.createElement("script");
+  widget.src = "https://tluma.ai/widget.js";
+  widget.async = true;
+  document.body.append(widget);
+</script>

@@ -7,7 +7,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     <div class="reading-shell">
       <span class="eyebrow">Privacy · qyl.at</span>
       <h1 class="page-title">Measure the page, not the person.</h1>
-      <p class="lede">qyl.at uses no advertising pixels, cross-site trackers, or analytics cookies. Its only browser telemetry is a bounded same-origin Core Web Vitals event.</p>
+      <p class="lede">qyl.at records a bounded same-origin Core Web Vitals event. The optional Ask AI chat is provided by Tluma, a separate service with its own data practices.</p>
     </div>
   </section>
   <section class="editorial-section editorial-section--raised">
@@ -20,6 +20,10 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
       <h2>Where it goes</h2>
       <p>The browser posts to <code>/_qyl/vitals</code> on this origin. A Cloudflare Worker validates the closed payload and forwards an official OTLP log record to the qyl collector. The collector credential remains server-side. qyl’s normal telemetry retention policy applies; the performance scoreboard uses rolling 28-day aggregates.</p>
+
+      <h2>Ask AI by Tluma</h2>
+      <p>Pages load the chat launcher script from <a href="https://tluma.ai/">Tluma</a>. The hosted chat loads when you open Ask AI; background chat preloading is disabled. The assistant uses the public <a href="https://github.com/ANcpLua/qyl">qyl repository</a> as its source.</p>
+      <p>When you open the chat, the widget shares the current page URL with Tluma. Tluma processes your messages, responses, and session information, and may store browser identifiers for conversation continuity. This is separate from the Core Web Vitals event described above. Do not paste secrets or sensitive production logs. See <a href="https://tluma.ai/privacy-policy">Tluma’s privacy policy</a> for access and retention details.</p>
 
       <h2>Source and questions</h2>
       <p>The site and collector are open source. Implementation questions or deletion requests can be raised through the <a href="https://github.com/ANcpLua/qyl.at/issues">qyl.at issue tracker</a>.</p>
