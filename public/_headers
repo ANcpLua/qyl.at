@@ -1,6 +1,6 @@
 /*
   Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
-  Content-Security-Policy: default-src 'self'; connect-src 'self'; img-src 'self' data:; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; frame-ancestors 'none'; base-uri 'none'
+  Content-Security-Policy: default-src 'self'; connect-src 'self'; img-src 'self' data:; script-src 'self' 'wasm-unsafe-eval' https://tluma.ai/widget.js; frame-src https://tluma.ai; style-src 'self' 'unsafe-inline'; frame-ancestors 'none'; base-uri 'none'
   Link: </fonts/geist-sans-variable.woff2>; rel=preload; as=font; type="font/woff2"; crossorigin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
   Referrer-Policy: strict-origin-when-cross-origin

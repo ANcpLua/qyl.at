@@ -6,6 +6,14 @@ import { routes } from "./routes";
 
 test.describe.configure({ mode: "serial" });
 
+const tlumaScript = "https://tluma.ai/widget.js";
+
+// Keep the site gates deterministic and verify the reading surface even when
+// the optional chat provider is unavailable. The live widget is checked separately.
+test.beforeEach(async ({ context }) => {
+  await context.route(tlumaScript, (route) => route.fulfill({ contentType: "text/javascript", body: "" }));
+});
+
 // `wrangler dev` exits on its own if its ProxyWorker ever fails to reach the
 // UserWorker, and Playwright stops watching the process once it has answered
 // on `url` (see playwright.config.ts). A suite that keeps loading pages from
@@ -38,7 +46,7 @@ for (const route of routes) {
     const dropped: string[] = [];
     recordDroppedRequests(page, "page", dropped);
     page.on("request", (request) => {
-      if (new URL(request.url()).origin !== new URL(baseURL!).origin) externalRequests.push(request.url());
+      if (new URL(request.url()).origin !== new URL(baseURL!).origin && request.url() !== tlumaScript) externalRequests.push(request.url());
     });
     const response = await page.goto(route, { waitUntil: "networkidle" });
     expect(response?.status()).toBeLessThan(400);
@@ -74,6 +82,7 @@ for (const route of routes) {
     });
     const dropped: string[] = [];
     try {
+      await enabledContext.route(tlumaScript, (route) => route.fulfill({ contentType: "text/javascript", body: "" }));
       const enabled = await enabledContext.newPage();
       const disabled = await disabledContext.newPage();
       recordDroppedRequests(enabled, "javascript enabled", dropped);
@@ -202,7 +211,7 @@ test("documentation search works through the strict CSP and local Pagefind index
   });
   page.on("pageerror", (error) => errors.push(error.message));
   page.on("request", (request) => {
-    if (new URL(request.url()).origin !== new URL(baseURL!).origin) externalRequests.push(request.url());
+    if (new URL(request.url()).origin !== new URL(baseURL!).origin && request.url() !== tlumaScript) externalRequests.push(request.url());
   });
 
   await page.goto("/docs/", { waitUntil: "networkidle" });

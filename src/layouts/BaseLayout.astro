@@ -1,6 +1,7 @@
 ---
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
+import AskAI from "../components/AskAI.astro";
 import "../styles/global.css";
 
 interface Props {
@@ -52,6 +53,7 @@ const fullTitle = title === "qyl" ? title : `${title} — qyl`;
       <slot />
     </main>
     {!hideFooter && <SiteFooter />}
+    <AskAI />
     <script>
       import { startVitals } from "../scripts/vitals";
 
