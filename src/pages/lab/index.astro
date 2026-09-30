@@ -14,7 +14,7 @@ const count = variants.length;
     <main class="mx-auto max-w-7xl px-6 pb-20 pt-14 sm:pt-20">
       <div class="grid gap-8 border-b border-zinc-200 pb-12 md:grid-cols-[1.4fr_1fr] md:items-end">
         <div><p class="mb-5 font-mono text-xs uppercase tracking-[.16em] text-zinc-500">React Bits Pro / Interface study 01</p><h1 class="text-5xl font-medium leading-[1.02] tracking-[-.055em] sm:text-7xl">One product.<br /><span class="text-zinc-500">{count} directions.</span></h1></div>
-        <div class="max-w-md"><p class="text-lg leading-relaxed text-zinc-600">{count} complete interpretations of qyl. Every one light, responsive, and built with Tailwind. Open a direction and explore the whole page.</p><p class="mt-5 text-sm text-zinc-500">8 React Bits Pro design skills · {count - 8} original directions · one subdomain each</p></div>
+        <div class="max-w-md"><p class="text-lg leading-relaxed text-zinc-600">{count} complete interpretations of qyl. Every one light, responsive, and built with Tailwind. Open a direction and explore the whole page.</p><p class="mt-5 text-sm text-zinc-500">8 React Bits Pro design skills · {count - 8} original directions</p></div>
       </div>
       <a href="/lab/effects/" class="mt-7 flex min-h-20 flex-wrap items-center justify-between gap-3 rounded-xl border border-blue-200 bg-blue-50 px-6 py-5 text-blue-950 transition-colors hover:bg-blue-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-700"><span><span class="block font-mono text-[10px] uppercase tracking-[.15em] text-blue-700">New / React Bits Pro</span><span class="mt-1 block text-xl font-medium tracking-tight">Step into the third dimension.</span></span><span class="text-sm">Explore all seven effects ↗</span></a>
       <div class="flex flex-wrap items-center gap-2 py-7" role="group" aria-label="Filter design directions">
@@ -26,7 +26,7 @@ const count = variants.length;
           <a href={`/lab/${variant.slug}/`} class="group block focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-zinc-900">
             <div class="aspect-[16/10] overflow-hidden rounded-lg border border-zinc-200 bg-white"><img src={`/lab-previews/${variant.slug}.png`} width="1280" height="800" loading={index < 2 ? 'eager' : 'lazy'} decoding="async" alt={`${variant.name}: ${variant.summary}`} class="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-[1.015] motion-reduce:transition-none" /></div>
             <div class="mt-5 flex items-center gap-3"><span class={`h-2.5 w-2.5 rounded-full ${variant.accent}`} aria-hidden="true"></span><span class="font-mono text-xs text-zinc-500">{String(index + 1).padStart(2, "0")}</span><h2 class="text-xl font-medium tracking-tight">{variant.name}</h2><span class="ml-auto text-zinc-500" aria-hidden="true">↗</span></div>
-            <p class="mt-2 text-sm leading-relaxed text-zinc-600">{variant.summary}</p><p class="mt-1 font-mono text-xs text-zinc-500">{variant.slug}.qyl.at</p>
+            <p class="mt-2 text-sm leading-relaxed text-zinc-600">{variant.summary}</p>
           </a>
         </article>)}
       </div>

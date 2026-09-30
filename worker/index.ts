@@ -1,7 +1,6 @@
 import { OTLPLogExporter } from "@opentelemetry/exporter-logs-otlp-http";
 import { resourceFromAttributes } from "@opentelemetry/resources";
 import { BatchLogRecordProcessor, LoggerProvider } from "@opentelemetry/sdk-logs";
-import { variants } from "../src/data/variants.ts";
 
 interface AssetsBinding {
   fetch(request: Request): Promise<Response>;
@@ -217,18 +216,9 @@ export async function handleVitals(request: Request, env: Env, context: WorkerCo
   return new Response(null, { status: 202 });
 }
 
-// Every design lab direction also answers on its own subdomain, such as
-// swiss-grid.qyl.at. Only "/" runs this Worker first (wrangler.jsonc), so the
-// subdomain root is rewritten to that direction's page and every other path,
-// its stylesheets included, is served as a plain asset.
-const labPages = new Map(variants.map((variant) => [`${variant.slug}.qyl.at`, `/lab/${variant.slug}/`]));
-
 export default {
   async fetch(request: Request, env: Env, context: WorkerContext): Promise<Response> {
-    const url = new URL(request.url);
-    if (url.pathname === "/_qyl/vitals") return handleVitals(request, env, context);
-    const labPage = url.pathname === "/" ? labPages.get(url.hostname) : undefined;
-    if (labPage) return env.ASSETS.fetch(new Request(new URL(labPage, url), request));
+    if (new URL(request.url).pathname === "/_qyl/vitals") return handleVitals(request, env, context);
     return env.ASSETS.fetch(request);
   },
 };
