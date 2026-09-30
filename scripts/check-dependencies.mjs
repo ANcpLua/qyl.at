@@ -12,7 +12,9 @@ const lock = JSON.parse(raw.replace(/,(\s*[}\]])/g, "$1"));
 // npm's lock keyed the same nodes as "node_modules/name". Match both shapes so
 // a banned package cannot hide one level down.
 const packages = Object.keys(lock.packages ?? {});
-const banned = ["gsap", "lenis", "matter-js", "smooothy", "d3", "three"];
+// The requested React Bits Pro effects explicitly require Three, Fiber and Motion.
+// Keep unrelated animation runtimes out; effect loading is covered by browser gates.
+const banned = ["gsap", "lenis", "matter-js", "smooothy", "d3"];
 const violations = banned.flatMap((name) => packages.filter((entry) => entry === name || entry.endsWith(`/${name}`)));
 
 if (violations.length > 0) {
@@ -21,8 +23,8 @@ if (violations.length > 0) {
 
 const manifest = JSON.parse(fs.readFileSync(new URL("../package.json", import.meta.url), "utf8"));
 const direct = { ...manifest.dependencies, ...manifest.devDependencies };
-for (const name of ["motion", "framer-motion", "@react-three/fiber", "@react-three/drei"]) {
+for (const name of ["framer-motion", "@react-three/drei"]) {
   if (name in direct) throw new Error(`Unapproved animation dependency: ${name}`);
 }
 
-console.log(`dependency guard: ${packages.length} package nodes checked; no banned animation or WebGL runtime`);
+console.log(`dependency guard: ${packages.length} package nodes checked; only the requested React Bits animation runtimes allowed`);

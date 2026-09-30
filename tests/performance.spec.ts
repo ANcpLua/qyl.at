@@ -61,17 +61,17 @@ async function installObservers(page: Page): Promise<void> {
   });
 }
 
-async function runOnce(browser: Browser, baseURL: string, route: string): Promise<RunEvidence> {
+async function runOnce(browser: Browser, baseURL: string, route: string, animated = false): Promise<RunEvidence> {
   const context = await browser.newContext({
     baseURL,
     colorScheme: "dark",
-    deviceScaleFactor: 2,
-    hasTouch: true,
-    isMobile: true,
+    deviceScaleFactor: animated ? 1 : 2,
+    hasTouch: !animated,
+    isMobile: !animated,
     locale: "en-GB",
-    reducedMotion: "reduce",
-    screen: { width: 390, height: 844 },
-    viewport: { width: 390, height: 844 },
+    reducedMotion: animated ? "no-preference" : "reduce",
+    screen: animated ? { width: 1280, height: 900 } : { width: 390, height: 844 },
+    viewport: animated ? { width: 1280, height: 900 } : { width: 390, height: 844 },
   });
   const page = await context.newPage();
   const session = await context.newCDPSession(page);
@@ -88,6 +88,7 @@ async function runOnce(browser: Browser, baseURL: string, route: string): Promis
   await installObservers(page);
   try {
     await page.goto(route, { waitUntil: "networkidle" });
+    if (animated) await expect(page.locator('[data-effect="eclipse"]')).toHaveAttribute('data-effect-state', 'playing', { timeout: 30_000 });
     const heading = page.locator("h1");
     for (let index = 0; index < SCRIPTED_INTERACTIONS; index += 1) {
       await heading.click({ position: { x: 8 + index % 3, y: 8 + index % 5 } });
@@ -113,6 +114,24 @@ async function runOnce(browser: Browser, baseURL: string, route: string): Promis
     await context.close();
   }
 }
+
+test('/ remains responsive with 3D motion enabled at fixed 4G / 4x CPU', async ({ browser, baseURL }) => {
+  test.setTimeout(180_000);
+  const runs: RunEvidence[] = [];
+  for (let index = 0; index < 3; index++) runs.push(await runOnce(browser, baseURL!, '/', true));
+  const evidence = {
+    lcp: median(runs.map(run => run.lcp)),
+    cls: median(runs.map(run => run.cls)),
+    inpP75: median(runs.map(run => run.inpP75)),
+    longestTask: median(runs.map(run => run.longestTask)),
+    longtaskTotal: median(runs.map(run => run.longtaskTotal)),
+  };
+  console.log(`animated / lcp=${evidence.lcp.toFixed(0)}ms cls=${evidence.cls.toFixed(3)} inp_p75=${evidence.inpP75.toFixed(0)}ms longest_task=${evidence.longestTask.toFixed(0)}ms longtask_total=${evidence.longtaskTotal.toFixed(0)}ms`);
+  await test.info().attach('animated-homepage-performance', { body: JSON.stringify({ evidence, runs }, null, 2), contentType: 'application/json' });
+  expect(evidence.lcp).toBeLessThanOrEqual(1_800);
+  expect(evidence.cls).toBe(0);
+  expect(evidence.inpP75).toBeLessThanOrEqual(150);
+});
 
 for (const route of routes) {
   test(`${route} clears the fixed 4G / 4x CPU harness`, async ({ browser, baseURL }) => {

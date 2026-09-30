@@ -1,0 +1,27 @@
+---
+import VariantLayout from "../../layouts/VariantLayout.astro";
+import { variants } from "../../data/variants";
+import AppleMinimal from "../../components/variants/AppleMinimal";
+import SwissGrid from "../../components/variants/SwissGrid";
+import Editorial from "../../components/variants/Editorial";
+import CorporateTrust from "../../components/variants/CorporateTrust";
+import LuxurySerif from "../../components/variants/LuxurySerif";
+import Neobrutalism from "../../components/variants/Neobrutalism";
+import PlayfulMotion from "../../components/variants/PlayfulMotion";
+import TerminalLight from "../../components/variants/TerminalLight";
+import Blueprint from "../../components/variants/Blueprint";
+import Bauhaus from "../../components/variants/Bauhaus";
+import ZenInk from "../../components/variants/ZenInk";
+import LabNotebook from "../../components/variants/LabNotebook";
+import SystemClassic from "../../components/variants/SystemClassic";
+import Risograph from "../../components/variants/Risograph";
+import ControlRoom from "../../components/variants/ControlRoom";
+import SoftGlass from "../../components/variants/SoftGlass";
+export function getStaticPaths() { return variants.map(variant => ({ params: { variant: variant.slug }, props: { variant } })); }
+const { variant } = Astro.props;
+const components = { "apple-minimal": AppleMinimal, "swiss-grid": SwissGrid, editorial: Editorial, "corporate-trust": CorporateTrust, "luxury-serif": LuxurySerif, neobrutalism: Neobrutalism, "playful-motion": PlayfulMotion, "terminal-light": TerminalLight, blueprint: Blueprint, bauhaus: Bauhaus, "zen-ink": ZenInk, "lab-notebook": LabNotebook, "system-classic": SystemClassic, risograph: Risograph, "control-room": ControlRoom, "soft-glass": SoftGlass };
+const Component = components[variant.slug];
+---
+<VariantLayout title={`${variant.name} — qyl design lab`} preview>
+  <Component />
+</VariantLayout>

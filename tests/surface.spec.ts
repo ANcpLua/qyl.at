@@ -104,6 +104,20 @@ for (const route of routes) {
         expect((await disabled.locator("[data-pagefind-body]").innerText()).length).toBeGreaterThan(200);
       }
 
+      // Native lazy loading is disabled when JavaScript is disabled. Visit the
+      // images in both pages before comparing the complete reading surface;
+      // otherwise the long landing compares loaded art with unvisited posters.
+      for (const readingPage of [enabled, disabled]) {
+        for (const image of await readingPage.locator('img[loading="lazy"]').all()) {
+          await image.scrollIntoViewIfNeeded();
+          await expect.poll(() => image.evaluate(element => {
+            const imageElement = element as HTMLImageElement;
+            return imageElement.complete && imageElement.naturalWidth > 0;
+          })).toBe(true);
+        }
+        await readingPage.evaluate(() => window.scrollTo(0, 0));
+      }
+
       const [enabledImage, disabledImage] = await Promise.all([
         enabled.screenshot({ fullPage: true, animations: "disabled" }),
         disabled.screenshot({ fullPage: true, animations: "disabled" }),
@@ -131,6 +145,9 @@ test("deployed headers are represented by the local Workers asset server", async
   expect(response.headers()["content-security-policy"]).toContain("default-src 'self'");
   expect(response.headers()["content-security-policy"]).toContain("'wasm-unsafe-eval'");
   expect(response.headers()["speculation-rules"]).toBe('"/speculation-rules.json"');
+  expect(response.headers()["link"]).toBeUndefined();
+  const lab = await request.get("/lab/");
+  expect(lab.headers()["link"]).toBeUndefined();
   const speculationRules = await request.get("/speculation-rules.json");
   expect(speculationRules.headers()["content-type"]).toContain("application/speculationrules+json");
 
@@ -287,4 +304,13 @@ test("a superseded search cannot overwrite what the input is currently asking fo
   // The engine still answers the term that is actually in the input.
   await input.pressSequentially("protocol", { delay: 20 });
   await expect(page.locator(".search-result").first()).toContainText("Protocol 2026-07-28");
+});
+
+test("the light homepage copies the real installation command", async ({ page, context }) => {
+  await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+  await page.goto("/", { waitUntil: "networkidle" });
+  await expect(page.locator("astro-island")).toHaveCount(0);
+  await page.getByRole("button", { name: "Copy qyl install command", exact: true }).click();
+  await expect(page.getByRole("button", { name: "Commands copied", exact: true })).toBeVisible();
+  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe("dotnet tool install --global qyl && qyl up");
 });

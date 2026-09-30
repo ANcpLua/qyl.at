@@ -1,0 +1,10 @@
+@import "tailwindcss" source(none);
+@source "../components/variants";
+@source "../components/SpatialLanding.astro";
+@source "../components/EffectStage.astro";
+@source "../components/effects";
+@source "../components/react-bits";
+@source "../layouts/VariantLayout.astro";
+@source "../layouts/PageFrame.astro";
+@source "../pages/lab";
+@source "../data/variants.ts";

@@ -7,12 +7,37 @@ URL structure is a standing redirect obligation rather than a draft.
 The site is Astro 7 with static output, MDX documentation, build-time Shiki syntax
 highlighting, Tailwind CSS 4, and on-demand Pagefind search. Cloudflare Workers Static
 Assets serves the generated files and handles the same-origin Core Web Vitals endpoint.
-There is no React runtime or client router in the production bundle.
+The spatial landing page renders its reading surface as static HTML. A small visibility
+controller loads React and the selected React Bits effect when a scene enters the viewport.
+The design variants remain static React output without hydration. All new visual styling
+uses Tailwind utilities; the original effects retain their animation-time transforms.
+Existing documentation remains static MDX with its established reading styles.
+
+`/lab/` compares the light design directions, including the eight original React Bits Pro styles:
+Apple Minimal, Swiss Grid, Editorial, Corporate Trust, Luxury Serif, Neobrutalism,
+Playful Motion, and Terminal Light (the terminal skill adapted to the requested light palette).
+The gallery supports filtering, full-page previews, and paired comparisons. Preview routes
+are marked noindex. `/` uses a continuous sixteen-chapter spatial landing page, with one
+composition inspired by each direction and all seven original React Bits effects placed
+throughout the story. A native chapter navigator links directly to every part and the setup.
+`/lab/effects/` contains isolated working examples of all seven requested effects: Eclipse,
+Scroll Portal, ASCII Ripple, Depth Image, Bend Gallery, Glass Reveal and Tile Reveal.
+The original Apple Minimal page remains at `/lab/apple-minimal/`.
+
+Motion starts after the static reading surface paints. Pause, an offscreen scene, and a
+hidden tab unmount the effect and release its resources. Reduced-motion and data-saving
+preferences start with the static illustration; users may explicitly play a scene. Scroll
+effects do not start automatically on narrow screens. All textures and posters are local.
+`check-artifacts.mjs` measures initial and deferred JavaScript separately, retains the
+initial byte limits, and caps the complete deferred graph. `tests/effects.spec.ts` exercises
+the actual renderers, pause/resume, viewport cleanup, chapter navigation and the static/mobile paths.
+The main page has its own Tailwind entry, `src/styles/spatial.css`, so it does not load
+the stylesheet for the sixteen standalone design previews. Both layouts share `PageFrame.astro`.
+
 
 ## Local development
 
-Use Node.js 24 LTS. Bun is the package manager, pinned by `packageManager` in
-package.json and read by CI through setup-bun.
+Use Node.js 24 LTS. Bun is the package manager, used by the local commands and CI through setup-bun.
 
 ```bash
 bun install --frozen-lockfile
@@ -81,3 +106,42 @@ HTML and asset graph that the byte budgets in `scripts/check-artifacts.mjs` meas
 each upgrade has to arrive as its own reviewable Renovate PR that re-clears the gate
 rather than riding along inside a lockfile-maintenance bump. Everything else floats on a
 caret range.
+
+## React Bits Pro and MCP
+
+`components.json` configures the official starter and Pro registries. Put the account's
+license in the ignored `.env.local` as `REACTBITS_LICENSE_KEY=...`; never commit it.
+The installed `shadcn` CLI reads that file. Verify the real MCP initialize/tool flow with:
+
+```bash
+bun run check:mcp
+```
+
+The local Codex MCP server uses `shadcn mcp --cwd <this checkout>`. Restart Codex after
+changing its MCP configuration. Registry search and installation require network access.
+Licensed design instructions under `src/skills`, `src/prompts`, and `src/recipes` are
+local-only; the adapted application components under `src/components/variants` are source.
+The byte gate also counts hydrated islands if a future component introduces one. `finalize-site.mjs`
+externalizes Astro's inline island bootstrap into content-hashed local scripts so hydration
+works under the existing deployed Content-Security-Policy.
+
+## Design study
+
+The variant sources live in `src/components/variants`; `src/data/variants.ts` controls
+labels and ordering. `src/styles/variants.css` contains only Tailwind import/source directives.
+`VariantLayout.astro` handles metadata and shared behavior. Each variant has a separate
+Git worktree under `/private/tmp/qyl-ui-lab/worktrees/` on this workstation, including the
+original setup skill and all 19 remaining Agent Kit documents under `upstream/`.
+Those instructions and licensed unmodified source references are local-only.
+
+Run the design checks and refresh real preview screenshots with:
+
+```bash
+bun run build:site
+bunx playwright test --project=surface tests/lab.spec.ts
+bun run build:site
+```
+
+The last build includes the screenshots created in `public/lab-previews/`. Full desktop
+and mobile evidence stays outside the published site in `evidence/designs/`. Vite caches
+are scoped to each checkout so parallel worktree builds do not share optimizer state.

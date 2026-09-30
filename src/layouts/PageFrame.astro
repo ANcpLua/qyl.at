@@ -1,0 +1,48 @@
+---
+interface Props { title: string; preview?: boolean; description?: string }
+const isLab = Astro.url.pathname.startsWith("/lab/");
+const { title, preview = false, description = "Local OpenTelemetry traces, logs and metrics for you and your coding agent. qyl connects your runtime evidence over MCP." } = Astro.props;
+---
+<!doctype html>
+<html lang="en" class="bg-white text-zinc-950">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#ffffff" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    {isLab ? <meta name="robots" content="noindex, nofollow" /> : <link rel="canonical" href="https://qyl.at/" />}
+    <title>{title}</title>
+  </head>
+  <body>
+    <slot />
+    {preview && <aside aria-label="Design comparison" class="fixed bottom-4 right-4 z-50 rounded-full border border-zinc-300 bg-white px-4 py-2 font-sans text-xs text-zinc-900 shadow-sm"><a class="inline-flex min-h-7 items-center gap-2 hover:underline focus-visible:outline-2" href="/lab/"><span aria-hidden="true">←</span> All designs</a></aside>}
+    <script>
+      import { startVitals } from "../scripts/vitals";
+      if (window.location.hostname === "qyl.at" && !window.location.pathname.startsWith("/lab/")) {
+        const schedule = window.requestIdleCallback ?? ((callback: IdleRequestCallback) => window.setTimeout(callback, 1_500));
+        schedule(() => startVitals(), { timeout: 2_000 });
+      }
+      const selectors = "[data-copy-command], [data-copy], [data-qyl-copy], [data-copy-setup]";
+      document.querySelectorAll<HTMLButtonElement>(selectors).forEach(button => {
+        button.addEventListener("click", async () => {
+          const command = button.dataset.copyCommand || button.dataset.copy || button.dataset.qylCopy || "dotnet tool install --global qyl\nqyl up";
+          const label = button.querySelector("[data-copy-label]");
+          const panel = button.closest("[data-command-panel]") || button.parentElement?.parentElement;
+          const status = panel?.querySelector("[data-copy-status]");
+          try {
+            await navigator.clipboard.writeText(command);
+            if (label) label.textContent = "Copied";
+            if (status) status.textContent = "Commands copied. Ready for your terminal.";
+            button.setAttribute("aria-label", "Commands copied");
+          } catch {
+            if (label) label.textContent = "Select and copy";
+            if (status) status.textContent = "Select the command and copy it from the page.";
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

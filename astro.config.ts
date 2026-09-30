@@ -1,4 +1,5 @@
 import mdx from "@astrojs/mdx";
+import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
 import { FontaineTransform } from "fontaine";
 import { defineConfig } from "astro/config";
@@ -6,7 +7,7 @@ import { defineConfig } from "astro/config";
 export default defineConfig({
   site: "https://qyl.at",
   output: "static",
-  integrations: [mdx()],
+  integrations: [mdx(), react()],
   build: {
     inlineStylesheets: "auto",
   },
@@ -17,6 +18,7 @@ export default defineConfig({
     },
   },
   vite: {
+    cacheDir: ".astro/vite",
     build: {
       assetsInlineLimit: 0,
       target: ["chrome111", "edge111", "firefox128", "safari16.4"],

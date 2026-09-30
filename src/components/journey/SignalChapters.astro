@@ -1,0 +1,175 @@
+---
+import EffectStage from "../EffectStage.astro";
+
+const heading = "text-[clamp(2.75rem,5.7vw,5.25rem)] leading-[1.02] tracking-[-0.055em]";
+const body = "text-[19px] leading-[1.5] tracking-[-0.018em] text-[#555650] sm:text-[21px]";
+const label = "text-[11px] font-medium uppercase tracking-[0.12em] text-[#555650]";
+const focus = "focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#174aff]";
+const textLink = `inline-flex min-h-11 items-center gap-4 text-[14px] text-[#1746dd] hover:underline underline-offset-4 ${focus}`;
+---
+
+<section id="logs" data-journey-chapter="03" data-direction="editorial" aria-labelledby="journey-logs-title" class="scroll-mt-8 px-6 py-24 lg:px-12 lg:py-36">
+  <div class="mx-auto max-w-[1304px]">
+    <div class="grid gap-x-10 gap-y-8 border-t border-[#20211e]/25 pt-6 lg:grid-cols-12">
+      <div class="lg:col-span-8">
+        <p class={label}>03 / Read between the lines</p>
+        <h2 id="journey-logs-title" class={`${heading} mt-8 max-w-[14ch] font-serif font-normal tracking-[-0.045em]`}>The moment.<br />And everything<br class="hidden sm:block" /> around it.</h2>
+      </div>
+      <div class="flex flex-col justify-end lg:col-span-4 lg:pb-1">
+        <p class={body}>A log line means more when you know where it belongs. Search by text, severity, trace or time, and read the records around the failure.</p>
+        <a href="/product/logs/" class={`${textLink} mt-5`}>Put your logs in context <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+
+    <figure class="mt-12 min-w-0 lg:mt-16">
+      <div class="flex flex-wrap items-center justify-between gap-3 border-y border-[#20211e]/20 py-3 font-mono text-[10px] uppercase tracking-[.08em] text-[#555650]"><span>Field notes / Runtime</span><span>Move through the signal</span></div>
+      <EffectStage kind="ascii-ripple" class="h-[350px] min-w-0 sm:h-[430px] lg:h-[480px]" label="An illustrative field of log characters that ripples as you move across it" poster="/effects/trace-map.svg" />
+      <figcaption class="grid gap-5 border-t border-[#20211e]/20 pt-5 text-[12px] leading-6 text-[#555650] sm:grid-cols-[1fr_1fr] lg:grid-cols-[1.7fr_1fr]">
+        <span>Illustrative text study. The moving characters represent a stream of records; they are not a live log feed.</span>
+        <span class="sm:text-right">Search for the event.<br />Keep the surrounding context.</span>
+      </figcaption>
+    </figure>
+
+    <div class="mt-12 grid gap-7 border-b border-[#20211e]/20 pb-8 sm:grid-cols-3 sm:gap-10">
+      <div><p class="mb-3 font-mono text-[10px] text-[#555650]">01 / TEXT</p><h3 class="text-xl font-medium tracking-[-.025em]">Find the phrase.</h3><p class="mt-2 text-[14px] leading-6 text-[#555650]">Start with the message that caught your attention.</p></div>
+      <div><p class="mb-3 font-mono text-[10px] text-[#555650]">02 / TRACE</p><h3 class="text-xl font-medium tracking-[-.025em]">Follow its context.</h3><p class="mt-2 text-[14px] leading-6 text-[#555650]">Narrow the search to records from the same trace.</p></div>
+      <div><p class="mb-3 font-mono text-[10px] text-[#555650]">03 / TIME</p><h3 class="text-xl font-medium tracking-[-.025em]">Read the surrounding run.</h3><p class="mt-2 text-[14px] leading-6 text-[#555650]">Bound the window so the useful details stay in view.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="metrics" data-journey-chapter="04" data-direction="blueprint" aria-labelledby="journey-metrics-title" class="scroll-mt-8 border-y border-[#1746dd]/15 bg-[#edf3fa] bg-[linear-gradient(to_right,rgba(23,70,221,0.045)_1px,transparent_1px),linear-gradient(to_bottom,rgba(23,70,221,0.045)_1px,transparent_1px)] bg-size-[32px_32px] px-6 py-24 lg:px-12 lg:py-36">
+  <div class="mx-auto max-w-[1304px]">
+    <div class="grid gap-8 bg-[#edf3fa] lg:grid-cols-[1.15fr_1fr] lg:items-end lg:gap-24">
+      <div><p class={label}>04 / Look across time</p><h2 id="journey-metrics-title" class={`${heading} mt-8 pb-2 font-medium`}>A point in time.<br />A bigger pattern.</h2></div>
+      <p class={`${body} max-w-[34ch]`}>Choose a metric, a time window and a step. qyl returns aggregated buckets, so you can examine the shape of a run without adding up every point yourself.</p>
+    </div>
+
+    <figure class="relative mt-14 min-w-0 border border-[#1746dd]/35 bg-[#f9fbff] px-4 pb-5 pt-5 sm:px-8 sm:pb-7 sm:pt-7 lg:mt-16">
+      <span aria-hidden="true" class="absolute -left-px -top-px size-4 border-l-2 border-t-2 border-[#1746dd]" /><span aria-hidden="true" class="absolute -bottom-px -right-px size-4 border-b-2 border-r-2 border-[#1746dd]" />
+      <div class="mb-8 flex flex-wrap items-start justify-between gap-5 border-b border-[#1746dd]/15 pb-5">
+        <div><p class="font-mono text-[10px] uppercase tracking-[.1em] text-[#555650]">An example window</p><h3 class="mt-2 text-lg font-medium tracking-tight sm:text-xl">Request duration <span class="ml-2 text-sm font-normal text-[#555650]">/ milliseconds</span></h3></div>
+        <p class="flex items-center gap-2 text-[11px] text-[#555650]"><span aria-hidden="true" class="h-0.5 w-5 bg-[#1746dd]" />Mean per minute · illustrative</p>
+      </div>
+      <div class="relative min-w-0 pl-8 sm:pl-12">
+        <div aria-hidden="true" class="absolute bottom-0 left-0 top-0 flex flex-col justify-between pb-0.5 font-mono text-[10px] text-[#555650]"><span>300</span><span>200</span><span>100</span><span>0</span></div>
+        <svg viewBox="0 0 1100 330" preserveAspectRatio="none" role="img" aria-labelledby="journey-metric-chart-title journey-metric-chart-description" class="h-60 w-full sm:h-80 lg:h-96">
+          <title id="journey-metric-chart-title">Illustrative request duration over ten minutes</title>
+          <desc id="journey-metric-chart-description">A synthetic mean request duration rises from around 90 milliseconds to a peak of 250 milliseconds, then settles near 100 milliseconds. This is a drawing, not a measured qyl benchmark or live metric.</desc>
+          <g class="stroke-[#1746dd]/15" stroke-width="1"><path d="M0 1H1100 M0 110H1100 M0 220H1100 M0 329H1100" /><path d="M1 0V330 M220 0V330 M440 0V330 M660 0V330 M880 0V330 M1099 0V330" stroke-dasharray="3 6" /></g>
+          <path d="M0 232 C45 230 65 218 110 220 S180 242 220 221 S295 195 330 199 S398 206 440 175 S500 118 550 64 S622 140 660 137 S731 170 770 189 S839 211 880 206 S950 211 990 215 S1070 215 1100 220 L1100 330H0Z" class="fill-[#1746dd]/[.055]" />
+          <path d="M0 232 C45 230 65 218 110 220 S180 242 220 221 S295 195 330 199 S398 206 440 175 S500 118 550 64 S622 140 660 137 S731 170 770 189 S839 211 880 206 S950 211 990 215 S1070 215 1100 220" fill="none" class="stroke-[#1746dd]" stroke-width="3" vector-effect="non-scaling-stroke" />
+          <path d="M550 0V330" class="stroke-[#1746dd]/50" stroke-width="1" stroke-dasharray="4 6" />
+          <circle cx="550" cy="64" r="6" class="fill-[#f9fbff] stroke-[#1746dd]" stroke-width="3" vector-effect="non-scaling-stroke" />
+        </svg>
+        <div aria-hidden="true" class="mt-3 flex justify-between font-mono text-[10px] text-[#555650]"><span>10:00</span><span>10:02</span><span>10:04</span><span>10:06</span><span>10:08</span><span>10:10</span></div>
+      </div>
+      <figcaption class="mt-7 flex flex-wrap items-start justify-between gap-4 border-t border-[#1746dd]/15 pt-5 text-[11px] leading-5 text-[#555650]"><span>Illustrative data · 10-minute window · 60-second buckets</span><span>Time and attributes give the pattern its scope.</span></figcaption>
+    </figure>
+
+    <div class="mt-8 flex flex-col justify-between gap-5 bg-[#edf3fa] sm:flex-row sm:items-center"><p class="max-w-[52ch] text-[14px] leading-6 text-[#555650]">Inspect the recorded series, match the attributes you care about, and keep the time range explicit.</p><a href="/product/metrics/" class={`${textLink} shrink-0`}>Explore metrics <span aria-hidden="true">↗</span></a></div>
+  </div>
+</section>
+
+<section id="store" data-journey-chapter="05" data-direction="corporate-trust" aria-labelledby="journey-store-title" class="scroll-mt-8 px-6 py-24 lg:px-12 lg:py-36">
+  <div class="mx-auto grid max-w-[1304px] gap-14 lg:grid-cols-[.92fr_1.08fr] lg:items-center lg:gap-24">
+    <div>
+      <p class={label}>05 / Keep the evidence together</p>
+      <h2 id="journey-store-title" class={`${heading} mt-8 font-medium`}>Many signals.<br />One local store.</h2>
+      <p class={`${body} mt-8 max-w-[32ch]`}>Traces, logs and metrics enter through OpenTelemetry. The collector retains all three in DuckDB, ready for the dashboard and your coding agent.</p>
+      <a href="/docs/telemetry/" class={`${textLink} mt-6`}>Follow the data path <span aria-hidden="true">↗</span></a>
+      <div class="mt-12 max-w-md border-t border-[#20211e]/20 pt-5"><p class="text-[14px] font-medium">A clear boundary for every part.</p><p class="mt-2 text-[14px] leading-6 text-[#555650]">OpenTelemetry defines the incoming signals. qyl provides a consistent read contract. MCP brings that evidence into the conversation.</p></div>
+    </div>
+
+    <figure class="min-w-0">
+      <div class="border border-[#20211e]/20 bg-[#fcfcf9] p-5 sm:p-8 lg:p-10">
+        <div class="flex items-center justify-between gap-4 border-b border-[#20211e]/15 pb-5"><span class="text-[13px] font-medium">The local signal path</span><span class="font-mono text-[10px] text-[#555650]">qyl / architecture</span></div>
+        <div class="mt-9 grid grid-cols-3 gap-2 sm:gap-4">
+          {['Traces', 'Logs', 'Metrics'].map(signal => <div class="border border-[#1746dd]/25 bg-[#edf3fa] px-2 py-4 text-center text-[12px] font-medium text-[#1746dd] sm:text-[14px]">{signal}</div>)}
+        </div>
+        <div aria-hidden="true" class="mx-auto grid h-7 w-2/3 grid-cols-2 border-b border-[#20211e]/25"><span class="border-x border-[#20211e]/25" /><span class="border-r border-[#20211e]/25" /></div>
+        <div class="flex flex-col items-center"><span aria-hidden="true" class="h-5 border-l border-[#20211e]/25" /><span class="bg-[#fcfcf9] px-3 font-mono text-[10px] uppercase tracking-[.12em] text-[#555650]">OTLP collector</span><span aria-hidden="true" class="h-5 border-l border-[#20211e]/25" /></div>
+        <div class="mx-auto flex max-w-sm items-center gap-5 border border-[#1746dd]/40 bg-[#f2f5fc] px-5 py-7 sm:px-7">
+          <svg aria-hidden="true" viewBox="0 0 48 54" fill="none" class="h-14 w-12 shrink-0 stroke-[#1746dd]" stroke-width="1.5"><ellipse cx="24" cy="10" rx="21" ry="7" /><path d="M3 10v32c0 4 9.4 7 21 7s21-3 21-7V10M3 26c0 4 9.4 7 21 7s21-3 21-7" /></svg>
+          <div><p class="text-[25px] font-medium tracking-[-.035em]">DuckDB</p><p class="mt-1 text-[12px] leading-5 text-[#555650]">One local analytical store.<br />Three kinds of evidence.</p></div>
+        </div>
+        <div aria-hidden="true" class="mx-auto h-6 w-px bg-[#20211e]/25" />
+        <div class="border border-[#20211e]/20 py-3 text-center text-[11px] text-[#555650]">Generated qyl read contract</div>
+        <div aria-hidden="true" class="mx-auto h-6 w-px bg-[#20211e]/25" />
+        <div class="grid grid-cols-2 divide-x divide-[#20211e]/20 border border-[#20211e]/20"><div class="px-2 py-4 text-center text-[12px] font-medium">Your dashboard</div><div class="px-2 py-4 text-center text-[12px] font-medium">Your agent <span class="font-normal text-[#555650]">/ MCP</span></div></div>
+      </div>
+      <figcaption class="mt-5 text-[11px] leading-5 text-[#555650]">Illustrative architecture. Signals are stored locally; your connected client reads the evidence through qyl.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="depth" data-journey-chapter="06" data-direction="luxury-serif" aria-labelledby="journey-depth-title" class="scroll-mt-8 bg-[#eeefe8] px-6 py-24 lg:px-12 lg:py-36">
+  <div class="mx-auto max-w-[1304px]">
+    <div class="mb-12 flex flex-wrap items-center justify-between gap-5 border-t border-[#20211e]/20 pt-5"><p class="text-[10px] font-medium uppercase tracking-[.2em] text-[#555650]">06 / Dimensions of a trace</p><span class="font-serif text-[15px] italic text-[#555650]">An invitation to look closer.</span></div>
+    <div class="grid items-center gap-12 lg:grid-cols-[1.05fr_.95fr] lg:gap-24">
+      <figure class="min-w-0">
+        <EffectStage kind="depth-image" class="h-[460px] min-w-0 sm:h-[620px] lg:h-[740px]" label="A sculptural illustration of connected signals, relit as you move your pointer" poster="/effects/signal-sculpture.svg" />
+        <figcaption class="mt-5 flex justify-between gap-4 text-[11px] leading-5 text-[#555650]"><span>Light reveals the structure.</span><span class="max-w-[21ch] text-right">Illustrative sculpture.<br />Move across it to relight.</span></figcaption>
+      </figure>
+      <div class="lg:py-12">
+        <h2 id="journey-depth-title" class={`${heading} font-serif font-normal tracking-[-.04em]`}>Every detail<br />has depth.</h2>
+        <p class={`${body} mt-8 max-w-[30ch]`}>A trace is more than a duration. Open the span tree to see the relationships, the recorded status, and the events that give the run its shape.</p>
+        <dl class="mt-10 divide-y divide-[#20211e]/20 border-y border-[#20211e]/20">
+          <div class="grid grid-cols-[5rem_1fr] gap-4 py-5"><dt class="text-[13px] font-medium">Timing</dt><dd class="text-[14px] leading-6 text-[#555650]">When a span began, when it ended, and where time was spent.</dd></div>
+          <div class="grid grid-cols-[5rem_1fr] gap-4 py-5"><dt class="text-[13px] font-medium">Parent</dt><dd class="text-[14px] leading-6 text-[#555650]">How one operation belongs to the larger request.</dd></div>
+          <div class="grid grid-cols-[5rem_1fr] gap-4 py-5"><dt class="text-[13px] font-medium">Status</dt><dd class="text-[14px] leading-6 text-[#555650]">What the span recorded, alongside its attributes and events.</dd></div>
+        </dl>
+        <a href="/product/tracing/" class={`${textLink} mt-7`}>Read the complete trace <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="evidence" data-journey-chapter="07" data-direction="neobrutalism" aria-labelledby="journey-proof-title" class="scroll-mt-8 px-6 py-24 lg:px-12 lg:py-36">
+  <div class="mx-auto max-w-[1304px]">
+    <p class={label}>07 / Let the run speak</p>
+    <div class="mt-8 grid items-start gap-12 lg:grid-cols-[1.05fr_.95fr] lg:gap-20">
+      <div>
+        <h2 id="journey-proof-title" class={`${heading} font-extrabold tracking-[-.06em]`}>Evidence.<br />Then conclusions.</h2>
+        <p class={`${body} mt-8 max-w-[31ch]`}>A useful explanation starts with what actually happened. Give your agent the recorded trace and related logs, then investigate the cause together.</p>
+        <a href="/product/mcp-evidence/" class={`${textLink} mt-7 font-medium`}>See what the evidence contains <span aria-hidden="true">↗</span></a>
+        <p class="mt-12 max-w-[38ch] border-l-[3px] border-[#1746dd] pl-5 text-[14px] leading-6 text-[#555650]">Collector failures remain errors. Demonstration data is explicitly marked as demonstration data.</p>
+      </div>
+
+      <figure class="min-w-0 lg:mt-10">
+        <div class="border-[3px] border-[#20211e] bg-[#fcfcf9] shadow-[8px_8px_0_0_#20211e]">
+          <div class="flex flex-wrap items-center justify-between gap-3 border-b-[3px] border-[#20211e] bg-[#dce7ff] px-5 py-4 sm:px-7"><h3 class="text-lg font-extrabold tracking-[-.025em]">What the record says.</h3><span class="font-mono text-[10px] uppercase tracking-[.1em]">Example / 001</span></div>
+          <div class="grid grid-cols-[28px_1fr] gap-4 border-b-2 border-[#20211e] px-5 py-6 sm:px-7"><span class="font-mono text-[11px] text-[#555650]">A.</span><div><p class="text-[11px] font-bold uppercase tracking-[.1em] text-[#555650]">A recorded span</p><p class="mt-2 break-words font-mono text-[15px] font-medium">payment.authorize</p><p class="mt-2 text-[13px] text-[#555650]">Status: error</p></div></div>
+          <div class="grid grid-cols-[28px_1fr] gap-4 border-b-2 border-[#20211e] px-5 py-6 sm:px-7"><span class="font-mono text-[11px] text-[#555650]">B.</span><div><p class="text-[11px] font-bold uppercase tracking-[.1em] text-[#555650]">A related log</p><p class="mt-2 break-words font-mono text-[15px] font-medium">deadline_exceeded</p><p class="mt-2 text-[13px] text-[#555650]">The same trace. A bounded time window.</p></div></div>
+          <div class="bg-[#edf3fa] px-5 py-6 sm:px-7"><p class="text-[11px] font-bold uppercase tracking-[.1em] text-[#1746dd]">The next useful question</p><p class="mt-3 text-[23px] font-bold leading-[1.2] tracking-[-.03em]">What happened inside<br />the failed operation?</p></div>
+        </div>
+        <figcaption class="mt-6 max-w-[54ch] text-[11px] leading-5 text-[#555650]">Illustrative investigation. These sample records are invented to explain the workflow; they do not establish a real failure or its cause.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section id="perspectives" data-journey-chapter="08" data-direction="playful-motion" aria-labelledby="journey-angles-title" class="scroll-mt-8 px-6 py-24 lg:px-12 lg:py-36">
+  <div class="mx-auto max-w-[1304px]">
+    <div class="grid gap-8 lg:grid-cols-[1.15fr_1fr] lg:items-end lg:gap-24">
+      <div><p class={label}>08 / Change your perspective</p><h2 id="journey-angles-title" class={`${heading} mt-8 font-semibold`}>Same investigation.<br />Fresh perspective.</h2></div>
+      <p class={`${body} max-w-[33ch]`}>Read the relationships in a trace. Find the surrounding log records. Look at a metric over the same window. Each angle gives you something different to examine.</p>
+    </div>
+
+    <figure class="mt-12 min-w-0 lg:mt-16">
+      <div class="relative rounded-[32px] border border-[#1746dd]/15 bg-[#edf3fa] p-3 sm:rounded-[48px] sm:p-6">
+        <div class="flex flex-wrap items-center justify-between gap-3 px-3 pb-5 pt-3 text-[11px] text-[#555650] sm:px-5"><span class="font-medium">One story, several views</span><span>Drag the images to explore <span aria-hidden="true">↔</span></span></div>
+        <EffectStage kind="bend-gallery" class="h-[390px] min-w-0 rounded-[20px] sm:h-[540px] lg:h-[620px]" label="Drag through sculptural illustrations of traces and connected runtime signals" poster="/effects/trace-map.svg" />
+      </div>
+      <figcaption class="mt-5 flex flex-col justify-between gap-2 text-[11px] leading-5 text-[#555650] sm:flex-row"><span>A small shift in perspective can suggest the next question.</span><span>Illustrative signal studies · not live telemetry</span></figcaption>
+    </figure>
+
+    <nav aria-label="Explore the three signal types" class="mt-10 grid gap-3 sm:grid-cols-3 sm:gap-5">
+      {[
+        { number: '01', name: 'Follow the trace', detail: 'Relationships & recorded events', href: '/product/tracing/' },
+        { number: '02', name: 'Read the logs', detail: 'Messages & surrounding context', href: '/product/logs/' },
+        { number: '03', name: 'Examine the metrics', detail: 'Series & time windows', href: '/product/metrics/' },
+      ].map(item => <a href={item.href} class={`group flex min-h-28 items-center gap-4 rounded-[20px] border border-[#20211e]/20 px-5 py-5 transition-colors hover:bg-[#edf3fa] motion-reduce:transition-none ${focus}`}><span aria-hidden="true" class="font-mono text-[10px] text-[#555650]">{item.number}</span><span class="min-w-0"><span class="block text-[16px] font-medium tracking-[-.025em]">{item.name}</span><span class="mt-1 block text-[11px] leading-5 text-[#555650]">{item.detail}</span></span><span aria-hidden="true" class="ml-auto text-lg text-[#1746dd]">↗</span></a>)}
+    </nav>
+  </div>
+</section>

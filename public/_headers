@@ -40,3 +40,16 @@
 /schemas/*
   Content-Type: text/yaml; charset=utf-8
   ! Link
+
+# The light landing pages use system fonts and need no font preload.
+/
+  ! Link
+
+/lab/*
+  ! Link
+
+/effects/*
+  ! Link
+
+/lab-previews/*
+  ! Link

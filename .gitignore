@@ -14,17 +14,11 @@ test-results
 wrangler-logs
 output
 .env.local
-# Guard only: no React source or vendored premium component lives in this site
-# any more, and the runtime gate in scripts/check-artifacts.mjs fails the build
-# if one reappears in the output. This entry stops a re-vendored copy from
-# being committed in the first place.
-#
-# Anchored to the repository root. Unanchored, `components/` matches a directory
-# of that name at any depth, so it also swallowed the site's own
-# `src/components/`: the six Astro components there are tracked only because
-# they predate this rule, and every new one was silently untracked -- the file
-# built locally and was missing from the CI checkout.
-/components/
+# Licensed agent guidance is local tooling, not application source.
 /SKILL.md
+/src/SKILL.md
+/src/skills/
+/src/prompts/
+/src/recipes/
 tsconfig.tsbuildinfo
 .DS_Store

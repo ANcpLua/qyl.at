@@ -1,0 +1,184 @@
+---
+import EffectStage from "./EffectStage.astro";
+import SignalChapters from "./journey/SignalChapters.astro";
+import ContextChapters from "./journey/ContextChapters.astro";
+import { externalLinks, versionOf } from "../data/site";
+import { journey } from "../data/journey";
+
+const focus = "focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#174aff]";
+const textLink = `inline-flex min-h-11 items-center gap-2 text-[#1746dd] transition-opacity hover:opacity-70 motion-reduce:transition-none ${focus}`;
+const install = "dotnet tool install --global qyl && qyl up";
+const navigation = [
+  { href: "/product/tracing/", label: "Product" },
+  { href: "/docs/", label: "Docs" },
+  { href: "/pricing/", label: "Pricing" },
+  { href: "#chapters", label: "The journey" },
+  { href: externalLinks.github, label: "GitHub" },
+];
+const evidence = [
+  { label: "Traces", copy: "Follow a request through every span.", href: "/product/tracing/" },
+  { label: "Logs", copy: "Find the records that explain the moment.", href: "/product/logs/" },
+  { label: "Metrics", copy: "See what changed across a time window.", href: "/product/metrics/" },
+];
+---
+
+<div class="min-h-screen overflow-x-clip bg-[#f7f7f2] font-sans text-[#20211e] antialiased selection:bg-[#174aff] selection:text-white">
+  <a href="#main" class={`sr-only z-50 bg-white p-4 focus:not-sr-only focus:fixed focus:left-4 focus:top-4 ${focus}`}>Skip to content</a>
+
+  <header class="relative z-30 border-b border-[#20211e]/15">
+    <div class="mx-auto flex max-w-[1400px] flex-wrap items-center justify-between gap-x-6 px-6 lg:h-24 lg:flex-nowrap lg:px-12">
+      <a href="/" aria-label="qyl home" class={`flex min-h-20 items-center text-[38px] font-semibold leading-none tracking-[-0.09em] ${focus}`}>qyl<span aria-hidden="true">.</span></a>
+      <nav aria-label="Main navigation" class="order-last flex w-full justify-between gap-4 border-t border-[#20211e]/15 py-1 text-[12px] text-[#555650] sm:justify-start sm:gap-8 lg:order-none lg:w-auto lg:border-0 lg:py-0">
+        {navigation.map(({ href, label }) => <a href={href} class={`inline-flex min-h-11 items-center transition-colors hover:text-[#20211e] motion-reduce:transition-none ${focus}`}>{label}</a>)}
+      </nav>
+      <a href="/docs/getting-started/" class={`inline-flex min-h-11 items-center gap-4 text-[13px] font-medium ${focus}`}>Start locally <span aria-hidden="true" class="text-lg">↗</span></a>
+    </div>
+  </header>
+
+  <main id="main">
+    <section id="surface" data-journey-chapter="01" data-direction="apple-minimal" aria-labelledby="spatial-hero-title" class="relative px-6 pb-10 pt-16 lg:px-12 lg:pb-12 lg:pt-16">
+      <div class="mx-auto max-w-[1304px]">
+        <div class="grid items-center gap-10 lg:min-h-[650px] lg:grid-cols-[1.12fr_1fr] lg:gap-0">
+          <div class="relative z-10 pb-4 lg:pb-20">
+            <p class="mb-8 text-[11px] font-medium uppercase tracking-[0.12em] text-[#555650]">Local observability. A deeper view.</p>
+            <h1 id="spatial-hero-title" class="text-[clamp(3.9rem,8.9vw,8rem)] font-semibold leading-[0.95] tracking-[-0.065em]">See beyond<br />the surface<span class="text-[#74766c]">.</span></h1>
+            <p class="mt-8 max-w-[31ch] text-[19px] leading-[1.5] tracking-[-0.018em] text-[#555650] sm:text-[21px]">Your code tells one part of the story. qyl brings the runtime into focus.</p>
+            <div class="mt-10 flex flex-wrap items-center gap-x-7 gap-y-3">
+              <a href="/docs/getting-started/" class={`inline-flex min-h-14 items-center justify-center gap-7 rounded-full bg-[#174aff] px-7 text-[15px] text-white transition-colors hover:bg-[#103ad6] motion-reduce:transition-none ${focus}`}>Get started <span aria-hidden="true" class="text-xl">↗</span></a>
+              <a href="#inside" class={`inline-flex min-h-11 items-center gap-2 text-[14px] ${focus}`}>Look inside <svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 4v16m-6-6 6 6 6-6" /></svg></a>
+            </div>
+          </div>
+
+          <figure class="relative -mx-6 min-w-0 lg:-ml-8 lg:-mr-10">
+            <div class="relative aspect-square w-full min-w-0 overflow-hidden sm:mx-auto sm:max-w-[620px] lg:max-w-none">
+              <EffectStage kind="eclipse" class="absolute inset-0" label="A luminous eclipse, an abstract study of the signals beneath the surface" poster="/effects/eclipse-poster.svg" eager />
+            </div>
+            <figcaption class="mx-6 flex items-start justify-between gap-6 border-t border-[#20211e]/15 pt-4 text-[11px] leading-5 text-[#555650] lg:mx-10">
+              <span>Every signal has a story.</span>
+              <span class="text-right">An exploration in depth<br />and connected systems.</span>
+            </figcaption>
+          </figure>
+        </div>
+
+        <div class="mt-12 flex flex-col justify-between gap-5 border-t border-[#20211e]/15 pt-6 text-[12px] leading-5 text-[#555650] sm:flex-row sm:items-center lg:mt-20">
+          <p>Traces. Logs. Metrics.<br class="sm:hidden" /> <span class="sm:ml-4">One local view.</span></p>
+          <a href="#inside" class={`inline-flex min-h-11 items-center gap-5 text-[#20211e] ${focus}`}>Follow the story <svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 4v16m-6-6 6 6 6-6" /></svg></a>
+        </div>
+      </div>
+    </section>
+
+    <nav id="chapters" aria-label="Journey chapters" class="mx-auto max-w-[1400px] scroll-mt-8 px-6 lg:px-12">
+      <details class="group border-y border-[#20211e]/15 py-2">
+        <summary class={`flex min-h-14 cursor-pointer list-none items-center justify-between gap-6 text-[12px] text-[#555650] ${focus}`}><span>Sixteen perspectives. One connected story.</span><span class="font-medium text-[#20211e] group-open:hidden">Explore the chapters +</span><span class="hidden font-medium text-[#20211e] group-open:block">Close chapters −</span></summary>
+        <ol class="grid gap-x-10 pb-7 pt-2 sm:grid-cols-2 lg:grid-cols-4">
+          {journey.map((chapter, index) => <li><a href={`#${chapter.id}`} class={`flex min-h-12 items-center gap-4 border-t border-[#20211e]/10 text-[12px] text-[#555650] transition-colors hover:text-[#174aff] ${focus}`}><span aria-hidden="true" class="font-mono text-[10px] tabular-nums">{String(index + 1).padStart(2, '0')}</span>{chapter.label}</a></li>)}
+        </ol>
+      </details>
+    </nav>
+
+    <section id="inside" data-journey-chapter="02" data-direction="swiss-grid" aria-labelledby="spatial-inside-title" class="scroll-mt-8 px-6 py-24 lg:px-12 lg:py-36">
+      <div class="mx-auto max-w-[1304px]">
+        <div class="mb-14 grid items-end gap-8 lg:grid-cols-[1.15fr_1fr] lg:gap-24">
+          <div>
+            <p class="mb-6 text-[11px] font-medium uppercase tracking-[0.12em] text-[#555650]">02 / 16 · Follow the whole story</p>
+            <h2 id="spatial-inside-title" class="text-[clamp(2.75rem,5.7vw,5.25rem)] font-medium leading-[1.02] tracking-[-0.055em]">Go a layer<br />deeper.</h2>
+          </div>
+          <div class="pb-1">
+            <p class="max-w-[36ch] text-[19px] leading-[1.5] tracking-[-0.018em] text-[#555650] sm:text-[21px]">One request can cross a lot of boundaries. Follow the trace, open the logs, and find the moment that matters.</p>
+            <a href="/product/tracing/" class={`${textLink} mt-6 text-[14px]`}>Explore tracing <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+
+        <figure>
+          <EffectStage kind="scroll-portal" class="min-h-[560px]" label="Travel through nested frames into a visual map of connected traces" poster="/effects/trace-map.svg" />
+          <figcaption class="mt-5 flex flex-col justify-between gap-2 text-[11px] leading-5 text-[#555650] sm:flex-row">
+            <span>One run. Many layers. A single path through.</span>
+            <span>Conceptual signal map · not live telemetry</span>
+          </figcaption>
+        </figure>
+
+        <div class="mt-12 divide-y divide-[#20211e]/15 border-y border-[#20211e]/15">
+          {evidence.map(({ label, copy, href }, index) => (
+            <a href={href} class={`group grid min-h-24 grid-cols-[28px_1fr_24px] items-center gap-x-4 gap-y-1 py-6 sm:grid-cols-[40px_180px_1fr_24px] sm:gap-x-8 ${focus}`}>
+              <span aria-hidden="true" class="row-span-2 self-start pt-2 text-[11px] tabular-nums text-[#555650] sm:row-span-1 sm:self-center sm:pt-0">0{index + 1}</span>
+              <h3 class="text-[24px] font-medium tracking-[-0.035em] transition-transform group-hover:translate-x-1 motion-reduce:transform-none motion-reduce:transition-none">{label}</h3>
+              <p class="col-start-2 text-[14px] leading-6 text-[#555650] sm:col-start-auto">{copy}</p>
+              <span aria-hidden="true" class="col-start-3 row-start-1 text-xl sm:col-start-auto sm:row-start-auto">↗</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <SignalChapters />
+
+    <section id="connected" data-journey-chapter="09" data-direction="soft-glass" aria-labelledby="spatial-context-title" class="scroll-mt-8 bg-[#eeefe8] px-6 py-24 lg:px-12 lg:py-36">
+      <div class="mx-auto grid max-w-[1304px] items-center gap-14 lg:grid-cols-[1fr_1fr] lg:gap-24">
+        <div class="lg:order-2">
+          <p class="mb-6 text-[11px] text-[#555650]">09 / 16 · Give your agent the context</p>
+          <h2 id="spatial-context-title" class="text-[clamp(2.75rem,5.7vw,5.25rem)] font-medium leading-[1.02] tracking-[-0.055em]">A clearer<br />conversation.</h2>
+          <p class="mt-8 max-w-[32ch] text-[19px] leading-[1.5] tracking-[-0.018em] text-[#555650] sm:text-[21px]">Your coding agent can read the code. Connect qyl over MCP so it can inspect what happened when the code ran.</p>
+          <a href="/docs/mcp/" class={`${textLink} mt-6 text-[14px]`}>Connect your agent <span aria-hidden="true">↗</span></a>
+          <p class="mt-10 max-w-[37ch] border-t border-[#20211e]/15 pt-5 text-[12px] leading-6 text-[#555650]">Search the logs. Inspect a complete trace. Bring the evidence into the same conversation.</p>
+        </div>
+        <figure class="min-w-0 lg:order-1">
+          <div class="relative aspect-[4/5] w-full overflow-hidden bg-[#e3e5da]">
+            <EffectStage kind="glass-reveal" class="absolute inset-0" label="A glass lens reveals connections inside an abstract signal sculpture" poster="/effects/signal-sculpture.svg" />
+          </div>
+          <figcaption class="mt-5 flex items-start justify-between gap-6 text-[11px] leading-5 text-[#555650]">
+            <span>A different perspective.</span>
+            <span class="text-right">Move across the scene<br />to look closer.</span>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <ContextChapters />
+
+    <section id="start" data-journey-chapter="16" data-direction="terminal-light" aria-labelledby="spatial-start-title" class="scroll-mt-8 px-6 py-24 lg:px-12 lg:py-36">
+      <div class="mx-auto max-w-[1304px]">
+        <div class="grid gap-14 lg:grid-cols-[1.15fr_1fr] lg:gap-24">
+          <div>
+            <p class="mb-6 text-[11px] text-[#555650]">16 / 16 · Start where you are</p>
+            <h2 id="spatial-start-title" class="text-[clamp(2.75rem,5.7vw,5.25rem)] font-medium leading-[1.02] tracking-[-0.055em]">On your machine.<br />In your hands.</h2>
+            <p class="mt-8 max-w-[32ch] text-[19px] leading-[1.5] tracking-[-0.018em] text-[#555650] sm:text-[21px]">A local collector, a dashboard, and the evidence your agent needs. Start with a terminal.</p>
+          </div>
+          <div class="lg:pt-12">
+            <div data-command-panel class="border-y border-[#20211e]/20 py-7">
+              <div class="mb-6 flex items-center justify-between gap-4 text-[11px] text-[#555650]">
+                <span>Install qyl {versionOf("qyl")}</span>
+                <span>.NET tool</span>
+              </div>
+              <code class="block overflow-x-auto whitespace-pre text-[12px] leading-8 text-[#20211e] sm:text-[14px]">{`$ dotnet tool install --global qyl\n$ qyl up`}</code>
+              <button type="button" data-copy-command={install} aria-label="Copy qyl install command" class={`mt-5 inline-flex min-h-11 items-center gap-4 text-[12px] font-medium ${focus}`}><span data-copy-label>Copy command</span><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="8" y="8" width="12" height="12" rx="2" /><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4" /></svg></button>
+              <p data-copy-status aria-live="polite" class="mt-3 min-h-10 max-w-[42ch] text-[12px] leading-5 text-[#555650]">Opens your local collector and dashboard. No hosted account needed.</p>
+            </div>
+            <div class="mt-5 flex flex-wrap justify-between gap-x-6 gap-y-1 text-[13px]">
+              <a href="/docs/getting-started/" class={textLink}>Read the setup guide <span aria-hidden="true">↗</span></a>
+              <a href="/pricing/" class={`inline-flex min-h-11 items-center gap-2 text-[#555650] hover:underline ${focus}`}>What’s included <span aria-hidden="true">↗</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="px-6 pb-7 lg:px-12">
+    <div class="mx-auto max-w-[1304px] border-t border-[#20211e]/20 pt-8">
+      <div class="flex flex-col justify-between gap-8 sm:flex-row sm:items-start">
+        <a href="/" aria-label="qyl home" class={`w-fit text-[68px] font-semibold leading-none tracking-[-0.09em] ${focus}`}>qyl<span aria-hidden="true">.</span></a>
+        <nav aria-label="Footer navigation" class="flex flex-wrap gap-x-7 gap-y-1 text-[12px] text-[#555650]">
+          <a href="/docs/" class={`inline-flex min-h-11 items-center hover:underline ${focus}`}>Documentation</a>
+          <a href="/lab/effects/" class={`inline-flex min-h-11 items-center hover:underline ${focus}`}>Explore the effects</a>
+          <a href="/lab/" class={`inline-flex min-h-11 items-center hover:underline ${focus}`}>All designs</a>
+          <a href={externalLinks.github} class={`inline-flex min-h-11 items-center hover:underline ${focus}`}>GitHub</a>
+          <a href="/privacy/" class={`inline-flex min-h-11 items-center hover:underline ${focus}`}>Privacy</a>
+        </nav>
+      </div>
+      <div class="mt-10 flex flex-col justify-between gap-3 text-[11px] leading-5 text-[#555650] sm:flex-row">
+        <p>See the signals. Find the story.</p>
+        <p>Local-first observability · qyl {versionOf("qyl")}</p>
+      </div>
+    </div>
+  </footer>
+</div>

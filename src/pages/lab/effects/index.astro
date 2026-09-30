@@ -1,0 +1,66 @@
+---
+import VariantLayout from "../../../layouts/VariantLayout.astro";
+import EffectStage from "../../../components/EffectStage.astro";
+import { effects } from "../../../data/effects";
+---
+<VariantLayout title="Another dimension — qyl effects lab" description="Seven interactive studies in light, depth and motion. Explore the qyl effects lab with React Bits Pro.">
+  <div class="min-h-screen bg-[#f8f7f3] font-sans text-zinc-950">
+    <a href="#main" class="sr-only z-50 rounded-md bg-zinc-950 px-5 py-3 text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4">Skip to content</a>
+    <header class="border-b border-zinc-950/15">
+      <nav aria-label="Effects lab navigation" class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-5 py-5 sm:px-8">
+        <a href="/" class="text-2xl font-semibold tracking-[-.08em] focus-visible:outline-2 focus-visible:outline-offset-4">qyl<span class="ml-3 font-mono text-[10px] font-normal tracking-[.12em] text-zinc-600 sm:text-xs">EFFECTS LAB</span></a>
+        <div class="flex items-center gap-5 text-xs sm:gap-8 sm:text-sm"><a href="/lab/" class="min-h-6 content-center text-zinc-600 hover:text-zinc-950 focus-visible:outline-2 focus-visible:outline-offset-4">Design directions</a><a href="#collection" class="min-h-6 content-center font-medium hover:underline focus-visible:outline-2 focus-visible:outline-offset-4">Explore effects <span aria-hidden="true">↘</span></a></div>
+      </nav>
+    </header>
+
+    <main id="main" class="mx-auto max-w-7xl px-5 sm:px-8">
+      <section aria-labelledby="page-title" class="pb-12 pt-14 sm:pb-20 sm:pt-20">
+        <div class="grid gap-8 pb-10 md:grid-cols-[1.6fr_1fr] md:items-end sm:pb-14">
+          <div>
+            <p class="mb-6 font-mono text-[11px] uppercase tracking-[.14em] text-zinc-600">React Bits Pro / Study 02</p>
+            <h1 id="page-title" class="max-w-3xl text-5xl font-medium leading-[.97] tracking-[-.065em] sm:text-7xl lg:text-[5.75rem]">Give the signal<br />another dimension.</h1>
+          </div>
+          <div class="max-w-sm md:ml-auto md:pb-1">
+            <p class="text-lg leading-relaxed text-zinc-600">Light you can move. Images you can enter. Seven ways to make a digital surface feel a little more alive.</p>
+            <p class="mt-6 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[.1em] text-zinc-600"><span class="h-1.5 w-1.5 rounded-full bg-blue-700" aria-hidden="true"></span>07 interactive studies</p>
+          </div>
+        </div>
+
+        <div class="rounded-2xl border border-zinc-950/15 bg-[#f3f2ee]">
+          <EffectStage kind="eclipse" class="h-[380px] w-full rounded-2xl sm:h-[520px] lg:h-[600px]" label="Eclipse — a spectral corona responding to your pointer" poster="/effects/eclipse-poster.svg" eager />
+        </div>
+        <div class="mt-5 flex flex-wrap items-center justify-between gap-3 text-xs text-zinc-600">
+          <p><span class="mr-3 font-mono">01 / 07</span><span class="font-medium text-zinc-950">Eclipse</span><span class="ml-3 hidden sm:inline">A living corona. A quiet centre.</span></p>
+          <a href="/lab/effects/eclipse/" class="min-h-6 content-center text-zinc-950 underline decoration-zinc-400 underline-offset-4 hover:decoration-zinc-950 focus-visible:outline-2 focus-visible:outline-offset-4">Open the full study <span aria-hidden="true">↗</span></a>
+        </div>
+      </section>
+
+      <section id="collection" aria-labelledby="collection-title" class="grid gap-8 border-t border-zinc-950/15 py-12 sm:gap-12 sm:py-20 lg:grid-cols-[.75fr_1.65fr]">
+        <div>
+          <p class="mb-5 font-mono text-[11px] uppercase tracking-[.14em] text-zinc-600">The collection</p>
+          <h2 id="collection-title" class="text-3xl font-medium leading-tight tracking-[-.045em] sm:text-4xl">Choose a feeling.<br /><span class="text-zinc-600">Step inside.</span></h2>
+          <p class="mt-5 max-w-[28ch] text-sm leading-relaxed text-zinc-600">Each study has its own space. Open one, move around, and see what changes.</p>
+        </div>
+        <ol class="divide-y divide-zinc-950/15 border-y border-zinc-950/15">
+          {effects.map((effect, index) => <li>
+            <a href={`/lab/effects/${effect.slug}/`} class="group grid grid-cols-[100px_1fr] gap-5 py-6 focus-visible:outline-2 focus-visible:outline-offset-4 sm:grid-cols-[160px_1fr] sm:gap-7">
+              <div class="relative aspect-[4/3] overflow-hidden rounded-lg border border-zinc-950/10 bg-white sm:aspect-[16/10]">
+                <img src={effect.poster} alt={effect.imageAlt} width="640" height="400" loading="lazy" decoding="async" class="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.035] motion-reduce:transition-none" />
+                <span aria-hidden="true" class="absolute bottom-2 left-2 rounded bg-[#f8f7f3] px-1.5 py-1 font-mono text-[9px] text-zinc-700">{String(index + 1).padStart(2, "0")}</span>
+              </div>
+              <div class="flex min-w-0 flex-col justify-center">
+                <p class="mb-2 font-mono text-[9px] uppercase tracking-[.1em] text-zinc-600 sm:text-[10px]">{effect.category}</p>
+                <div class="flex items-center justify-between gap-2"><h3 class="text-xl font-medium tracking-[-.035em] sm:text-2xl">{effect.name}</h3><span aria-hidden="true" class="text-xl text-zinc-600 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 motion-reduce:transition-none">↗</span></div>
+                <p class="mt-2 text-xs leading-relaxed text-zinc-600 sm:text-sm">{effect.summary}</p>
+              </div>
+            </a>
+          </li>)}
+        </ol>
+      </section>
+    </main>
+
+    <footer class="border-t border-zinc-950/15">
+      <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-5 px-5 py-7 text-xs text-zinc-600 sm:px-8"><p>qyl / Experiments in light, depth & motion</p><div class="flex flex-wrap gap-6"><a href="/lab/" class="min-h-6 content-center hover:text-zinc-950 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4">All design directions</a><a href="https://pro.reactbits.dev/docs/components/eclipse" class="min-h-6 content-center hover:text-zinc-950 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4">Made with React Bits Pro <span aria-hidden="true">↗</span></a></div></div>
+    </footer>
+  </div>
+</VariantLayout>

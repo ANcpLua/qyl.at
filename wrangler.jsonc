@@ -7,7 +7,25 @@
     {
       "pattern": "qyl.at",
       "custom_domain": true
-    }
+    },
+    // One subdomain per design lab direction, matching src/data/variants.ts.
+    // worker/index.ts maps each root to /lab/<slug>/.
+    { "pattern": "apple-minimal.qyl.at", "custom_domain": true },
+    { "pattern": "swiss-grid.qyl.at", "custom_domain": true },
+    { "pattern": "editorial.qyl.at", "custom_domain": true },
+    { "pattern": "corporate-trust.qyl.at", "custom_domain": true },
+    { "pattern": "luxury-serif.qyl.at", "custom_domain": true },
+    { "pattern": "neobrutalism.qyl.at", "custom_domain": true },
+    { "pattern": "playful-motion.qyl.at", "custom_domain": true },
+    { "pattern": "terminal-light.qyl.at", "custom_domain": true },
+    { "pattern": "blueprint.qyl.at", "custom_domain": true },
+    { "pattern": "bauhaus.qyl.at", "custom_domain": true },
+    { "pattern": "zen-ink.qyl.at", "custom_domain": true },
+    { "pattern": "lab-notebook.qyl.at", "custom_domain": true },
+    { "pattern": "system-classic.qyl.at", "custom_domain": true },
+    { "pattern": "risograph.qyl.at", "custom_domain": true },
+    { "pattern": "control-room.qyl.at", "custom_domain": true },
+    { "pattern": "soft-glass.qyl.at", "custom_domain": true }
   ],
   // Must be stated explicitly. `wrangler deploy` PATCHes observability to
   // `{enabled: false}` whenever the key is absent ("if the user hasn't specified
@@ -22,7 +40,7 @@
     "directory": "./dist",
     "binding": "ASSETS",
     "not_found_handling": "404-page",
-    "run_worker_first": ["/_qyl/vitals"]
+    "run_worker_first": ["/_qyl/vitals", "/"]
   },
   "vars": {
     "QYL_OTLP_LOGS_ENDPOINT": "https://api.qyl.at/v1/logs",

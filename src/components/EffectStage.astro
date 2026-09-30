@@ -1,0 +1,43 @@
+---
+interface Props {
+  kind: 'eclipse' | 'scroll-portal' | 'ascii-ripple' | 'depth-image' | 'bend-gallery' | 'glass-reveal' | 'tile-reveal';
+  class?: string;
+  label: string;
+  poster?: string;
+  eager?: boolean;
+}
+const { kind, class: className = 'h-[560px]', label, eager = false } = Astro.props;
+const poster = Astro.props.poster ?? (kind === 'eclipse' ? '/effects/eclipse-poster.svg' : kind === 'depth-image' ? '/effects/signal-sculpture.svg' : '/effects/trace-map.svg');
+const runway = kind === 'scroll-portal' || kind === 'tile-reveal';
+const position = className.split(' ').includes('absolute') ? 'absolute' : 'relative';
+---
+<div
+  class:list={['group/effect isolate w-full min-w-0 data-[runway=true]:h-[240svh]!', kind !== 'eclipse' && 'bg-[#f6f5f1]', position, className]}
+  data-effect={kind}
+  data-effect-state="static"
+  data-effect-scroll={runway ? 'true' : undefined}
+  role="region"
+  aria-label={label}
+>
+  <div data-effect-poster class:list={['absolute inset-0 overflow-hidden transition-opacity duration-500 group-data-[effect-state=playing]/effect:pointer-events-none group-data-[effect-state=playing]/effect:opacity-0 motion-reduce:transition-none', kind === 'eclipse' && '[mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_72%)]']}>
+    <img src={poster} alt="" width="1200" height="1000" loading={eager ? 'eager' : 'lazy'} fetchpriority={eager ? 'high' : 'auto'} decoding="async" class="h-full w-full object-cover" />
+    <slot />
+  </div>
+  <div data-effect-mount class="absolute inset-0"></div>
+  <button
+    type="button"
+    data-effect-toggle
+    aria-label={`Play ${label}`}
+    aria-pressed="false"
+    disabled
+    class="absolute bottom-4 right-4 z-20 inline-flex min-h-11 items-center gap-2 rounded-full border border-black/15 bg-white px-4 font-sans text-xs font-medium text-zinc-800 shadow-sm transition-colors hover:bg-zinc-50 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-700 disabled:cursor-default"
+  >
+    <span class="size-1.5 rounded-full bg-blue-600" aria-hidden="true"></span>
+    <span data-effect-toggle-label class="w-20 text-center">Play motion</span>
+  </button>
+  <span data-effect-status class="sr-only" aria-live="polite"></span>
+</div>
+<script>
+  import { enhanceEffects } from '../scripts/effects';
+  enhanceEffects();
+</script>

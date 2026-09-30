@@ -1,0 +1,184 @@
+---
+import EffectStage from "../EffectStage.astro";
+
+const focus = "focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#174aff]";
+const link = `inline-flex min-h-11 items-center gap-4 text-[14px] text-[#1746dd] underline-offset-4 hover:underline ${focus}`;
+const heading = "text-[clamp(2.75rem,5.7vw,5.25rem)] font-medium leading-[1.02] tracking-[-0.055em]";
+const body = "text-[19px] leading-[1.5] tracking-[-0.018em] text-[#555650] sm:text-[21px]";
+const languages = ["Python", "Go", "Java", "Node.js", "Rust", ".NET"];
+const journal = [
+  { index: "01", title: "The call", detail: "The request and its result or typed error." },
+  { index: "02", title: "The execution", detail: "Lifecycle, duration, retries and cancellation." },
+  { index: "03", title: "The context", detail: "Correlated qyl evidence, alongside the run." },
+];
+const phases = [
+  { label: "Restore", number: "01", position: "col-start-1" },
+  { label: "Build", number: "02", position: "col-start-2" },
+  { label: "Verify", number: "03", position: "col-start-3" },
+  { label: "Package", number: "04", position: "col-start-4" },
+];
+---
+
+<section id="open" data-journey-chapter="10" data-direction="bauhaus" aria-labelledby="open-standards-title" class="px-6 py-24 lg:px-12 lg:py-36">
+  <div class="mx-auto max-w-[1304px]">
+    <div class="mb-14 flex items-center justify-between gap-4 border-t border-[#20211e]/25 pt-5 text-[11px] text-[#555650]">
+      <span>10 / Open by design</span><span>Many languages. One standard.</span>
+    </div>
+    <div class="grid items-center gap-14 lg:grid-cols-[1.05fr_1fr] lg:gap-24">
+      <figure class="order-2 min-w-0 lg:order-1">
+        <div class="relative grid aspect-square grid-cols-2 grid-rows-2 border border-[#20211e]/20 bg-[#eeefe8]">
+          <div class="flex items-center justify-center border-b border-r border-[#20211e]/20 p-5 sm:p-8">
+            <div aria-hidden="true" class="aspect-square w-full rounded-full border-[16px] border-[#20211e] sm:border-[24px]"></div>
+          </div>
+          <div class="relative flex items-end justify-start border-b border-[#20211e]/20 p-5 sm:p-8">
+            <span class="text-[clamp(1.75rem,5vw,4rem)] font-medium leading-none tracking-[-0.08em]">OTLP</span>
+            <span aria-hidden="true" class="absolute right-5 top-4 text-[48px] leading-none text-[#1746dd] sm:right-8 sm:top-6">↙</span>
+          </div>
+          <div class="flex flex-col justify-between border-r border-[#20211e]/20 p-5 sm:p-8">
+            <span class="text-[11px] leading-5 text-[#555650]">Your application<br />Your language</span>
+            <span class="text-[clamp(1.5rem,4vw,3rem)] font-medium leading-none tracking-[-0.06em]">qyl.</span>
+          </div>
+          <div aria-hidden="true" class="relative m-5 self-stretch overflow-hidden sm:m-8">
+            <div class="absolute bottom-0 left-0 aspect-square w-[200%] rounded-full bg-[#1746dd]"></div>
+          </div>
+        </div>
+        <figcaption class="mt-4 text-[11px] leading-5 text-[#555650]">OpenTelemetry → OTLP → qyl. An illustration of the ingest path.</figcaption>
+      </figure>
+      <div class="order-1 lg:order-2">
+        <h2 id="open-standards-title" class={heading}>Different tools.<br />Common ground.</h2>
+        <p class={`${body} mt-8 max-w-[33ch]`}>Use the OpenTelemetry SDK that fits your application. A compliant OTLP exporter can send its traces, logs and metrics straight to qyl.</p>
+        <div class="mt-9 grid grid-cols-2 gap-x-8 border-t border-[#20211e]/20 sm:grid-cols-3">
+          {languages.map(language => <span class="border-b border-[#20211e]/20 py-4 text-[15px] font-medium">{language}</span>)}
+        </div>
+        <p class="mt-5 text-[12px] leading-6 text-[#555650]">Standard OTLP over HTTP or gRPC. No language-specific collector required.</p>
+        <a href="/docs/getting-started/" class={`${link} mt-4`}>Connect your application <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="workbench" data-journey-chapter="11" data-direction="lab-notebook" aria-labelledby="workbench-title" class="bg-[#f0f0e9] px-6 py-24 lg:px-12 lg:py-36">
+  <div class="mx-auto max-w-[1304px]">
+    <div class="grid gap-12 lg:grid-cols-12 lg:gap-x-8">
+      <aside class="border-t border-[#20211e]/25 pt-5 text-[11px] leading-6 text-[#555650] lg:col-span-2">
+        <p>11 / Field notes</p><p class="mt-4 font-serif text-[24px] italic leading-tight text-[#20211e]">Keep the<br class="hidden lg:block" /> evidence.</p>
+        <p class="mt-5 max-w-[22ch]">The MCP workbench.<br />A record you can return to.</p>
+      </aside>
+      <div class="lg:col-span-10">
+        <h2 id="workbench-title" class={`${heading} max-w-[16ch] font-serif! tracking-[-0.035em]!`}>A run ends.<br />Its story stays.</h2>
+        <div class="mt-12 grid gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
+          <div>
+            <p class={`${body} max-w-[31ch]`}>The local MCP workbench keeps the request, the outcome and the execution around it. Review a run, compare it with another, and carry the evidence forward.</p>
+            <a href="/docs/workbench/" class={`${link} mt-6`}>Open the workbench guide <span aria-hidden="true">↗</span></a>
+            <div class="mt-10 border-l-2 border-[#1746dd] pl-5">
+              <h3 class="text-[16px] font-medium">Choose what enters the journal.</h3>
+              <p class="mt-3 max-w-[40ch] text-[14px] leading-6 text-[#555650]">The live protocol journal is metadata-only by default. Redacted, bounded JSON-RPC bodies require explicit content capture.</p>
+            </div>
+          </div>
+          <figure class="min-w-0 border-t-2 border-[#20211e]">
+            <figcaption class="flex justify-between gap-4 border-b border-[#20211e]/20 py-4 text-[11px] text-[#555650]"><span>Execution record anatomy</span><span>Illustration</span></figcaption>
+            <ol class="divide-y divide-[#20211e]/20">
+              {journal.map(item => <li class="grid grid-cols-[24px_1fr] gap-5 py-6"><span class="pt-1 font-mono text-[11px] text-[#555650]">{item.index}</span><div><h3 class="font-serif text-[25px] leading-tight">{item.title}</h3><p class="mt-2 text-[14px] leading-6 text-[#555650]">{item.detail}</p></div></li>)}
+            </ol>
+            <p class="border-y border-[#20211e]/20 py-4 text-[12px] leading-6 text-[#555650]">Compare completed runs. Export validated JSON or Markdown. Keep real tool assertions with your tests.</p>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="delivery" data-journey-chapter="12" data-direction="control-room" aria-labelledby="ci-evidence-title" class="px-6 py-24 lg:px-12 lg:py-36">
+  <div class="mx-auto max-w-[1304px]">
+    <div class="mb-12 flex items-center gap-4 text-[11px] text-[#555650]"><span aria-hidden="true" class="size-2 bg-[#1746dd]"></span><span>12 / Build operations</span><span class="ml-auto font-mono">CI → OTLP</span></div>
+    <div class="mb-14 grid items-end gap-8 lg:grid-cols-[1.1fr_1fr] lg:gap-24">
+      <h2 id="ci-evidence-title" class={heading}>Your build has<br />a timeline, too.</h2>
+      <div><p class={`${body} max-w-[35ch]`}>qyl’s own build and release paths emit phases as OpenTelemetry spans. Investigate their outcomes, durations and failure evidence in the same system as the code they verify.</p><a href="/product/ci/" class={`${link} mt-5`}>Follow the CI evidence <span aria-hidden="true">↗</span></a></div>
+    </div>
+    <figure class="border border-[#20211e]/30 bg-[#eeefe8] p-4 sm:p-8">
+      <figcaption class="flex flex-wrap items-center justify-between gap-3 border-b border-[#20211e]/25 pb-5 text-[11px] text-[#555650]"><span class="font-mono text-[#20211e]">release / operation map</span><span>Illustrative sequence · no measured timings</span></figcaption>
+      <div class="mt-8 grid gap-8 lg:grid-cols-[1fr_240px] lg:gap-12">
+        <div class="min-w-0">
+          <div class="grid grid-cols-4 gap-2 border-b border-[#20211e]/15 pb-4 text-[10px] tabular-nums text-[#555650] sm:gap-4 sm:text-[11px]"><span>Start</span><span>Compile</span><span>Validate</span><span class="text-right">Complete</span></div>
+          <ol class="mt-3 divide-y divide-[#20211e]/10">
+            {phases.map(phase => <li class="grid grid-cols-[72px_1fr] items-center gap-3 py-5 sm:grid-cols-[100px_1fr] sm:gap-6"><span class="text-[12px] font-medium sm:text-[14px]">{phase.label}</span><div class="grid grid-cols-4 gap-2 sm:gap-4"><div class={`${phase.position} flex h-9 items-center justify-center border-l-2 border-[#1746dd] bg-[#dfe4f0] text-[11px] text-[#35416a]`}>{phase.number}</div></div></li>)}
+          </ol>
+        </div>
+        <div class="flex flex-col justify-between border-t border-[#20211e]/25 pt-6 lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0">
+          <div><p class="text-[11px] text-[#555650]">Ask through MCP</p><p class="mt-3 font-mono text-[25px] tracking-[-0.04em]">ci_log</p><p class="mt-4 text-[13px] leading-6 text-[#555650]">Read recent runs, their phases and the evidence behind an outcome.</p></div>
+          <div class="mt-7 border-t border-[#20211e]/20 pt-4"><p class="text-[12px] font-medium">Failures stay evidence.</p><p class="mt-2 text-[12px] leading-5 text-[#555650]">A failed phase carries its error in span status.</p></div>
+        </div>
+      </div>
+    </figure>
+  </div>
+</section>
+
+<section id="local" data-journey-chapter="13" data-direction="zen-ink" aria-labelledby="local-first-title" class="px-6 py-24 lg:px-12 lg:py-36">
+  <div class="mx-auto grid max-w-[1304px] items-center gap-16 lg:grid-cols-[1fr_1fr] lg:gap-24">
+    <div>
+      <p class="mb-9 text-[11px] text-[#555650]">13 / Keep it close</p>
+      <h2 id="local-first-title" class={heading}>Your machine.<br />Your context.</h2>
+      <p class={`${body} mt-8 max-w-[32ch]`}>Collect your application’s signals locally. qyl stores traces, logs and metrics in DuckDB, ready for the dashboard and your connected agent.</p>
+      <p class="mt-7 max-w-[37ch] text-[15px] leading-7 text-[#555650]">Local development starts on loopback. A hosted account is not required to begin.</p>
+      <a href="/docs/telemetry/" class={`${link} mt-5`}>Understand the data boundary <span aria-hidden="true">↗</span></a>
+    </div>
+    <figure class="min-w-0">
+      <div class="relative mx-auto flex aspect-square w-full max-w-[520px] flex-col items-center justify-center px-8">
+        <div aria-hidden="true" class="absolute inset-[2%] rotate-[-8deg] rounded-[48%] border-b-[5px] border-l-[3px] border-r border-t-2 border-[#20211e]"></div>
+        <div aria-hidden="true" class="absolute inset-[4%] rotate-[13deg] rounded-[49%] border-b border-l border-[#20211e]/20"></div>
+        <p class="relative text-[10px] tracking-[0.08em] text-[#555650]">YOUR MACHINE</p>
+        <p class="relative mt-5 text-[14px] sm:text-[16px]">Application</p>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="relative my-3 size-5 text-[#555650]"><path d="M12 4v16m-6-6 6 6 6-6" /></svg>
+        <p class="relative text-[48px] font-medium leading-none tracking-[-0.08em] sm:text-[64px]">qyl.</p>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="relative my-3 size-5 text-[#555650]"><path d="M12 4v16m-6-6 6 6 6-6" /></svg>
+        <p class="relative text-[14px] sm:text-[16px]">Local DuckDB</p>
+        <p class="relative mt-4 text-center text-[11px] text-[#555650]">Traces · Logs · Metrics</p>
+      </div>
+      <figcaption class="mx-auto mt-6 max-w-[36ch] text-center text-[11px] leading-5 text-[#555650]">An illustration of the local collection path.<br />The same evidence, close to the work.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="contracts" data-journey-chapter="14" data-direction="risograph" aria-labelledby="shared-contract-title" class="bg-[#eeefe8] px-6 py-24 lg:px-12 lg:py-36">
+  <div class="mx-auto max-w-[1304px]">
+    <div class="mb-12 flex justify-between gap-6 border-t-2 border-[#20211e] pt-5 text-[11px] text-[#555650]"><span>14 / A shared language</span><span>Generated, on both sides.</span></div>
+    <div class="grid gap-14 lg:grid-cols-12 lg:gap-x-8">
+      <div class="lg:col-span-6">
+        <h2 id="shared-contract-title" class={heading}>One contract.<br />Fewer surprises.</h2>
+        <p class={`${body} mt-8 max-w-[33ch]`}>A shared read contract gives .NET and TypeScript the same requests, responses and errors. The collector maps its internal rows before data crosses the boundary.</p>
+        <a href="/docs/telemetry/" class={`${link} mt-6`}>Read about the contract <span aria-hidden="true">↗</span></a>
+      </div>
+      <figure class="relative min-w-0 lg:col-span-5 lg:col-start-8">
+        <div aria-hidden="true" class="absolute inset-x-2 inset-y-3 translate-x-2 translate-y-2 border border-[#1746dd] bg-[#1746dd]/5"></div>
+        <div class="relative border border-[#20211e] bg-[#f7f7f2] p-6 sm:p-8">
+          <figcaption class="border-b border-[#20211e]/25 pb-4 text-[11px] text-[#555650]">Generated surfaces · schematic</figcaption>
+          <div class="border-b border-[#20211e]/20 py-7"><p class="text-[40px] font-medium leading-none tracking-[-0.055em]">.NET</p><p class="mt-3 break-all font-mono text-[12px] text-[#555650]">Qyl.Api.Contracts</p></div>
+          <div class="py-7"><p class="text-[40px] font-medium leading-none tracking-[-0.055em]">TypeScript</p><p class="mt-3 break-all font-mono text-[12px] text-[#555650]">@ancplua/qyl-api-schema</p><p class="mt-2 text-[12px] text-[#555650]">Including its Zod export.</p></div>
+          <p class="border-t border-[#20211e]/25 pt-4 text-[12px] leading-6">Same read boundary. Different languages.</p>
+        </div>
+      </figure>
+    </div>
+    <div class="mt-16 grid gap-7 border-y border-[#20211e]/25 py-8 lg:grid-cols-[1fr_1.25fr_1fr] lg:gap-14">
+      <h3 class="text-[26px] font-medium leading-tight tracking-[-0.035em]">And one telemetry<br />vocabulary.</h3>
+      <p class="text-[15px] leading-7 text-[#555650]">A single Weaver registry supplies the attribute vocabulary. Generated constants and collector mappings keep instrumentation and ingestion aligned.</p>
+      <div><p class="text-[15px] leading-7 text-[#555650]">Building an API? Qyl.Api.Sdk brings the Native AOT path and telemetry together.</p><a href="/docs/api-sdk/" class={`${link} mt-3`}>Explore the API SDK <span aria-hidden="true">↗</span></a></div>
+    </div>
+  </div>
+</section>
+
+<section id="together" data-journey-chapter="15" data-direction="system-classic" aria-labelledby="full-picture-title" class="px-6 py-24 lg:px-12 lg:py-36">
+  <div class="mx-auto max-w-[1304px]">
+    <div class="mb-14 grid items-end gap-8 lg:grid-cols-[1.1fr_1fr] lg:gap-24">
+      <div><p class="mb-7 text-[11px] text-[#555650]">15 / The pieces come together</p><h2 id="full-picture-title" class={heading}>The whole picture.<br />Finally in focus.</h2></div>
+      <p class={`${body} max-w-[34ch]`}>A request, its logs, the run around it. When the pieces stay connected, you and your agent can follow the evidence to the next useful question.</p>
+    </div>
+    <figure class="border border-[#20211e]/40 bg-[#e7e8df] p-2 sm:p-3">
+      <figcaption class="mb-2 flex min-h-10 items-center gap-4 border border-[#20211e]/25 bg-[#f7f7f2] px-3 text-[11px] sm:mb-3 sm:px-4"><span aria-hidden="true" class="size-3 border border-[#20211e]/60"></span><span class="font-medium">qyl / connected evidence</span><span class="ml-auto text-[#555650]">Visual study</span></figcaption>
+      <div class="border border-[#20211e]/25">
+        <EffectStage kind="tile-reveal" class="min-h-[560px]" label="Tiles gather into a complete image, an illustration of connected runtime evidence" poster="/effects/trace-map.svg" />
+      </div>
+      <div class="mt-2 flex flex-wrap justify-between gap-x-6 gap-y-2 border border-[#20211e]/25 bg-[#f7f7f2] px-3 py-3 text-[11px] leading-5 text-[#555650] sm:mt-3 sm:px-4"><span>Traces + logs + metrics</span><span>Conceptual scene · not live telemetry</span></div>
+    </figure>
+    <div class="mt-10 flex flex-col justify-between gap-5 border-b border-[#20211e]/20 pb-8 sm:flex-row sm:items-center"><p class="text-[17px] text-[#555650]">Your next run is the place to start.</p><a href="#start" class={link}>Make it your own <svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 4v16m-6-6 6 6 6-6" /></svg></a></div>
+  </div>
+</section>

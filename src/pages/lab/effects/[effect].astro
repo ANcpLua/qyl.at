@@ -1,0 +1,52 @@
+---
+import VariantLayout from "../../../layouts/VariantLayout.astro";
+import EffectStage from "../../../components/EffectStage.astro";
+import { effects } from "../../../data/effects";
+
+export function getStaticPaths() {
+  return effects.map((effect, index) => ({ params: { effect: effect.slug }, props: { effect, index } }));
+}
+
+const { effect, index } = Astro.props;
+const previous = effects[(index + effects.length - 1) % effects.length];
+const next = effects[(index + 1) % effects.length];
+---
+<VariantLayout title={`${effect.name} — qyl effects lab`} description={effect.description}>
+  <div class="min-h-screen bg-[#f8f7f3] font-sans text-zinc-950">
+    <a href="#main" class="sr-only z-50 rounded-md bg-zinc-950 px-5 py-3 text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4">Skip to content</a>
+    <header class="border-b border-zinc-950/15">
+      <nav aria-label="Effects lab navigation" class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-5 py-5 sm:px-8">
+        <a href="/" class="text-2xl font-semibold tracking-[-.08em] focus-visible:outline-2 focus-visible:outline-offset-4">qyl<span class="ml-3 font-mono text-[10px] font-normal tracking-[.12em] text-zinc-600 sm:text-xs">EFFECTS LAB</span></a>
+        <a href="/lab/effects/" class="min-h-6 content-center text-xs text-zinc-600 hover:text-zinc-950 focus-visible:outline-2 focus-visible:outline-offset-4 sm:text-sm"><span aria-hidden="true">←</span> All seven studies</a>
+      </nav>
+    </header>
+
+    <main id="main" class="mx-auto max-w-7xl px-5 sm:px-8">
+      <section aria-labelledby="page-title" class="pb-10 pt-12 sm:pb-12 sm:pt-16">
+        <div class="mb-7 flex flex-wrap items-center gap-4 font-mono text-[10px] uppercase tracking-[.13em] text-zinc-600"><span>Study {String(index + 1).padStart(2, "0")} / 07</span><span aria-hidden="true">—</span><span>{effect.category}</span></div>
+        <div class="grid gap-7 md:grid-cols-[1.25fr_1fr] md:items-end">
+          <div><h1 id="page-title" class="text-5xl font-medium leading-[.98] tracking-[-.065em] sm:text-7xl lg:text-[5.25rem]">{effect.name}</h1><p class="mt-5 text-xl tracking-[-.025em] text-zinc-600 sm:text-2xl">{effect.summary}</p></div>
+          <p class="max-w-md text-sm leading-relaxed text-zinc-600 md:ml-auto sm:text-base">{effect.description}</p>
+        </div>
+      </section>
+
+      <section aria-label={`${effect.name} interactive study`}>
+        <div class="mb-4 flex flex-wrap items-center justify-between gap-3 border-t border-zinc-950/15 pt-5 text-xs text-zinc-600"><p class="flex items-center gap-2"><span aria-hidden="true" class="text-base text-zinc-950">↳</span>{effect.interaction}</p><a href={`https://pro.reactbits.dev/docs/components/${effect.slug}`} class="min-h-6 content-center underline decoration-zinc-400 underline-offset-4 hover:text-zinc-950 hover:decoration-zinc-950 focus-visible:outline-2 focus-visible:outline-offset-4">Component reference <span aria-hidden="true">↗</span></a></div>
+        <div class="rounded-2xl border border-zinc-950/15 bg-[#f3f2ee]">
+          <EffectStage kind={effect.slug} class="h-[440px] w-full rounded-2xl sm:h-[560px] lg:h-[680px]" label={`${effect.name}: ${effect.interaction}`} poster={effect.poster} eager />
+        </div>
+      </section>
+
+      <nav aria-label="Previous and next effect" class="grid grid-cols-2 gap-8 border-b border-zinc-950/15 pb-10 pt-8 sm:pb-12 sm:pt-10">
+        <a href={`/lab/effects/${previous.slug}/`} class="group min-w-0 focus-visible:outline-2 focus-visible:outline-offset-4"><span class="mb-2 block font-mono text-[10px] uppercase tracking-[.1em] text-zinc-600">Previous study</span><span class="flex items-center gap-3 text-base font-medium tracking-tight sm:text-xl"><span aria-hidden="true" class="text-zinc-600 transition-transform duration-200 group-hover:-translate-x-1 motion-reduce:transition-none">←</span>{previous.name}</span></a>
+        <a href={`/lab/effects/${next.slug}/`} class="group min-w-0 text-right focus-visible:outline-2 focus-visible:outline-offset-4"><span class="mb-2 block font-mono text-[10px] uppercase tracking-[.1em] text-zinc-600">Next study</span><span class="flex items-center justify-end gap-3 text-base font-medium tracking-tight sm:text-xl">{next.name}<span aria-hidden="true" class="text-zinc-600 transition-transform duration-200 group-hover:translate-x-1 motion-reduce:transition-none">→</span></span></a>
+      </nav>
+
+      <nav aria-label="All effect studies" class="flex flex-wrap gap-x-6 gap-y-3 py-8">
+        {effects.map((item, itemIndex) => <a href={`/lab/effects/${item.slug}/`} aria-current={item.slug === effect.slug ? "page" : undefined} class="flex min-h-7 items-center gap-2 text-xs text-zinc-600 underline-offset-4 hover:text-zinc-950 hover:underline aria-[current=page]:font-medium aria-[current=page]:text-zinc-950 aria-[current=page]:underline focus-visible:outline-2 focus-visible:outline-offset-4"><span class="font-mono text-[9px]">{String(itemIndex + 1).padStart(2, "0")}</span>{item.name}</a>)}
+      </nav>
+    </main>
+
+    <footer class="border-t border-zinc-950/15"><div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-5 py-7 text-xs text-zinc-600 sm:px-8"><p>qyl / React Bits Pro effects study</p><a href="/lab/" class="min-h-6 content-center hover:text-zinc-950 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4">Back to the design directions <span aria-hidden="true">↗</span></a></div></footer>
+  </div>
+</VariantLayout>

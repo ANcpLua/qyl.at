@@ -3,7 +3,9 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const root = path.dirname(fileURLToPath(new URL("../package.json", import.meta.url)));
+const root = path.dirname(
+  fileURLToPath(new URL("../package.json", import.meta.url)),
+);
 const dist = path.join(root, "dist");
 const routes = [
   "/",
@@ -31,7 +33,9 @@ function fail(message) {
 }
 
 function htmlPath(route) {
-  return route === "/404.html" ? path.join(dist, "404.html") : path.join(dist, route.slice(1), "index.html");
+  return route === "/404.html"
+    ? path.join(dist, "404.html")
+    : path.join(dist, route.slice(1), "index.html");
 }
 
 function gzipBytes(value) {
@@ -42,11 +46,15 @@ function localAsset(url) {
   if (!url.startsWith("/") || url.startsWith("//")) return undefined;
   const clean = url.split(/[?#]/, 1)[0];
   const candidate = path.join(dist, clean.slice(1));
-  return fs.existsSync(candidate) && fs.statSync(candidate).isFile() ? candidate : undefined;
+  return fs.existsSync(candidate) && fs.statSync(candidate).isFile()
+    ? candidate
+    : undefined;
 }
 
 function referencedAssets(html, expression) {
-  return [...html.matchAll(expression)].map((match) => localAsset(match[1])).filter(Boolean);
+  return [...html.matchAll(expression)]
+    .map((match) => localAsset(match[1]))
+    .filter(Boolean);
 }
 
 function allFiles(directory) {
@@ -61,36 +69,99 @@ const evidence = [];
 
 for (const route of routes) {
   const file = htmlPath(route);
-  if (!fs.existsSync(file)) fail(`${route}: missing ${path.relative(root, file)}`);
+  if (!fs.existsSync(file))
+    fail(`${route}: missing ${path.relative(root, file)}`);
   const html = fs.readFileSync(file, "utf8");
   if (!/<h1(?:\s|>)/i.test(html)) fail(`${route}: missing h1`);
-  if (!/<nav(?:\s|>)[\s\S]*?<a\s[^>]*href=/i.test(html)) fail(`${route}: navigation lacks real links`);
-  if (route.startsWith("/docs/") && !/data-pagefind-body/.test(html)) fail(`${route}: missing docs body index marker`);
+  if (!/<nav(?:\s|>)[\s\S]*?<a\s[^>]*href=/i.test(html))
+    fail(`${route}: navigation lacks real links`);
+  if (route.startsWith("/docs/") && !/data-pagefind-body/.test(html))
+    fail(`${route}: missing docs body index marker`);
 
   // `<[a-z][^!/?][^>]*>` consumed a second character after the tag's first
   // letter, so `<p>alpha <b>` matched as one element and every inline tag nested
   // in a paragraph went uncounted — the budget was measured against a number
   // below the truth. A tag name is one letter followed by name characters only,
   // and `[^>]` already stops the match at the first `>`.
-  const domElements = (html.match(/<[a-z][a-z0-9-]*(?:\s[^>]*?)?\/?>/gi) ?? []).length;
-  if (domElements >= 1_500) fail(`${route}: DOM contains ${domElements} elements`);
+  const domElements = (html.match(/<[a-z][a-z0-9-]*(?:\s[^>]*?)?\/?>/gi) ?? [])
+    .length;
+  if (domElements >= 1_500)
+    fail(`${route}: DOM contains ${domElements} elements`);
 
-  const scripts = referencedAssets(html, /<script[^>]+src="([^"]+)"/gi);
-  const styles = referencedAssets(html, /<link[^>]+rel="stylesheet"[^>]+href="([^"]+)"/gi);
-  const fonts = referencedAssets(html, /<link[^>]+href="([^"]+)"[^>]+as="font"/gi);
-  const inlineScripts = [...html.matchAll(/<script(?![^>]+src=)[^>]*>([\s\S]*?)<\/script>/gi)].map((match) => match[1]);
-  const inlineStyles = [...html.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/gi)].map((match) => match[1]);
-  const js = scripts.reduce((sum, asset) => sum + gzipBytes(fs.readFileSync(asset)), 0) + inlineScripts.reduce((sum, source) => sum + gzipBytes(source), 0);
-  const css = styles.reduce((sum, asset) => sum + gzipBytes(fs.readFileSync(asset)), 0) + inlineStyles.reduce((sum, source) => sum + gzipBytes(source), 0);
-  const initialFiles = [...new Set([...scripts, ...styles, ...fonts])];
-  const total = gzipBytes(html) + initialFiles.reduce((sum, asset) => sum + gzipBytes(fs.readFileSync(asset)), 0);
+  // Include the modules that Astro imports for hydrated islands. Script tags
+  // alone miss React and the component tree, understating the landing payload.
+  const scripts = new Set(
+    referencedAssets(
+      html,
+      /<(?:script|link)[^>]+(?:src|href)="([^" ]+\.js)"/gi,
+    ),
+  );
+  for (const asset of referencedAssets(
+    html,
+    /(?:component-url|renderer-url)="([^"]+)"/gi,
+  ))
+    scripts.add(asset);
+  function expandImports(graph, includeDynamic) {
+    // A static import is fetched immediately; import() is only fetched when its
+    // branch runs. Measure both graphs, with a separate cap on optional effects.
+    for (const importer of graph) {
+      const source = fs.readFileSync(importer, "utf8");
+      const imports = /\bfrom\s*["'`]([^"'`]+\.js)["'`]|\bimport\s*["'`]([^"'`]+\.js)["'`]/g;
+      const names = [...source.matchAll(imports)].map(match => match[1] ?? match[2]);
+      if (includeDynamic) names.push(...[...source.matchAll(/\bimport\s*\(\s*["'`]([^"'`]+\.js)["'`]/g)].map(match => match[1]));
+      for (const name of names) {
+        const asset = name.startsWith("/") ? localAsset(name) : path.resolve(path.dirname(importer), name);
+        if (!asset || !asset.startsWith(dist + path.sep) || !fs.existsSync(asset)) fail(`${route}: unresolved JS import ${name}`);
+        graph.add(asset);
+      }
+    }
+  }
+  const completeGraph = new Set(scripts);
+  expandImports(scripts, false);
+  expandImports(completeGraph, true);
+  const deferredJs = [...completeGraph].filter(asset => !scripts.has(asset)).reduce((sum, asset) => sum + gzipBytes(fs.readFileSync(asset)), 0);
+  if (deferredJs > 650_000) fail(`${route}: deferred JS ${deferredJs} > 650000`);
+  const styles = referencedAssets(
+    html,
+    /<link[^>]+rel="stylesheet"[^>]+href="([^"]+)"/gi,
+  );
+  const fonts = referencedAssets(
+    html,
+    /<link[^>]+href="([^"]+)"[^>]+as="font"/gi,
+  );
+  const inlineScripts = [
+    ...html.matchAll(/<script(?![^>]+src=)[^>]*>([\s\S]*?)<\/script>/gi),
+  ].map((match) => match[1]);
+  const inlineStyles = [
+    ...html.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/gi),
+  ].map((match) => match[1]);
+  const js =
+    [...scripts].reduce(
+      (sum, asset) => sum + gzipBytes(fs.readFileSync(asset)),
+      0,
+    ) + inlineScripts.reduce((sum, source) => sum + gzipBytes(source), 0);
+  if (inlineScripts.some(source => source.trim())) fail(`${route}: executable inline script would be blocked by the deployed CSP`);
+  const css =
+    styles.reduce((sum, asset) => sum + gzipBytes(fs.readFileSync(asset)), 0) +
+    inlineStyles.reduce((sum, source) => sum + gzipBytes(source), 0);
+  const eagerImages = [...html.matchAll(/<img\b[^>]*>/gi)].filter(match => /loading="eager"/.test(match[0])).map(match => localAsset(/\bsrc="([^"]+)"/.exec(match[0])?.[1] ?? '')).filter(Boolean);
+  const initialFiles = [...new Set([...scripts, ...styles, ...fonts, ...eagerImages])];
+  const total =
+    gzipBytes(html) +
+    initialFiles.reduce(
+      (sum, asset) => sum + gzipBytes(fs.readFileSync(asset)),
+      0,
+    );
   const docs = route.startsWith("/docs/");
-  const budget = docs ? { js: 30_000, css: 15_000, total: 350_000 } : { js: 120_000, css: 20_000, total: 600_000 };
+  const budget = docs
+    ? { js: 30_000, css: 15_000, total: 350_000 }
+    : { js: 120_000, css: 20_000, total: 600_000 };
   if (js > budget.js) fail(`${route}: initial JS ${js} > ${budget.js}`);
   if (css > budget.css) fail(`${route}: CSS ${css} > ${budget.css}`);
-  if (total > budget.total) fail(`${route}: initial total ${total} > ${budget.total}`);
+  if (total > budget.total)
+    fail(`${route}: initial total ${total} > ${budget.total}`);
 
-  evidence.push({ route, js, css, total, domElements });
+  evidence.push({ route, js, deferredJs, css, total, domElements });
 }
 
 const files = allFiles(dist);
@@ -106,7 +177,9 @@ const files = allFiles(dist);
 const published = new Set(
   files.flatMap((file) => {
     const url = `/${path.relative(dist, file).split(path.sep).join("/")}`;
-    return url.endsWith("/index.html") ? [url, url.slice(0, -"index.html".length)] : [url];
+    return url.endsWith("/index.html")
+      ? [url, url.slice(0, -"index.html".length)]
+      : [url];
   }),
 );
 const redirectSources = new Set(
@@ -121,7 +194,9 @@ const redirectSources = new Set(
 const brokenLinks = [];
 for (const file of files.filter((entry) => entry.endsWith(".html"))) {
   const source = fs.readFileSync(file, "utf8");
-  for (const match of source.matchAll(/<a\b[^>]*\bhref=(?:"([^"]*)"|'([^']*)')/gi)) {
+  for (const match of source.matchAll(
+    /<a\b[^>]*\bhref=(?:"([^"]*)"|'([^']*)')/gi,
+  )) {
     const href = match[1] ?? match[2];
     // Only same-origin paths are this gate's business. A protocol-relative URL
     // (`//host/path`) is external despite the leading slash.
@@ -137,29 +212,52 @@ for (const file of files.filter((entry) => entry.endsWith(".html"))) {
     if (!resolved) brokenLinks.push(`${path.relative(dist, file)} -> ${href}`);
   }
 }
-if (brokenLinks.length > 0) fail(`link gate: ${brokenLinks.length} unresolvable internal link(s): ${[...new Set(brokenLinks)].join(", ")}`);
+if (brokenLinks.length > 0)
+  fail(
+    `link gate: ${brokenLinks.length} unresolvable internal link(s): ${[...new Set(brokenLinks)].join(", ")}`,
+  );
 
 // The sitemap is hand-maintained in public/, so it drifts silently when a page
 // is added or removed. It is a published claim about what exists: hold it to
 // the same standard as a link.
-const sitemap = [...fs.readFileSync(path.join(dist, "sitemap.xml"), "utf8").matchAll(/<loc>([^<]+)<\/loc>/gu)].map((match) => new URL(match[1]).pathname);
+const sitemap = [
+  ...fs
+    .readFileSync(path.join(dist, "sitemap.xml"), "utf8")
+    .matchAll(/<loc>([^<]+)<\/loc>/gu),
+].map((match) => new URL(match[1]).pathname);
 const sitemapExtra = sitemap.filter((pathname) => !published.has(pathname));
-const sitemapMissing = routes.filter((route) => route !== "/404.html" && !sitemap.includes(route));
-if (sitemapExtra.length > 0) fail(`sitemap gate: lists unpublished ${sitemapExtra.join(", ")}`);
-if (sitemapMissing.length > 0) fail(`sitemap gate: does not list ${sitemapMissing.join(", ")}`);
+const sitemapMissing = routes.filter(
+  (route) => route !== "/404.html" && !sitemap.includes(route),
+);
+if (sitemapExtra.length > 0)
+  fail(`sitemap gate: lists unpublished ${sitemapExtra.join(", ")}`);
+if (sitemapMissing.length > 0)
+  fail(`sitemap gate: does not list ${sitemapMissing.join(", ")}`);
 
 const woff2 = files.filter((file) => file.endsWith(".woff2"));
-if (woff2.length !== 1 || path.relative(dist, woff2[0]) !== "fonts/geist-sans-variable.woff2") {
-  fail(`font gate: expected one Geist WOFF2, found ${woff2.map((file) => path.relative(dist, file)).join(", ")}`);
+if (
+  woff2.length !== 1 ||
+  path.relative(dist, woff2[0]) !== "fonts/geist-sans-variable.woff2"
+) {
+  fail(
+    `font gate: expected one Geist WOFF2, found ${woff2.map((file) => path.relative(dist, file)).join(", ")}`,
+  );
 }
-if (!fs.existsSync(path.join(dist, "licenses/GEIST-OFL.txt"))) fail("font gate: missing Geist SIL OFL");
+if (!fs.existsSync(path.join(dist, "licenses/GEIST-OFL.txt")))
+  fail("font gate: missing Geist SIL OFL");
 
 const inspectable = files.filter((file) => /\.(?:html|css|js)$/.test(file));
-const combined = inspectable.map((file) => fs.readFileSync(file, "utf8")).join("\n");
-if (!/font-family:\s*["']?Geist["']?/.test(combined)) fail("font gate: Geist @font-face missing");
-if (!/font-family:\s*["']?Geist override["']?/.test(combined)) fail("font gate: Fontaine Geist override missing");
-if (/Aeonik|Geist Mono|SynapticShift/i.test(combined)) fail("font/runtime gate: obsolete or unlicensed surface found");
-if (/regeneratorRuntime|_asyncToGenerator/.test(combined)) fail("build target gate: legacy transpilation helper found");
+const combined = inspectable
+  .map((file) => fs.readFileSync(file, "utf8"))
+  .join("\n");
+if (!/font-family:\s*["']?Geist["']?/.test(combined))
+  fail("font gate: Geist @font-face missing");
+if (!/font-family:\s*["']?Geist override["']?/.test(combined))
+  fail("font gate: Fontaine Geist override missing");
+if (/Aeonik|Geist Mono|SynapticShift/i.test(combined))
+  fail("font/runtime gate: obsolete or unlicensed surface found");
+if (/regeneratorRuntime|_asyncToGenerator/.test(combined))
+  fail("build target gate: legacy transpilation helper found");
 
 // Any rel that makes the browser open a connection or fetch bytes. `rel` is a
 // space-separated token list, so it is parsed rather than pattern-matched.
@@ -180,7 +278,10 @@ const subresourceRel = new Set([
 function linkRelTokens(tag) {
   const rel = /\brel=(?:"([^"]*)"|'([^']*)'|([^\s>]+))/i.exec(tag);
   if (!rel) return [];
-  return (rel[1] ?? rel[2] ?? rel[3]).toLowerCase().split(/\s+/u).filter(Boolean);
+  return (rel[1] ?? rel[2] ?? rel[3])
+    .toLowerCase()
+    .split(/\s+/u)
+    .filter(Boolean);
 }
 
 // The previous pattern required href before rel, which is the opposite of the
@@ -190,7 +291,9 @@ function linkRelTokens(tag) {
 function remoteLinkHrefs(source) {
   return [...source.matchAll(/<link\b[^>]*>/gi)]
     .map((match) => match[0])
-    .filter((tag) => linkRelTokens(tag).some((token) => subresourceRel.has(token)))
+    .filter((tag) =>
+      linkRelTokens(tag).some((token) => subresourceRel.has(token)),
+    )
     .map((tag) => /\bhref=(?:"([^"]*)"|'([^']*)'|([^\s>]+))/i.exec(tag))
     .map((href) => href?.[1] ?? href?.[2] ?? href?.[3])
     .filter((href) => href !== undefined && /^https?:\/\//i.test(href));
@@ -200,16 +303,26 @@ for (const file of inspectable) {
   const source = fs.readFileSync(file, "utf8");
   const relative = path.relative(dist, file);
   const remoteSubresources = [
-    ...[...source.matchAll(/<(?:script|img|source)[^>]+(?:src|srcset)=["'](https?:\/\/[^"']+)/gi)].map((match) => match[1]),
+    ...[
+      ...source.matchAll(
+        /<(?:script|img|source)[^>]+(?:src|srcset)=["'](https?:\/\/[^"']+)/gi,
+      ),
+    ].map((match) => match[1]),
     ...remoteLinkHrefs(source),
-    ...[...source.matchAll(/url\(["']?(https?:\/\/[^)'"\s]+)/gi)].map((match) => match[1]),
+    ...[...source.matchAll(/url\(["']?(https?:\/\/[^)'"\s]+)/gi)].map(
+      (match) => match[1],
+    ),
   ].filter((url) => new URL(url).origin !== "https://qyl.at");
-  if (remoteSubresources.length > 0) fail(`${relative}: cross-origin subresource ${remoteSubresources[0]}`);
+  if (remoteSubresources.length > 0)
+    fail(`${relative}: cross-origin subresource ${remoteSubresources[0]}`);
 }
 
 // The 1.0.0 taxonomy retires Qyl.Sdk, and this site is the one place a wrong
 // package name is visible to the outside — a reader who copies it gets NU1101.
-if (/\bQyl\.Sdk\b/.test(combined)) fail("taxonomy gate: retired package name Qyl.Sdk is present in the built site");
+if (/\bQyl\.Sdk\b/.test(combined))
+  fail(
+    "taxonomy gate: retired package name Qyl.Sdk is present in the built site",
+  );
 
 const headers = fs.readFileSync(path.join(dist, "_headers"), "utf8");
 
@@ -228,7 +341,8 @@ function parseHeaderRules(source) {
       continue;
     }
     const current = rules.at(-1);
-    if (!current) fail(`header gate: header line before any path rule: ${line.trim()}`);
+    if (!current)
+      fail(`header gate: header line before any path rule: ${line.trim()}`);
     const body = line.trim();
     if (body.startsWith("!")) {
       current.unset.push(body.slice(1).trim().toLowerCase());
@@ -236,13 +350,22 @@ function parseHeaderRules(source) {
     }
     const separator = body.indexOf(":");
     if (separator < 1) fail(`header gate: unparsable header line: ${body}`);
-    current.set.push([body.slice(0, separator).trim(), body.slice(separator + 1).trim()]);
+    current.set.push([
+      body.slice(0, separator).trim(),
+      body.slice(separator + 1).trim(),
+    ]);
   }
   return rules;
 }
 
 function matchesPattern(pattern, pathname) {
-  const expression = new RegExp(`^${pattern.split("*").map((part) => part.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&")).join(".*")}$`, "u");
+  const expression = new RegExp(
+    `^${pattern
+      .split("*")
+      .map((part) => part.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&"))
+      .join(".*")}$`,
+    "u",
+  );
   return expression.test(pathname);
 }
 
@@ -263,7 +386,12 @@ function mergedHeaders(rules, pathname) {
     for (const [name, value] of rule.set) {
       const key = name.toLowerCase();
       const existing = merged.get(key);
-      merged.set(key, set.has(key) && existing !== undefined ? `${existing}, ${value}` : value);
+      merged.set(
+        key,
+        set.has(key) && existing !== undefined
+          ? `${existing}, ${value}`
+          : value,
+      );
       set.add(key);
     }
   }
@@ -272,9 +400,13 @@ function mergedHeaders(rules, pathname) {
 
 const headerRules = parseHeaderRules(headers);
 const longCache = "public, max-age=31536000, immutable";
-const documentCache = "public, max-age=0, s-maxage=600, stale-while-revalidate=86400";
+const documentCache =
+  "public, max-age=0, s-maxage=600, stale-while-revalidate=86400";
 const astroAsset = allFiles(path.join(dist, "_astro"))[0];
-if (!astroAsset) fail("header gate: no /_astro asset to check the merged cache policy against");
+if (!astroAsset)
+  fail(
+    "header gate: no /_astro asset to check the merged cache policy against",
+  );
 
 for (const [pathname, expected] of [
   ["/fonts/geist-sans-variable.woff2", longCache],
@@ -284,7 +416,10 @@ for (const [pathname, expected] of [
   ["/docs/getting-started/", documentCache],
 ]) {
   const actual = mergedHeaders(headerRules, pathname).get("cache-control");
-  if (actual !== expected) fail(`header gate: ${pathname} serves Cache-Control "${actual}", expected exactly "${expected}"`);
+  if (actual !== expected)
+    fail(
+      `header gate: ${pathname} serves Cache-Control "${actual}", expected exactly "${expected}"`,
+    );
 }
 
 const rootHeaders = mergedHeaders(headerRules, "/");
@@ -294,25 +429,46 @@ for (const [name, required] of [
   ["content-security-policy", "'wasm-unsafe-eval'"],
   ["content-security-policy", "frame-ancestors 'none'"],
 ]) {
-  if (!rootHeaders.get(name)?.includes(required)) fail(`header gate: / is missing ${name}: ${required}`);
+  if (!rootHeaders.get(name)?.includes(required))
+    fail(`header gate: / is missing ${name}: ${required}`);
 }
-if (rootHeaders.get("speculation-rules") !== '"/speculation-rules.json"') fail("header gate: / is missing the Speculation-Rules header");
-if (mergedHeaders(headerRules, "/speculation-rules.json").get("content-type") !== "application/speculationrules+json") {
-  fail("header gate: /speculation-rules.json does not serve the speculation rules content type");
+if (rootHeaders.get("speculation-rules") !== '"/speculation-rules.json"')
+  fail("header gate: / is missing the Speculation-Rules header");
+if (
+  mergedHeaders(headerRules, "/speculation-rules.json").get("content-type") !==
+  "application/speculationrules+json"
+) {
+  fail(
+    "header gate: /speculation-rules.json does not serve the speculation rules content type",
+  );
 }
 
 // dist is uploaded verbatim, dotfiles included, so anything here that is not
 // site content is published at qyl.at. `public/.assetsignore` is the deploy-time
 // guard; this is the build-time one.
 const publishable = allFiles(dist).map((file) => path.relative(dist, file));
-const strays = publishable.filter((file) => path.basename(file) === ".DS_Store" || path.basename(file) === "Thumbs.db" || file === "evidence" || file.startsWith(`evidence${path.sep}`));
-if (strays.length > 0) fail(`upload gate: dist contains non-content files that would be published: ${strays.join(", ")}`);
+const strays = publishable.filter(
+  (file) =>
+    path.basename(file) === ".DS_Store" ||
+    path.basename(file) === "Thumbs.db" ||
+    file === "evidence" ||
+    file.startsWith(`evidence${path.sep}`),
+);
+if (strays.length > 0)
+  fail(
+    `upload gate: dist contains non-content files that would be published: ${strays.join(", ")}`,
+  );
 
 // Written outside dist deliberately: this is internal budget evidence, and in
 // dist it was uploaded and served at https://qyl.at/evidence/artifacts.json.
 const evidenceDirectory = path.join(root, "evidence");
 fs.mkdirSync(evidenceDirectory, { recursive: true });
-fs.writeFileSync(path.join(evidenceDirectory, "artifacts.json"), `${JSON.stringify(evidence, null, 2)}\n`);
+fs.writeFileSync(
+  path.join(evidenceDirectory, "artifacts.json"),
+  `${JSON.stringify(evidence, null, 2)}\n`,
+);
 for (const row of evidence) {
-  console.log(`${row.route} js=${(row.js / 1024).toFixed(1)}KB css=${(row.css / 1024).toFixed(1)}KB total=${(row.total / 1024).toFixed(1)}KB dom=${row.domElements}`);
+  console.log(
+    `${row.route} js=${(row.js / 1024).toFixed(1)}KB deferred_js=${(row.deferredJs / 1024).toFixed(1)}KB css=${(row.css / 1024).toFixed(1)}KB total=${(row.total / 1024).toFixed(1)}KB dom=${row.domElements}`,
+  );
 }

@@ -1,0 +1,6 @@
+---
+import PageFrame from "./PageFrame.astro";
+import "../styles/variants.css";
+interface Props { title: string; preview?: boolean; description?: string }
+---
+<PageFrame {...Astro.props}><slot /></PageFrame>

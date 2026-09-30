@@ -1,0 +1,18 @@
+export const variants = [
+  { slug: "apple-minimal", name: "Apple Minimal", line: "Quiet confidence.", summary: "Generous whitespace, large type, one blue action.", accent: "bg-blue-600", tag: "Minimal" },
+  { slug: "swiss-grid", name: "Swiss Grid", line: "A system, made visible.", summary: "Sharp rules, an asymmetric grid, precise red accents.", accent: "bg-red-600", tag: "Structured" },
+  { slug: "editorial", name: "Editorial", line: "The evidence tells a story.", summary: "Warm paper, serif headlines, an investigative rhythm.", accent: "bg-red-900", tag: "Expressive" },
+  { slug: "corporate-trust", name: "Corporate Trust", line: "Clarity earns trust.", summary: "Cool neutrals, practical evidence, straightforward structure.", accent: "bg-blue-800", tag: "Structured" },
+  { slug: "luxury-serif", name: "Luxury Serif", line: "Fewer things. More presence.", summary: "Cream, ink and carefully spaced editorial typography.", accent: "bg-stone-800", tag: "Minimal" },
+  { slug: "neobrutalism", name: "Neobrutalism", line: "Debug with receipts.", summary: "Bold borders, acid yellow and an uncompromising layout.", accent: "bg-yellow-400", tag: "Expressive" },
+  { slug: "playful-motion", name: "Playful Motion", line: "A little more personality.", summary: "Warm ivory, coral, friendly diagrams and quiet hover motion.", accent: "bg-orange-600", tag: "Expressive" },
+  { slug: "terminal-light", name: "Terminal Light", line: "Close to the code.", summary: "A light developer workbench with syntax-coloured evidence.", accent: "bg-sky-600", tag: "Structured" },
+  { slug: "blueprint", name: "Blueprint", line: "Drawn to spec.", summary: "Pale drafting paper, cyan construction lines and annotated dimensions.", accent: "bg-cyan-600", tag: "Structured" },
+  { slug: "bauhaus", name: "Bauhaus", line: "Form follows signal.", summary: "Primary red, yellow and blue geometry on a strict modular grid.", accent: "bg-yellow-500", tag: "Expressive" },
+  { slug: "zen-ink", name: "Zen Ink", line: "Only what matters.", summary: "Rice paper, sumi ink and a single vermilion seal.", accent: "bg-rose-700", tag: "Minimal" },
+  { slug: "lab-notebook", name: "Lab Notebook", line: "Observed, recorded, reproduced.", summary: "A research paper with numbered figures, footnotes and a methods section.", accent: "bg-emerald-700", tag: "Structured" },
+  { slug: "system-classic", name: "System Classic", line: "It just works, in 1-bit.", summary: "A 1984 desktop: pixel windows, dithered patterns and a menu bar.", accent: "bg-zinc-900", tag: "Expressive" },
+  { slug: "risograph", name: "Risograph", line: "Printed in two inks.", summary: "Fluorescent pink and blue overprint, grain and zine energy.", accent: "bg-pink-500", tag: "Expressive" },
+  { slug: "control-room", name: "Control Room", line: "Every signal on one wall.", summary: "A dense, light operations console with panels and status lights.", accent: "bg-green-600", tag: "Structured" },
+  { slug: "soft-glass", name: "Soft Glass", line: "Clear, light, layered.", summary: "Pastel gradients, frosted panels and rounded calm.", accent: "bg-violet-500", tag: "Minimal" },
+] as const;

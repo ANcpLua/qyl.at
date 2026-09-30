@@ -1,0 +1,18 @@
+export const journey = [
+  { id: 'surface', label: 'A deeper view', direction: 'apple-minimal' },
+  { id: 'inside', label: 'Follow a request', direction: 'swiss-grid' },
+  { id: 'logs', label: 'Read the moment', direction: 'editorial' },
+  { id: 'metrics', label: 'See the pattern', direction: 'blueprint' },
+  { id: 'store', label: 'Keep it together', direction: 'corporate-trust' },
+  { id: 'depth', label: 'Find the depth', direction: 'luxury-serif' },
+  { id: 'evidence', label: 'Work from evidence', direction: 'neobrutalism' },
+  { id: 'perspectives', label: 'Change perspective', direction: 'playful-motion' },
+  { id: 'connected', label: 'Connect your agent', direction: 'soft-glass' },
+  { id: 'open', label: 'Speak OpenTelemetry', direction: 'bauhaus' },
+  { id: 'workbench', label: 'Keep the investigation', direction: 'lab-notebook' },
+  { id: 'delivery', label: 'Understand the build', direction: 'control-room' },
+  { id: 'local', label: 'Stay close to the code', direction: 'zen-ink' },
+  { id: 'contracts', label: 'Share one vocabulary', direction: 'risograph' },
+  { id: 'together', label: 'See the whole picture', direction: 'system-classic' },
+  { id: 'start', label: 'Make it yours', direction: 'terminal-light' },
+] as const;

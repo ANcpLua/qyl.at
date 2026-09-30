@@ -15,7 +15,7 @@ export default defineConfig({
   // the noise of a neighbouring workload as a site regression, so it runs on a
   // schedule and on demand (.github/workflows/performance.yml), never on a PR.
   projects: [
-    { name: "surface", testMatch: /surface\.spec\.ts$/ },
+    { name: "surface", testMatch: /(?:surface|lab|effects)\.spec\.ts$/ },
     { name: "performance", testMatch: /performance\.spec\.ts$/ },
   ],
   fullyParallel: false,
@@ -33,7 +33,8 @@ export default defineConfig({
     viewport: { width: 1280, height: 900 },
   },
   webServer: {
-    command: "npx wrangler dev --port 4173",
+    // A live preview must not compete with tests for the assets metadata DB.
+    command: "npx wrangler dev --port 4173 --persist-to .wrangler/playwright-state",
     url: "http://127.0.0.1:4173",
     reuseExistingServer: false,
     timeout: 120_000,
