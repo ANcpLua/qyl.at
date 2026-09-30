@@ -39,7 +39,7 @@ export const externalLinks = {
 // this array and nothing else, so a page cannot fall behind the feeds while
 // another page is current. The three literals no expression can replace are
 // held here by `scripts/check-versions.mjs`, which runs in `npm run check`.
-export const releaseWave = "2026-09-17" as const;
+export const releaseWave = "2026-09-30" as const;
 
 export const release = [
   {
@@ -98,7 +98,7 @@ export const release = [
   },
   {
     name: "qyl-mcp-server",
-    version: "7.0.0",
+    version: "7.1.0",
     registry: "https://www.npmjs.com/package/qyl-mcp-server",
     summary: "The MCP server: stdio locally, Streamable HTTP hosted.",
   },
@@ -114,7 +114,7 @@ export const headline = [
   "Qyl.Telemetry.AutoInstrumentation 21.1.0",
   "Qyl.Telemetry.SemanticConventions 9.4.0",
   "Qyl.Api.Contracts 11.2.0",
-  "qyl-mcp-server 7.0.0",
+  "qyl-mcp-server 7.1.0",
 ] as const;
 
 // Prose states a version by asking for it here instead of repeating it. Before
