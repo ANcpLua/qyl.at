@@ -42,7 +42,7 @@ Run the application, then connect an MCP client and ask your agent about the run
 npx -y qyl-mcp-server --stdio
 ```
 
-The server speaks MCP revision `2026-07-28` only; a host on the 2025 handshake, Claude Code included, is refused with `-32022`.
+The server uses MCP TypeScript SDK v2 to serve `2026-07-28` and supported 2025-era clients, including clients that open with `initialize`. See [protocol support](/docs/protocol-2026-07-28/) for how the two paths are selected.
 
 Three steps: `qyl up`, point `OTEL_EXPORTER_OTLP_ENDPOINT` at it, ask your agent.
 

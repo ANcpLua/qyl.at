@@ -1,25 +1,31 @@
 ---
 title: Protocol 2026-07-28
-description: How qyl.mcp pins the MCP TypeScript SDK v2 packages and the 2026-07-28 protocol revision for real connections.
+description: How qyl.mcp uses MCP TypeScript SDK v2 to serve modern and 2025-era clients and record the negotiated revision.
 order: 4
 ---
 
-## Pinned, not probed
+## SDK v2, both protocol eras
 
-Every user-configured stdio and Streamable HTTP workbench connection pins `2026-07-28`. A peer that cannot negotiate that revision fails the connection. qyl does not probe and fall back to a 2025-era handshake.
+qyl.mcp uses the TypeScript SDK v2 packages. Its serving entry points support `2026-07-28` and the SDK's supported 2025 revisions. Hosted requests use the same authorization checks and tool handlers through either path.
 
-That decision keeps recorded protocol evidence unambiguous and removes the compatibility shim from the product path.
+## HTTP and stdio
 
-## Modern request model
+The hosted HTTP server uses `createMcpHandler(factory)` with its default stateless compatibility behavior. Bun serves the Web Standard handler directly. Both eras share one endpoint and server factory.
 
-The 2026 revision is per request. Each request carries its protocol revision, client identity, and capabilities in the reserved `_meta` envelope. A server must not rely on a prior request over the same connection to establish that context.
+The stdio entry uses `serveStdio(factory)`. The opening exchange selects the protocol era for that connection. A 2025 `initialize` opening is supported.
 
-The modern HTTP entry is `createMcpHandler(factory)`. qyl creates a fresh server from the factory for each request and adapts the Web Standard handler to Node through `toNodeHandler()`.
+## Client negotiation
 
-## No initialize exchange
+The workbench explicitly configures `versionNegotiation: { mode: "auto" }`: try modern discovery, then use the SDK's 2025 fallback when appropriate. It records the revision actually negotiated. An SDK Client without this option still defaults to the 2025 handshake. Exact protocol pins remain in conformance tests for a particular era.
 
-Modern negotiation begins with `server/discover`; it does not run the legacy `initialize` exchange. qyl’s Streamable HTTP conformance test asserts the discover opening, the modern server identity, and the absence of initialize.
+## Modern requests and Events
 
-## Pinned versions
+Modern discovery uses `server/discover`. Requests carry revision and capabilities in the reserved `_meta` envelope; `clientInfo` is optional. The SDK supplies server identity through `_meta["io.modelcontextprotocol/serverInfo"]` on responses.
 
-qyl.mcp depends on `@modelcontextprotocol/core`, `@modelcontextprotocol/server` and `@modelcontextprotocol/client` at exactly `2.0.0`, and pins the `2026-07-28` protocol revision. The conformance tests verify that wire behavior on every build. See the upstream [2026-07-28 support guide](https://ts.sdk.modelcontextprotocol.io/v2/migration/support-2026-07-28.html) for the revision-level SDK behavior.
+ChatGPT Events require `2026-07-28` and configured subscription storage. Ordinary tools remain available through both protocol eras.
+
+## Reproducible dependencies
+
+The [server](https://github.com/ANcpLua/qyl.mcp/blob/main/server/package.json) and [workbench](https://github.com/ANcpLua/qyl.mcp/blob/main/workbench/package.json) manifests pin exact package versions, with one lockfile. Dependency pins and protocol negotiation are separate settings.
+
+See the upstream [2026-07-28 support guide](https://ts.sdk.modelcontextprotocol.io/v2/migration/support-2026-07-28) for the SDK's entry points and migration behavior.
