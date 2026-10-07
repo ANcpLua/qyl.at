@@ -23,7 +23,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       <div class="auth-flow">
         <article class="auth-step"><span>01 · DISCOVER</span><h2>Add the MCP URL</h2><p>The client reads the protected-resource metadata for the canonical endpoint.</p></article>
         <article class="auth-step"><span>02 · AUTHORIZE</span><h2>Complete PKCE</h2><p>Auth0 authenticates the person and returns a token for this resource and scope.</p></article>
-        <article class="auth-step"><span>03 · CONNECT</span><h2>Negotiate 2026</h2><p>The client presents the token and performs the pinned 2026-07-28 MCP opening.</p></article>
+        <article class="auth-step"><span>03 · CONNECT</span><h2>Connect with MCP</h2><p>The client presents its token. Modern and supported 2025-era clients use the same authorization checks and read tools.</p></article>
       </div>
       <div class="fact-grid">
         <div class="fact"><span>Resource</span><code>https://mcp.qyl.at/mcp</code></div>

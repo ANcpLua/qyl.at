@@ -29,6 +29,8 @@ User-created connections support:
 
 Only environment-variable names reach the browser or durable state. The runner resolves their values at connection time and registers them with the shared redactor.
 
+The workbench explicitly sets `versionNegotiation: { mode: "auto" }`. It attempts `2026-07-28` and can negotiate a supported 2025-era server through the SDK's compatibility path. The connection records the revision actually negotiated; see [protocol support](/docs/protocol-2026-07-28/).
+
 ## Review before execution
 
 MCP annotations are safety hints, not authorization. A tool runs without confirmation only when it is explicitly read-only, non-destructive, and closed-world. Missing, contradictory, mutating, destructive, or open-world hints require approval of the exact call.

@@ -22,7 +22,9 @@ For Claude Code:
 claude mcp add --transport http qyl https://mcp.qyl.at/mcp
 ```
 
-A compatible client discovers the protected-resource metadata, dynamically registers where supported, and opens Authorization Code with PKCE for the exact resource `https://mcp.qyl.at/mcp`. Hosted access requires `qyl:read`.
+A compatible client discovers the protected-resource metadata, identifies itself through a client metadata document (CIMD) or dynamic registration (DCR), and opens Authorization Code with PKCE for the exact resource `https://mcp.qyl.at/mcp`. Hosted access requires `qyl:read` and an explicit Auth0 client grant; registering a client alone does not grant access.
+
+For ChatGPT, add the same endpoint as an OAuth MCP connection and include `qyl:read` in its base scopes. Complete the qyl service login and consent. This is a custom connection; public directory submission is still in preparation.
 
 ## Authentication boundary
 
@@ -46,4 +48,10 @@ npx -y qyl-mcp-server --stdio
 
 The stdio server exposes the same Qyl read tools and MCP Apps without creating an Internet-facing listener.
 
-Both transports speak MCP revision `2026-07-28` only. A host that opens with the 2025 `initialize` handshake is refused with `-32022` naming that revision; Claude Code's stdio client is one such host. The MCP TypeScript SDK client connects with `versionNegotiation: { mode: "auto" }`.
+Both transports use SDK v2 to serve `2026-07-28` and supported 2025-era tool clients. The workbench explicitly enables `versionNegotiation: { mode: "auto" }`; the SDK Client's own default remains the 2025 handshake. See [protocol support](/docs/protocol-2026-07-28/).
+
+## Optional ChatGPT Events
+
+On a supported ChatGPT connection using `2026-07-28`, `trace.error` subscriptions can report matching errors, optionally filtered by service. Enabling the feature does not subscribe anyone automatically. Ordinary read tools remain available to clients without Events support.
+
+An operator enables Events by configuring `MCP_EVENTS_STORE` on an authenticated deployment with persistent storage and the access checker described in the [server configuration](https://github.com/ANcpLua/qyl.mcp#mcp-events). The store retains subscription owner/client identifiers, callback and filter settings, signing keys, and expiry. It does not retain subscribers' OAuth access or refresh tokens or copy the collector's telemetry. Expiration, revoked access, or unsubscribe removes the subscription and stops delivery.

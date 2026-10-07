@@ -251,7 +251,7 @@ test("documentation search works through the strict CSP and local Pagefind index
 // sequence guard is what has to reject it.
 const orderedPagefindStub = `
   const RESULT = {
-    data: async () => ({ url: "/docs/protocol-2026-07-28/", meta: { title: "Protocol 2026-07-28" }, excerpt: "pinned revision" }),
+    data: async () => ({ url: "/docs/protocol-2026-07-28/", meta: { title: "Protocol 2026-07-28" }, excerpt: "SDK v2 protocol negotiation" }),
   };
   let newestTerm = "";
   export async function init() {}
