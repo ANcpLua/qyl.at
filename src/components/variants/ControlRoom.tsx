@@ -177,7 +177,7 @@ export default function ControlRoom() {
               </div>
             </Panel>
             <Panel code="C2" title="Connect" light={{ tone: "standby", text: "stdio" }} className="lg:col-span-4">
-              <p className={`text-sm leading-6 ${muted}`}>Add the server command to an MCP client that supports protocol revision 2026-07-28.</p>
+              <p className={`text-sm leading-6 ${muted}`}>Add the server command to your MCP client. SDK v2 supports modern and 2025-era stdio connections.</p>
               <pre className={`mt-4 overflow-x-auto rounded-md border border-[#dde4e2] bg-[#f3f6f5] p-3 text-[13px] ${mono}`}><code>npx -y qyl-mcp-server --stdio</code></pre>
               <div className="mt-auto pt-3"><a href="/docs/mcp/" className={textLink}>Connection guide <ArrowRight aria-hidden="true" className="size-3.5" /></a></div>
             </Panel>
