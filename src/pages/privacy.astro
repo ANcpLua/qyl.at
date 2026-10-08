@@ -25,8 +25,25 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       <p>Pages load the chat launcher script from <a href="https://tluma.ai/">Tluma</a>. The hosted chat loads when you open Ask AI; background chat preloading is disabled. The assistant uses the public <a href="https://github.com/ANcpLua/qyl">qyl repository</a> as its source.</p>
       <p>When you open the chat, the widget shares the current page URL with Tluma. Tluma processes your messages, responses, and session information, and may store browser identifiers for conversation continuity. This is separate from the Core Web Vitals event described above. Do not paste secrets or sensitive production logs. See <a href="https://tluma.ai/privacy-policy">Tluma’s privacy policy</a> for access and retention details.</p>
 
+      <h2>Hosted qyl MCP service</h2>
+      <p>The hosted MCP service at <code>https://mcp.qyl.at/mcp</code> lets an authorized client read collector telemetry and, in clients that support MCP Events, request trace-error notifications. This section covers that service; the website sections above remain applicable to the website. The operator is Alexander Nachtmann, Austria, reachable at <a href="mailto:anfh22@outlook.com">anfh22@outlook.com</a>.</p>
+
+      <h3>Data processed and purposes</h3>
+      <ul>
+        <li><strong>Sign-in and authorization.</strong> Access tokens issued by Auth0 (tenant in the EU region) are checked for issuer, audience, expiry, subject, client and the <code>qyl:read</code> permission on every request. The operator keeps the mapping from your account's subject identifier to the collector project you may read in the server's configuration; it does not travel in tool arguments.</li>
+        <li><strong>Telemetry queries.</strong> Tool arguments select traces, spans, logs, recorded metric instruments and sessions. The requested results are returned to your connected client and its viewer. Telemetry can contain timestamps, service names, diagnostic messages and attributes that were sent to the collector.</li>
+        <li><strong>Notifications.</strong> A trace-error subscription stores the subscriber's subject and client identifiers, the event name, the optional service filter, the callback address, signing material with its rotation window, the expiration and the delivery state. It does not store your access or refresh token or a copy of collector telemetry.</li>
+        <li><strong>Operational records.</strong> The server records the tool name, timing, status and error type of incoming tool calls for diagnostics. It does not persist tool arguments, request metadata or conversation content.</li>
+      </ul>
+
+      <h3>Destinations</h3>
+      <p>Requested results go to the MCP client you connected, for example ChatGPT, Claude or Codex, which apply their own data practices. Signed trace-error events go to the callback that the subscribing client registered. The qyl collector supplies and stores the telemetry; Auth0 handles sign-in and authorization checks; Railway hosts the MCP service, the collector and the subscription store; Cloudflare provides the public edge in front of <code>mcp.qyl.at</code> and <code>api.qyl.at</code>.</p>
+
+      <h3>Retention and controls</h3>
+      <p>The collector keeps telemetry for 30 days and removes older records in periodic cleanup runs. A trace-error subscription lasts one hour by default and at most 24 hours; refreshing extends it, unsubscribing removes it and stops delivery, and losing authorization ends it. Removing a subscription does not remove collector telemetry, your sign-in account or results a client has already received. Account and deletion requests go to the contact address above.</p>
+
       <h2>Source and questions</h2>
-      <p>The site and collector are open source. Implementation questions or deletion requests can be raised through the <a href="https://github.com/ANcpLua/qyl.at/issues">qyl.at issue tracker</a>.</p>
+      <p>The site and collector are open source. Implementation questions or deletion requests can be raised through the <a href="https://github.com/ANcpLua/qyl.at/issues">qyl.at issue tracker</a> or by mail to <a href="mailto:anfh22@outlook.com">anfh22@outlook.com</a>. The <a href="/support/">support page</a> and the <a href="/terms/">terms</a> describe the hosted service further.</p>
     </article>
   </section>
 </BaseLayout>

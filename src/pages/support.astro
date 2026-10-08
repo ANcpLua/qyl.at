@@ -1,0 +1,32 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Support" description="How to get help with qyl and the hosted qyl MCP service.">
+  <section class="page-hero">
+    <div class="reading-shell">
+      <span class="eyebrow">Support · qyl</span>
+      <h1 class="page-title">Get help with qyl.</h1>
+      <p class="lede">qyl helps you inspect traces, logs, recorded metrics and sessions from the collector your account is authorized to access. Its telemetry tools read data; they do not change your systems.</p>
+    </div>
+  </section>
+  <section class="editorial-section editorial-section--raised">
+    <article class="reading-shell docs-content">
+      <h2>Contact</h2>
+      <p>Write to <a href="mailto:anfh22@outlook.com">anfh22@outlook.com</a>. This address is read by the operator, Alexander Nachtmann. Use it for technical issues, questions about the hosted MCP service at <code>https://mcp.qyl.at/mcp</code>, account access, privacy requests and deletion requests.</p>
+
+      <h2>What to include in a technical report</h2>
+      <p>Name the client and its version (for example ChatGPT, Claude, Claude Code, Codex or MCP Inspector), the tool or operation you tried, the approximate time with timezone, and what you saw. A small, sanitized reproduction helps most.</p>
+      <p>Do not send passwords, access tokens, signing keys, private telemetry or other people's data. If a trace or log record is part of the problem, send its identifier rather than its content.</p>
+
+      <h2>Account, privacy and deletion requests</h2>
+      <p>Requests about your sign-in account, about data the service holds for you, or about deletion go to the same address. The operator may ask you to confirm that you control the account before changing access or removing account-related records. Describe the request; never include your credentials.</p>
+
+      <h2>Notifications</h2>
+      <p>Stopping a trace-error subscription removes that subscription and stops its delivery. It does not delete collector telemetry or copies that a connected client has already received. The plugin has no tool for deleting telemetry.</p>
+
+      <h2>Source and documentation</h2>
+      <p>The MCP server is open source at <a href="https://github.com/ANcpLua/qyl.mcp">ANcpLua/qyl.mcp</a>; its README documents setup, tools and configuration. The collector and this site are at <a href="https://github.com/ANcpLua/qyl">ANcpLua/qyl</a> and <a href="https://github.com/ANcpLua/qyl.at">ANcpLua/qyl.at</a>.</p>
+    </article>
+  </section>
+</BaseLayout>

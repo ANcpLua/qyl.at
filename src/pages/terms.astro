@@ -1,0 +1,35 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Terms" description="Terms of use for the hosted qyl MCP service.">
+  <section class="page-hero">
+    <div class="reading-shell">
+      <span class="eyebrow">Terms · hosted qyl MCP service</span>
+      <h1 class="page-title">Plain terms for a read-only service.</h1>
+      <p class="lede">Effective 8 October 2026. These terms cover the hosted MCP service at <code>https://mcp.qyl.at/mcp</code> and the qyl plugin that connects to it. The open-source code is licensed separately under the MIT License.</p>
+    </div>
+  </section>
+  <section class="editorial-section editorial-section--raised">
+    <article class="reading-shell docs-content">
+      <h2>Operator</h2>
+      <p>The service is operated by Alexander Nachtmann, Austria. Contact: <a href="mailto:anfh22@outlook.com">anfh22@outlook.com</a>.</p>
+
+      <h2>What the service does</h2>
+      <p>qyl provides authenticated access to recorded telemetry through MCP tools and viewers. The tools read traces, logs, metrics and sessions from the qyl collector project your account is authorized for and return the collector's actual results, including empty results and upstream errors. In clients that support MCP Events, you can subscribe to trace-error notifications.</p>
+      <p>The tools cannot delete telemetry, deploy or roll back software, or search the public internet. An empty result means no matching records were returned; it does not prove that an application is healthy.</p>
+
+      <h2>Cost</h2>
+      <p>The qyl plugin is free to use. It has no purchases, no payment flow and no paid tiers.</p>
+
+      <h2>Your account and acceptable use</h2>
+      <p>Use only accounts and telemetry you are authorized to access. Keep your sign-in credentials private. Do not attempt to reach another account's project, to bypass the authorization boundary, or to send credentials through tool arguments, telemetry or support requests. Telemetry you send to the collector must be appropriate for the people and clients allowed to read it.</p>
+
+      <h2>Notifications and third-party clients</h2>
+      <p>Notifications depend on the collector, the subscribing client and the network between them. Connected clients such as ChatGPT or Claude apply their own terms and settings to data they receive. Stopping a subscription ends its delivery; it does not remove collector data or copies a client already holds.</p>
+
+      <h2>Availability and changes</h2>
+      <p>The service is provided as is, without a guaranteed availability level. The operator may change, pause or discontinue the hosted service and will update these terms and the <a href="/privacy/">privacy page</a> when the service's behavior changes.</p>
+    </article>
+  </section>
+</BaseLayout>
