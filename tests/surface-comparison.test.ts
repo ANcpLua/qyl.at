@@ -30,8 +30,8 @@ for (const name of ["apple-minimal", "terminal-light"]) {
     // These calibrate the comparator; the Playwright gate separately checks
     // actual JS-on/JS-off full-page captures of the reading routes.
     const before = PNG.sync.read(readFileSync(new URL(`../public/lab-previews/${name}.png`, import.meta.url)));
-    const shaded = { ...before, data: Buffer.from(before.data) };
-    const noise = { ...before, data: Buffer.from(before.data) };
+    const shaded = { width: before.width, height: before.height, data: Buffer.from(before.data) };
+    const noise = { width: before.width, height: before.height, data: Buffer.from(before.data) };
     for (let p = 0; p < before.data.length; p += 4) {
       for (let c = 0; c < 3; c++) {
         shaded.data[p + c] = Math.round(before.data[p + c] * 0.87);
