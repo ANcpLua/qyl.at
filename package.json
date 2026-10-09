@@ -11,7 +11,7 @@
     "check": "astro check && tsc --noEmit && node scripts/check-dependencies.mjs && node scripts/check-versions.mjs",
     "build:site": "astro build && pagefind --site dist && node scripts/finalize-site.mjs",
     "build": "bun run check && bun run build:site",
-    "test:unit": "node --test tests/vitals.test.ts",
+    "test:unit": "node --test tests/*.test.ts",
     "test:gates": "node scripts/check-artifacts.mjs && bun run test:unit && playwright test --project=surface",
     "test:perf": "playwright test --project=performance",
     "test": "bun run build && bun run test:gates",
