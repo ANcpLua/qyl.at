@@ -1,8 +1,8 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type APIRequestContext, type Page } from "@playwright/test";
-import pixelmatch from "pixelmatch";
 import { PNG } from "pngjs";
 import { routes } from "./routes";
+import { maxSurfaceDifferenceRatio, surfaceDifferenceRatio } from "./surface-comparison";
 
 test.describe.configure({ mode: "serial" });
 
@@ -128,11 +128,7 @@ for (const route of routes) {
       const enabledPng = PNG.sync.read(enabledImage);
       const disabledPng = PNG.sync.read(disabledImage);
       expect({ width: disabledPng.width, height: disabledPng.height }).toEqual({ width: enabledPng.width, height: enabledPng.height });
-      const different = pixelmatch(enabledPng.data, disabledPng.data, undefined, enabledPng.width, enabledPng.height, {
-        includeAA: false,
-        threshold: 0.12,
-      });
-      expect(different / (enabledPng.width * enabledPng.height)).toBeLessThanOrEqual(0.005);
+      expect(surfaceDifferenceRatio(enabledPng, disabledPng)).toBeLessThanOrEqual(maxSurfaceDifferenceRatio);
     } finally {
       await enabledContext.close();
       await disabledContext.close();
