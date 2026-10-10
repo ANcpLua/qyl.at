@@ -1,0 +1,7 @@
+# OpenTelemetry telemetry schema for the qyl semantic-convention registry.
+# Published by Qyl.OpenTelemetry.SemanticConventions; the attribute vocabulary this
+# version names is generated into the Qyl.Telemetry.SemanticConventions packages.
+file_format: 1.1.0
+schema_url: https://qyl.at/schemas/9.3.0
+versions:
+  9.3.0:
