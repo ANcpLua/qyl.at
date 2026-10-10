@@ -44,43 +44,43 @@ export const releaseWave = "2026-10-10" as const;
 export const release = [
   {
     name: "qyl",
-    version: "7.2.0",
+    version: "8.0.0",
     registry: "https://www.nuget.org/packages/qyl",
     summary: "The dotnet tool: native collector, embedded dashboard, product API.",
   },
   {
     name: "Qyl.Api.Sdk",
-    version: "7.2.0",
+    version: "8.0.0",
     registry: "https://www.nuget.org/packages/Qyl.Api.Sdk",
     summary: "MSBuild SDK for a Native AOT ASP.NET Core API behind one AddQylApi call.",
   },
   {
     name: "Qyl.Telemetry.AutoInstrumentation",
-    version: "21.1.0",
+    version: "22.0.0",
     registry: "https://www.nuget.org/packages/Qyl.Telemetry.AutoInstrumentation",
     summary: "Compile-time .NET instrumentation; writes generated constants only.",
   },
   {
     name: "Qyl.Telemetry.Hosting",
-    version: "21.1.0",
+    version: "22.0.0",
     registry: "https://www.nuget.org/packages/Qyl.Telemetry.Hosting",
     summary: "The AddQyl() activation line and the attribute-stamping processor.",
   },
   {
     name: "Qyl.Telemetry.SemanticConventions",
-    version: "9.5.0",
+    version: "9.7.0",
     registry: "https://www.nuget.org/packages/Qyl.Telemetry.SemanticConventions",
     summary: "Weaver-generated attribute and metric constants, committed to the repository.",
   },
   {
     name: "Qyl.Telemetry.SemanticConventions.Incubating",
-    version: "9.5.0",
+    version: "9.7.0",
     registry: "https://www.nuget.org/packages/Qyl.Telemetry.SemanticConventions.Incubating",
     summary: "The same generation for conventions upstream has not stabilised.",
   },
   {
     name: "Qyl.Telemetry.SemanticConventions.Analyzers",
-    version: "9.5.0",
+    version: "9.7.0",
     registry: "https://www.nuget.org/packages/Qyl.Telemetry.SemanticConventions.Analyzers",
     summary: "Compile-time diagnostics against the generated vocabulary.",
   },
@@ -109,10 +109,10 @@ export const release = [
 // not ten: the three semantic-conventions ids share a version, and Hosting
 // ships in lockstep with AutoInstrumentation.
 export const headline = [
-  "qyl 7.2.0",
-  "Qyl.Api.Sdk 7.2.0",
-  "Qyl.Telemetry.AutoInstrumentation 21.1.0",
-  "Qyl.Telemetry.SemanticConventions 9.5.0",
+  "qyl 8.0.0",
+  "Qyl.Api.Sdk 8.0.0",
+  "Qyl.Telemetry.AutoInstrumentation 22.0.0",
+  "Qyl.Telemetry.SemanticConventions 9.7.0",
   "Qyl.Api.Contracts 11.3.0",
   "qyl-mcp-server 7.1.1",
 ] as const;
