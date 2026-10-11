@@ -2,8 +2,8 @@
 
 import { Component, useEffect, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
+import type { EffectKind } from '../../data/effects';
 
-type Kind = 'eclipse' | 'scroll-portal' | 'ascii-ripple' | 'depth-image' | 'bend-gallery' | 'glass-reveal' | 'tile-reveal';
 type Lifecycle = { ready: () => void; error: () => void };
 const art = ['/effects/trace-map.svg', '/effects/signal-sculpture.svg', '/effects/signal-map.svg', '/effects/eclipse-poster.svg'];
 
@@ -31,7 +31,7 @@ function Scene({ number, title, text, image, dark = false }: { number: string; t
   </div>;
 }
 
-export async function mountEffect(node: HTMLElement, kind: Kind, lifecycle: Lifecycle): Promise<() => void> {
+export async function mountEffect(node: HTMLElement, kind: EffectKind, lifecycle: Lifecycle): Promise<() => void> {
   let content: ReactNode;
   switch (kind) {
     case 'eclipse': {
