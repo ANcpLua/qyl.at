@@ -1,7 +1,7 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "github>ANcpLua/github-settings-automation"
+    "local>ANcpLua/renovate-config"
   ],
   "description": "Pin the Bun that Renovate runs to the mise.toml version so regenerated bun.lock files keep the lockfileVersion CI (jdx/mise-action installing mise.toml) can read.",
   "constraints": {
