@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # Deploy qyl.at (the qyl-at Cloudflare Worker) from this machine. No workflow deploys.
 #
-#   ./release.sh            build, run the gates, deploy main to qyl.at
-#   ./release.sh --dry-run  build and `wrangler deploy --dry-run`; nothing is deployed
+#   ./release.sh            build, artifact gate, unit tests, deploy main to qyl.at
+#   ./release.sh --dry-run  build, artifact gate and `wrangler deploy --dry-run`; nothing is deployed
+# The Playwright suite (`bun run test:gates`) is on demand, not a deploy precondition.
 #
 # qyl.at has no package version of its own: a "release" is a deploy of main. What it
 # carries for the other repos: public/schemas/<version> (served before a SemanticConventions
@@ -32,15 +33,18 @@ else
 fi
 bun install --frozen-lockfile
 
+say "build and artifact gate"
+bun run build
+node scripts/check-artifacts.mjs
 if (( dry )); then
-  say "build and dry-run deploy"
-  bun run deploy:dry
+  bunx wrangler deploy --dry-run
   say "dry run finished: nothing deployed"
   exit 0
 fi
 
-say "build, gates and deploy"
-bun run deploy
+say "unit tests and deploy"
+bun run test:unit
+bunx wrangler deploy --var QYL_SERVICE_VERSION:"$(git rev-parse --short HEAD)"
 
 say "verify"
 code=$(curl -s -o /dev/null -w '%{http_code}' https://qyl.at/)

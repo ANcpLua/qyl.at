@@ -4,8 +4,9 @@ Who reads this: the one agent working on this repository's `main`. Agent, user a
 the same word. There is one agent per repository, six in all (qyl, qyl.mcp, qyl-api-schema,
 Qyl.Telemetry.AutoInstrumentation, Qyl.Telemetry.SemanticConventions, qyl.at), each on its own
 `main`. Commit and push to `main` directly: no pull requests, no CI, no branch rules. bun is the
-package manager (`bun.lock`); the gates are `bun run check`, `bun run lint` and
-`bun run test:gates`.
+package manager (`bun.lock`). The deploy gate is `bun run build` (check and site build), the
+artifact gate and the unit tests, which `./release.sh` runs; the Playwright suite
+(`bun run test:gates`) runs on demand, not before every deploy.
 
 ## This repository
 
@@ -16,8 +17,8 @@ package manager (`bun.lock`); the gates are `bun run check`, `bun run lint` and
   the only place a product version is written (`scripts/check-versions.mjs` holds every literal
   on the site to it, and requires `public/schemas/<version>` for the SemanticConventions
   version it names).
-- Deploy command: `./release.sh --dry-run` (build and `wrangler deploy --dry-run`), then
-  `./release.sh` (`bun run deploy`: build, gates, deploy, then an HTTP 200 check).
+- Deploy command: `./release.sh` (build, artifact gate, unit tests, deploy, HTTP 200 check);
+  `./release.sh --dry-run` only when unsure.
 - Credentials: a wrangler login session on this Mac (`bunx wrangler login`, once), or a
   Cloudflare API token registered in Vitals at `~/.config/vitals/cloudflare-qyl-at-token`,
   which the command exports as `CLOUDFLARE_API_TOKEN`. Never print, paste, commit or log a
