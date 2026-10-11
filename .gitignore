@@ -23,3 +23,6 @@ output
 tsconfig.tsbuildinfo
 .DS_Store
 .idea
+
+# Agent instructions at the repo root are tracked.
+!SKILL.md
