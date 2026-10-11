@@ -89,7 +89,7 @@ export const release = [
     name: "Qyl.Api.Contracts",
     version: "11.6.0",
     registry: "https://www.nuget.org/packages/Qyl.Api.Contracts",
-    summary: "The generated .NET read contract for every Qyl request and response.",
+    summary: "The generated .NET contract for every Qyl request and response.",
   },
   {
     name: "@ancplua/qyl-api-schema",
@@ -99,7 +99,7 @@ export const release = [
   },
   {
     name: "qyl-mcp-server",
-    version: "7.4.0",
+    version: "7.5.0",
     registry: "https://www.npmjs.com/package/qyl-mcp-server",
     summary: "The MCP server: stdio locally, Streamable HTTP hosted.",
   },
