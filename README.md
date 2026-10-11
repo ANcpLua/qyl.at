@@ -81,11 +81,15 @@ the collector credential used to forward bounded OTLP log records:
 
 ```bash
 bunx wrangler secret put QYL_API_KEY
-bun run deploy
+./release.sh
 ```
 
 The browser never receives the collector credential. Core Web Vitals initialize only
 on the `qyl.at` hostname and post to the same-origin `/_qyl/vitals` Worker route.
+The Worker uses the shared generated browser Web Vitals event and attributes, with
+real metric-instance IDs, deltas and navigation types. Cached older pages remain
+accepted through a legacy payload path; it does not invent missing fields or
+forward viewport dimensions and device memory.
 
 ## The versions the site states
 

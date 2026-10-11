@@ -2,6 +2,9 @@ import assert from "node:assert/strict";
 import { createServer } from "node:http";
 import test from "node:test";
 import { handleVitals, validPayload } from "../worker/index.ts";
+import { readingFromMetric, type VitalPayload } from "../src/lib/vitals-payload.ts";
+import type { Metric } from "web-vitals";
+
 
 const valid = {
   browser: {
@@ -284,9 +287,106 @@ test("the Worker emits bounded OTLP log records through the owned collector boun
     );
     assert.equal(resource.scopeLogs[0].logRecords.every((record) => record.body.stringValue === "Core Web Vital observed"), true);
     assert.equal(resource.scopeLogs[0].logRecords.every((record) => record.attributes.some((attribute) => attribute.key === "web.vital.value")), true);
+    for (const forbidden of ["browser.device_memory", "browser.viewport", "browser.web_vital.id", "browser.web_vital.delta"]) {
+      assert.equal(capture.body.includes(forbidden), false, `legacy payload must not emit ${forbidden}`);
+    }
     assert.equal(capture.body.includes("userAgent"), false);
     assert.equal(capture.body.includes("Mcp-Param"), false);
   } finally {
     await new Promise<void>((resolve, reject) => receiver.close((error) => error ? reject(error) : resolve()));
+  }
+});
+
+const canonical: VitalPayload = {
+  version: 2,
+  browser: { language: "en-GB" },
+  route: "/docs/mcp/",
+  metrics: [
+    { name: "CLS", rating: "good", value: 0.02, delta: 0.01, id: "v5-100-1", navigationType: "navigate" },
+    { name: "INP", rating: "needs-improvement", value: 240, delta: -10, id: "v5-100-2", navigationType: "back-forward-cache" },
+    { name: "LCP", rating: "poor", value: 4200, delta: 4200, id: "v5-100-3", navigationType: "restore" },
+  ],
+};
+
+test("canonical vitals require bounded real ids, deltas and navigation types", () => {
+  assert.equal(validPayload(canonical), true);
+  for (const [field, bad] of [
+    ["id", undefined], ["id", ""], ["id", "x".repeat(129)], ["id", "user@example.test"],
+    ["id", "v5-100-1\n"], ["delta", undefined], ["delta", Infinity], ["delta", "1"],
+    ["delta", 11], ["delta", -11], ["navigationType", "made-up"], ["navigationType", undefined],
+  ] as const) {
+    const payload = structuredClone(canonical);
+    (payload.metrics[0] as unknown as Record<string, unknown>)[field] = bad;
+    assert.equal(validPayload(payload), false, `${field}=${JSON.stringify(bad)} must be rejected`);
+  }
+  for (const extra of [{ deviceMemory: 8 }, { viewportWidth: 390 }, { userAgent: "private" }]) {
+    assert.equal(validPayload({ ...canonical, browser: { ...canonical.browser, ...extra } }), false);
+  }
+  assert.equal(validPayload({ ...canonical, version: 3 }), false);
+  assert.equal(validPayload({ ...canonical, navigationType: "navigate" }), false);
+  assert.equal(validPayload({ ...canonical, metrics: [canonical.metrics[0], canonical.metrics[0]] }), false);
+  assert.equal(validPayload({ ...canonical, route: "/path?token=private" }), false);
+  assert.equal(validPayload({ ...canonical, metrics: [{ ...canonical.metrics[0], name: "__proto__" }] }), false);
+});
+
+test("browser readings preserve metric identity and navigation while accumulating unsent deltas", () => {
+  const metric = { ...canonical.metrics[0], entries: [], navigationId: 1 } as Metric;
+  const first = readingFromMetric(metric);
+  assert.ok(first);
+  const second = readingFromMetric({ ...metric, value: 0.05, delta: 0.03 }, first);
+  assert.equal(second?.delta, 0.04);
+  assert.equal(second?.value, 0.05);
+  const restored = readingFromMetric({ ...metric, id: "v5-200-1", navigationType: "back-forward-cache", delta: 0.02 }, second);
+  assert.equal(restored?.delta, 0.02);
+  assert.equal(restored?.navigationType, "back-forward-cache");
+  assert.deepEqual(Object.keys(first).sort(), ["delta", "id", "name", "navigationType", "rating", "value"]);
+  assert.equal(readingFromMetric({ ...metric, name: "FCP" }), undefined);
+});
+
+test("canonical three-metric wire uses generated events and fields without private dimensions", async () => {
+  let capturedBody = "";
+  const receiver = createServer((request, response) => {
+    request.setEncoding("utf8");
+    request.on("data", chunk => { capturedBody += chunk; });
+    request.on("end", () => { response.writeHead(200, { "content-type": "application/json" }); response.end("{}"); });
+  });
+  await new Promise<void>(resolve => receiver.listen(0, "127.0.0.1", resolve));
+  try {
+    const address = receiver.address();
+    assert.ok(address && typeof address === "object");
+    let task: Promise<unknown> | undefined;
+    const response = await handleVitals(new Request("https://qyl.at/_qyl/vitals", {
+      method: "POST", headers: { "content-type": "application/json", origin: "https://qyl.at" }, body: JSON.stringify(canonical),
+    }), {
+      ASSETS: { fetch: async () => new Response(null, { status: 404 }) },
+      QYL_API_KEY: "test-only", QYL_OTLP_LOGS_ENDPOINT: `http://127.0.0.1:${address.port}/v1/logs`, QYL_SERVICE_VERSION: "deploy123",
+    }, { waitUntil: promise => { task = promise; } });
+    assert.equal(response.status, 202);
+    assert.ok(task);
+    await task;
+    type Attribute = { key: string; value: { stringValue?: string; doubleValue?: number; intValue?: string } };
+    const wire = JSON.parse(capturedBody) as { resourceLogs: Array<{ resource: { attributes: Attribute[] }; scopeLogs: Array<{ logRecords: Array<{ eventName: string; attributes: Attribute[] }> }> }> };
+    const resource = wire.resourceLogs[0];
+    assert.equal(resource.resource.attributes.find(a => a.key === "service.version")?.value.stringValue, "deploy123");
+    const logs = resource.scopeLogs[0].logRecords;
+    assert.equal(logs.length, 3);
+    const expectedNames = ["cls", "inp", "lcp"];
+    for (let i = 0; i < logs.length; i++) {
+      const log = logs[i];
+      assert.equal(log.eventName, "browser.web_vital");
+      const attrs = Object.fromEntries(log.attributes.map(a => [a.key, a.value.stringValue ?? a.value.doubleValue ?? Number(a.value.intValue)]));
+      assert.deepEqual(attrs, {
+        "browser.language": "en-GB", "url.path": canonical.route,
+        "browser.web_vital.name": expectedNames[i], "browser.web_vital.value": canonical.metrics[i].value,
+        "browser.web_vital.delta": canonical.metrics[i].delta, "browser.web_vital.id": canonical.metrics[i].id,
+        "browser.web_vital.rating": canonical.metrics[i].rating,
+        "browser.web_vital.navigation_type": canonical.metrics[i].navigationType,
+      });
+    }
+    for (const forbidden of ["browser.device_memory", "browser.viewport", "web.vital.unit", "page.route", "navigation.type", "userAgent", "Mcp-Param"]) {
+      assert.equal(capturedBody.includes(forbidden), false, forbidden);
+    }
+  } finally {
+    await new Promise<void>((resolve, reject) => receiver.close(error => error ? reject(error) : resolve()));
   }
 });
