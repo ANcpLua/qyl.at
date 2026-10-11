@@ -45,7 +45,7 @@ The collector must understand new vocabulary before qyl-owned emitters adopt it.
 
 The collector accepts official OTLP protobuf or JSON for traces, logs and metrics, and retains all three in DuckDB. Profiles are not supported.
 
-In production, the OTLP receiver requires `x-otlp-api-key`. Local development defaults to unsecured loopback listeners.
+In production, the OTLP receiver requires an `x-otlp-api-key` credential with the explicit `ingest` role. Configure each `QYL_OTLP_PROJECT_KEYS` entry as an object with `key` and a nonempty `roles` array; string-only keys and missing roles fail startup. Roles are independent: ingest access grants no product API permissions, and `read`, `write` or `delete` access grants no ingest permission. Local development defaults to unsecured loopback listeners.
 
 ## MCP operation telemetry
 

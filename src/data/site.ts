@@ -45,25 +45,25 @@ export const releaseWave = "2026-10-12" as const;
 export const release = [
   {
     name: "qyl",
-    version: "11.1.0",
+    version: "12.0.0",
     registry: "https://www.nuget.org/packages/qyl",
     summary: "The dotnet tool: native collector, embedded dashboard, product API.",
   },
   {
     name: "Qyl.Api.Sdk",
-    version: "11.1.0",
+    version: "12.0.0",
     registry: "https://www.nuget.org/packages/Qyl.Api.Sdk",
     summary: "MSBuild SDK for a Native AOT ASP.NET Core API behind one AddQylApi call.",
   },
   {
     name: "Qyl.Telemetry.AutoInstrumentation",
-    version: "24.0.0",
+    version: "24.0.1",
     registry: "https://www.nuget.org/packages/Qyl.Telemetry.AutoInstrumentation",
     summary: "Compile-time .NET instrumentation; writes generated constants only.",
   },
   {
     name: "Qyl.Telemetry.Hosting",
-    version: "24.0.0",
+    version: "24.0.1",
     registry: "https://www.nuget.org/packages/Qyl.Telemetry.Hosting",
     summary: "The AddQyl() activation line and the attribute-stamping processor.",
   },
@@ -105,7 +105,7 @@ export const release = [
   },
   {
     name: "qyl-mcp-server",
-    version: "7.6.0",
+    version: "7.6.1",
     registry: "https://www.npmjs.com/package/qyl-mcp-server",
     summary: "The MCP server: stdio locally, Streamable HTTP hosted.",
   },
