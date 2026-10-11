@@ -22,9 +22,9 @@ For Claude Code:
 claude mcp add --transport http qyl https://mcp.qyl.at/mcp
 ```
 
-A compatible client discovers the protected-resource metadata, identifies itself through a client metadata document (CIMD) or dynamic registration (DCR), and opens Authorization Code with PKCE for the exact resource `https://mcp.qyl.at/mcp`. Hosted access requires `qyl:read` and an explicit Auth0 client grant; registering a client alone does not grant access.
+A compatible client discovers the protected-resource metadata, identifies itself through a client metadata document (CIMD) or dynamic registration (DCR), and opens Authorization Code with PKCE for the exact resource `https://mcp.qyl.at/mcp`. Hosted access requires `qyl:read` and an explicit Auth0 client grant; registering a client alone does not grant access. The [write tools](#write-tools) also need `qyl:write` (create and update) or `qyl:delete` (delete).
 
-For ChatGPT, add the same endpoint as an OAuth MCP connection and include `qyl:read` in its base scopes. Complete the qyl service login and consent. This is a custom connection; public directory submission is still in preparation.
+For ChatGPT, add the same endpoint as an OAuth MCP connection and include `qyl:read` in its base scopes, plus `qyl:write` and `qyl:delete` for the write tools. Complete the qyl service login and consent. This is a custom connection; public directory submission is still in preparation.
 
 ## Authentication boundary
 
@@ -32,11 +32,27 @@ qyl acts only as an OAuth 2.1 Resource Server. Auth0 at `https://qyl-eu.eu.auth0
 
 - the exact issuer;
 - the exact resource audience;
-- the `qyl:read` scope;
+- the `qyl:read` scope on every request, and `qyl:write` or `qyl:delete` for a write tool;
 - expiry and the RFC 9068 access-token profile;
 - the token signature through the issuer’s JWKS.
 
 There is no proprietary static bearer-token path and no embedded anonymous authorization server.
+
+## Write tools
+
+The read tools stay read-only. Five separate tools change something, so a client can approve reads and writes separately. They change only annotations and saved queries in the qyl project your account is authorized for:
+
+| Tool | Changes | Scope |
+| --- | --- | --- |
+| `create_annotation` | adds a plain-text note of at most 2000 characters on a trace, span or session | `qyl:write` |
+| `update_annotation` | replaces a note's text; what it is attached to stays fixed | `qyl:write` |
+| `create_saved_query` | adds a named filter for traces, logs or metrics | `qyl:write` |
+| `update_saved_query` | renames it or replaces its description or filter | `qyl:write` |
+| `delete` | removes one annotation or saved query (`kind` is `annotation` or `saved_query`) | `qyl:delete` |
+
+`list_saved_queries` and `run_saved_query` read saved queries with `qyl:read`, and `get_trace` and `list_sessions` return the annotations on what they read. No tool deletes or edits traces, logs or metrics, deploys or rolls back software; retention removes telemetry.
+
+Updates and deletes take the object's `etag` and send it as `If-Match`: a stale etag fails with `precondition_failed` instead of overwriting a newer version, and a duplicate saved-query name fails with `conflict`. A call whose token lacks the scope it needs gets `403` with `WWW-Authenticate: Bearer error="insufficient_scope"` naming the scopes to request, before the tool runs, so the client can re-authorize. A transport without that challenge returns the refusal as a tool error with the code `insufficient_scope`, for example “Reconnect qyl and allow qyl:write to use it.”
 
 ## Local alternative
 
@@ -46,7 +62,7 @@ For a same-machine client, run the published server over stdio:
 npx -y qyl-mcp-server --stdio
 ```
 
-The stdio server exposes the same Qyl read tools and MCP Apps without creating an Internet-facing listener.
+The stdio server exposes the same tools, the write tools included, and MCP Apps without creating an Internet-facing listener. Without OAuth there is no scope to check: the `write` and `delete` roles of the Collector key you configure decide whether a write succeeds, and demo mode (`QYL_DEMO=1`) refuses the annotation and saved-query tools.
 
 Both transports use SDK v2 to serve `2026-07-28` and supported 2025-era tool clients. The workbench explicitly enables `versionNegotiation: { mode: "auto" }`; the SDK Client's own default remains the 2025 handshake. See [protocol support](/docs/protocol-2026-07-28/).
 

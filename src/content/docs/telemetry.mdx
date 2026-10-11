@@ -1,6 +1,6 @@
 ---
 title: Telemetry
-description: Understand qyl’s OTLP ingest boundary, generated read contract, MCP telemetry, redaction, and explicit demo behavior.
+description: Understand qyl’s OTLP ingest boundary, generated contract, MCP telemetry, redaction, and explicit demo behavior.
 order: 5
 ---
 
@@ -9,7 +9,7 @@ order: 5
 qyl keeps protocol ownership explicit:
 
 1. OpenTelemetry owns OTLP ingestion and the telemetry vocabulary.
-2. `qyl-api-schema` owns every Qyl read request, response, stream event, and error.
+2. `qyl-api-schema` owns every Qyl request, response, stream event, and error.
 3. The MCP SDK owns JSON-RPC, transport, tool-result, and resource-result envelopes.
 
 The collector maps internal DuckDB rows into generated Qyl contracts before data crosses an HTTP, streaming, MCP, or generated-client boundary.
