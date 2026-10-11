@@ -95,9 +95,12 @@ on the `qyl.at` hostname and post to the same-origin `/_qyl/vitals` Worker route
 shows: the footer release bar renders the headline list on every page, and the
 getting-started table renders the full one with a registry link per row. A
 release wave edits that file; no page carries a version of its own, so no page
-can fall behind the feeds while another is current. `bun run test` fails on an
-internal link that does not resolve and on a `public/sitemap.xml` that disagrees
-with the built routes.
+can fall behind the feeds while another is current. `scripts/check-versions.mjs`
+(in `bun run check`) anchors each literal that cannot be an expression to that
+file, fails on any other hand-written published version in `src/`, `scripts/` or
+this README, and requires `public/schemas/<version>` for the SemanticConventions
+version it names. `bun run test` fails on an internal link that does not resolve
+and on a `public/sitemap.xml` that disagrees with the built routes.
 
 ## Dependency pins
 

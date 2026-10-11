@@ -2,31 +2,14 @@ import { gzipSync } from "node:zlib";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+// The one route list: the Playwright suites iterate the same array, so a page
+// added to the site is added to every gate at once.
+import { routes } from "../tests/routes.ts";
 
 const root = path.dirname(
   fileURLToPath(new URL("../package.json", import.meta.url)),
 );
 const dist = path.join(root, "dist");
-const routes = [
-  "/",
-  "/pricing/",
-  "/faq/",
-  "/auth/",
-  "/privacy/",
-  "/docs/",
-  "/docs/getting-started/",
-  "/docs/workbench/",
-  "/docs/mcp/",
-  "/docs/protocol-2026-07-28/",
-  "/docs/telemetry/",
-  "/docs/api-sdk/",
-  "/product/tracing/",
-  "/product/logs/",
-  "/product/metrics/",
-  "/product/mcp-evidence/",
-  "/product/ci/",
-  "/404.html",
-];
 
 function fail(message) {
   throw new Error(message);
@@ -317,12 +300,42 @@ for (const file of inspectable) {
     fail(`${relative}: cross-origin subresource ${remoteSubresources[0]}`);
 }
 
-// The 1.0.0 taxonomy retires Qyl.Sdk, and this site is the one place a wrong
-// package name is visible to the outside — a reader who copies it gets NU1101.
-if (/\bQyl\.Sdk\b/.test(combined))
-  fail(
-    "taxonomy gate: retired package name Qyl.Sdk is present in the built site",
-  );
+// Taxonomy gate. The 1.0.0 taxonomy retires Qyl.Sdk, the 9.x registry retires
+// SemanticConventions.SourceGeneration, and Qyl.OpenTelemetry.* are repository
+// names that were never package ids: the packages ship as Qyl.Telemetry.*. This
+// site is the one place a wrong package id is visible to the outside — a reader
+// who copies it gets NU1101. The two retired ids are banned wherever they
+// appear. A repository may legitimately be named in prose (the served schema
+// files say "Published by Qyl.OpenTelemetry.SemanticConventions"), so the
+// Qyl.OpenTelemetry.* ban is on package-id usage only: a `dotnet add package`
+// line, a PackageReference or PackageVersion Include, a Project Sdk attribute
+// or a nuget.org link. Shiki wraps every token of a code example in its own
+// <span> and escapes the XML, so those patterns run on the text a reader sees.
+for (const retired of [/\bQyl\.Sdk\b/u, /\bSemanticConventions\.SourceGeneration\b/u]) {
+  const hit = retired.exec(combined);
+  if (hit)
+    fail(`taxonomy gate: retired package id ${hit[0]} is present in the built site`);
+}
+const visibleText = combined
+  .replace(/<[^>]+>/gu, "")
+  .replace(/&quot;|&#34;/gu, '"')
+  .replace(/&#39;|&apos;/gu, "'")
+  .replace(/&lt;/gu, "<")
+  .replace(/&gt;/gu, ">")
+  .replace(/&amp;/gu, "&");
+const packageIdUses = [
+  /\bdotnet\s+add\s+(?:\S+\s+)?package\s+Qyl\.OpenTelemetry\.[\w.]+/iu,
+  /<\s*(?:PackageReference|PackageVersion)\b[^>]*\bInclude\s*=\s*["']Qyl\.OpenTelemetry\.[\w.]+/iu,
+  /<\s*Project\b[^>]*\bSdk\s*=\s*["']Qyl\.OpenTelemetry\.[\w.]+/iu,
+  /nuget\.org\/packages\/Qyl\.OpenTelemetry\.[\w.]+/iu,
+];
+for (const use of packageIdUses) {
+  const hit = use.exec(visibleText);
+  if (hit)
+    fail(
+      `taxonomy gate: Qyl.OpenTelemetry.* is a repository name, not a package id, but the built site uses it as one: "${hit[0].replace(/\s+/gu, " ")}"`,
+    );
+}
 
 const headers = fs.readFileSync(path.join(dist, "_headers"), "utf8");
 

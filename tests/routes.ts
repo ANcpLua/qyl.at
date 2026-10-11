@@ -4,6 +4,8 @@ export const routes = [
   "/faq/",
   "/auth/",
   "/privacy/",
+  "/support/",
+  "/terms/",
   "/docs/",
   "/docs/getting-started/",
   "/docs/workbench/",
