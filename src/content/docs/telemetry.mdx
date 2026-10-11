@@ -37,7 +37,7 @@ The collector normalizes known attribute names before capture policy decides wha
 
 For example, a recognized `http.method` attribute becomes `http.request.method`. This is a known-key conversion, not a promise to translate any incoming schema. The incoming `schema_url` is metadata; it does not select or execute an arbitrary schema transformation.
 
-The collector must understand new vocabulary before qyl-owned emitters adopt it. Compatibility checks cover older and current keys, canonical-key precedence, vendor pass-through and capture denials. See the [SemanticConventions source](https://github.com/ANcpLua/Qyl.OpenTelemetry.SemanticConventions) and the [collector ingestion source](https://github.com/ANcpLua/qyl/tree/main/services/qyl.collector.ingestion).
+The collector must understand new vocabulary before qyl-owned emitters adopt it. Compatibility checks cover older and current keys, canonical-key precedence, vendor pass-through and capture denials. See the [SemanticConventions source](https://github.com/ANcpLua/Qyl.Telemetry.SemanticConventions) and the [collector ingestion source](https://github.com/ANcpLua/qyl/tree/main/services/qyl.collector.ingestion).
 
 ## Ingestion
 

@@ -301,12 +301,13 @@ for (const file of inspectable) {
 }
 
 // Taxonomy gate. The 1.0.0 taxonomy retires Qyl.Sdk, the 9.x registry retires
-// SemanticConventions.SourceGeneration, and Qyl.OpenTelemetry.* are repository
-// names that were never package ids: the packages ship as Qyl.Telemetry.*. This
+// SemanticConventions.SourceGeneration, and Qyl.OpenTelemetry.* were the former
+// repository names (renamed to Qyl.Telemetry.* on 2026-10-11) and never package
+// ids: the packages ship as Qyl.Telemetry.*. This
 // site is the one place a wrong package id is visible to the outside — a reader
 // who copies it gets NU1101. The two retired ids are banned wherever they
 // appear. A repository may legitimately be named in prose (the served schema
-// files say "Published by Qyl.OpenTelemetry.SemanticConventions"), so the
+// files say "Published by Qyl.Telemetry.SemanticConventions"), so the
 // Qyl.OpenTelemetry.* ban is on package-id usage only: a `dotnet add package`
 // line, a PackageReference or PackageVersion Include, a Project Sdk attribute
 // or a nuget.org link. Shiki wraps every token of a code example in its own
@@ -333,7 +334,7 @@ for (const use of packageIdUses) {
   const hit = use.exec(visibleText);
   if (hit)
     fail(
-      `taxonomy gate: Qyl.OpenTelemetry.* is a repository name, not a package id, but the built site uses it as one: "${hit[0].replace(/\s+/gu, " ")}"`,
+      `taxonomy gate: Qyl.OpenTelemetry.* was a repository name, never a package id, but the built site uses it as one: "${hit[0].replace(/\s+/gu, " ")}"`,
     );
 }
 
