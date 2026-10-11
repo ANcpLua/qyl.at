@@ -57,13 +57,13 @@ export const release = [
   },
   {
     name: "Qyl.Telemetry.AutoInstrumentation",
-    version: "23.1.0",
+    version: "24.0.0",
     registry: "https://www.nuget.org/packages/Qyl.Telemetry.AutoInstrumentation",
     summary: "Compile-time .NET instrumentation; writes generated constants only.",
   },
   {
     name: "Qyl.Telemetry.Hosting",
-    version: "23.1.0",
+    version: "24.0.0",
     registry: "https://www.nuget.org/packages/Qyl.Telemetry.Hosting",
     summary: "The AddQyl() activation line and the attribute-stamping processor.",
   },
