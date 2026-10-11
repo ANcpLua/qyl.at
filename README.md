@@ -37,7 +37,7 @@ the stylesheet for the sixteen standalone design previews. Both layouts share `P
 
 ## Local development
 
-`mise.toml` pins Node.js 24 and Bun; `mise install` installs both, and CI installs them through jdx/mise-action. Bun is the package manager.
+`mise.toml` pins Node.js 24 and Bun; `mise install` installs both. Bun is the package manager.
 
 ```bash
 bun install --frozen-lockfile
@@ -59,10 +59,8 @@ budgets, all routes with and without JavaScript, same-origin requests, deployed 
 behavior, accessibility, and documentation search.
 
 The fixed 4G/4× CPU performance harness is not part of that gate. It measures wall-clock
-LCP, INP and long tasks against hard thresholds, which a shared CI runner's noisy
-neighbour can fail without the site having changed, so it runs weekly and on demand
-(`.github/workflows/performance.yml`) where a failure is worth reading rather than
-re-running. Locally it is one command:
+LCP, INP and long tasks against hard thresholds, which a busy machine can fail without the site having changed, so it stays out of
+the push gate and runs on demand, where a failure is worth reading rather than re-running. Locally it is one command:
 
 ```bash
 bun run build:site && bun run test:perf
@@ -73,10 +71,10 @@ remain out-of-band deployed release evidence.
 
 ## Deploy
 
-CI owns the deploy. A push to `main` runs the verify job and, only if it passes, deploys
-the Worker from that commit; `workflow_dispatch` redeploys without an empty commit. A
-missing Cloudflare token fails the job rather than skipping it, because a silently
-skipped deploy leaves the live site on whatever was last pushed by hand.
+`./release.sh` owns the deploy (see `SKILL.md`): it builds, runs the gates and deploys the
+Worker from the current `main` commit; nothing deploys on push. It refuses without Cloudflare
+credentials (`bunx wrangler login` once, or a token registered in Vitals) rather than
+skipping, because a silently skipped deploy leaves the live site on whatever was last deployed.
 
 The manual path below is for first provisioning and recovery. The Worker secret carries
 the collector credential used to forward bounded OTLP log records:
@@ -106,8 +104,8 @@ and on a `public/sitemap.xml` that disagrees with the built routes.
 
 `astro`, `@astrojs/mdx` and `vite` are pinned to exact versions: they decide the emitted
 HTML and asset graph that the byte budgets in `scripts/check-artifacts.mjs` measure, so
-each upgrade has to arrive as its own reviewable Renovate PR that re-clears the gate
-rather than riding along inside a lockfile-maintenance bump. Everything else floats on a
+each upgrade arrives as its own Renovate PR and is merged only after `bun run test` re-clears
+the gate locally, rather than riding along inside a lockfile-maintenance bump. Everything else floats on a
 caret range.
 
 ## React Bits Pro and MCP
