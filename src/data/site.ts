@@ -34,11 +34,12 @@ export const externalLinks = {
 } as const;
 
 // One release wave, one place. Every version the site states comes from here:
-// the footer release bar renders `headline`, the getting-started table renders
-// `release`, and prose asks `versionOf` below. A wave that bumps a package edits
-// this array and nothing else, so a page cannot fall behind the feeds while
-// another page is current. The three literals no expression can replace are
-// held here by `scripts/check-versions.mjs`, which runs in `npm run check`.
+// the footer release bar renders `headline`, which is derived from `release`,
+// the getting-started table renders `release`, and prose asks `versionOf` below.
+// A wave that bumps a package edits this array and nothing else, so a page
+// cannot fall behind the feeds while another page is current. The literals no
+// expression can replace are held to this array by `scripts/check-versions.mjs`,
+// which runs in `bun run check`.
 export const releaseWave = "2026-10-11" as const;
 
 export const release = [
@@ -107,22 +108,25 @@ export const release = [
 // The footer states the wave on every page, so a reader never has to find the
 // documentation table to know which release the page describes. Six entries,
 // not ten: the three semantic-conventions ids share a version, and Hosting
-// ships in lockstep with AutoInstrumentation.
-export const headline = [
-  "qyl 9.0.0",
-  "Qyl.Api.Sdk 9.0.0",
-  "Qyl.Telemetry.AutoInstrumentation 23.0.0",
-  "Qyl.Telemetry.SemanticConventions 9.7.0",
-  "Qyl.Api.Contracts 11.5.0",
-  "qyl-mcp-server 7.2.3",
-] as const;
+// ships in lockstep with AutoInstrumentation -- `scripts/check-versions.mjs`
+// asserts both. The versions come from `release`, never from a second literal.
+const headlineNames = [
+  "qyl",
+  "Qyl.Api.Sdk",
+  "Qyl.Telemetry.AutoInstrumentation",
+  "Qyl.Telemetry.SemanticConventions",
+  "Qyl.Api.Contracts",
+  "qyl-mcp-server",
+] as const satisfies readonly (typeof release)[number]["name"][];
+
+export const headline: readonly string[] = headlineNames.map((name) => `${name} ${versionOf(name)}`);
 
 // Prose states a version by asking for it here instead of repeating it. Before
 // this, `release` was imported by exactly two components and every other version
 // on the site was a hand-kept literal, so a wave moved the table and the footer
-// and left the sentences behind. The three places that still hold a literal --
-// an MDX frontmatter `description`, and the two `<Project Sdk="…">` code
-// examples, none of which can hold an expression -- are held to this array by
+// and left the sentences behind. The places that still hold a literal -- an MDX
+// frontmatter `description` and the `<Project Sdk="…">` code examples, none of
+// which can hold an expression -- are each anchored to this array by
 // `scripts/check-versions.mjs` instead.
 export function versionOf(name: (typeof release)[number]["name"]): string {
   const entry = release.find((candidate) => candidate.name === name);
