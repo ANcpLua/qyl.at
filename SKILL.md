@@ -24,7 +24,7 @@ package manager (`bun.lock`); the gates are `bun run check`, `bun run lint` and
   token. If neither exists, stop and tell the owner.
 - Upstream pins this repo must keep fresh: every version in `src/data/site.ts` (`qyl`,
   `Qyl.Api.Sdk`, `Qyl.Telemetry.AutoInstrumentation`, `Qyl.Telemetry.SemanticConventions`,
-  `@ancplua/qyl-api-schema`, `Qyl.Api.Contracts`, `qyl-mcp-server`), and
+  `@ancplua/qyl-api-schema`, `@ancplua/qyl-semantic-conventions`, `Qyl.Api.Contracts`, `qyl-mcp-server`), and
   `public/schemas/<version>` for the SemanticConventions version listed.
 - Consumers to notify: none.
 

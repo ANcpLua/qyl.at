@@ -16,7 +16,7 @@
 // Four independent checks, any of which can go red on its own:
 //   1. The two lockstep claims site.ts documents hold. The footer `headline` is
 //      derived from `release`, so it cannot disagree with it, but it states six
-//      entries for ten packages on the strength of these two facts, and so does
+//      entries for eleven packages on the strength of these two facts, and so does
 //      the FAQ.
 //   2. Every literal that must exist, exists verbatim where it is anchored,
 //      built from `release`.
@@ -64,11 +64,13 @@ check(
   versionOf("Qyl.Telemetry.Hosting") === versionOf("Qyl.Telemetry.AutoInstrumentation"),
   `Hosting ${versionOf("Qyl.Telemetry.Hosting")} no longer ships in lockstep with AutoInstrumentation ${versionOf("Qyl.Telemetry.AutoInstrumentation")}; the footer headline and the FAQ answer both state one version for the pair`,
 );
-const semconv = release.filter((entry) => entry.name.startsWith("Qyl.Telemetry.SemanticConventions"));
-check(semconv.length === 3, `expected three SemanticConventions ids, found ${semconv.length}`);
+const semconv = release.filter(
+  (entry) => entry.name.startsWith("Qyl.Telemetry.SemanticConventions") || entry.name === "@ancplua/qyl-semantic-conventions",
+);
+check(semconv.length === 4, `expected four SemanticConventions packages, found ${semconv.length}`);
 check(
   new Set(semconv.map((entry) => entry.version)).size === 1,
-  `the three SemanticConventions ids no longer share a version: ${semconv.map((entry) => `${entry.name} ${entry.version}`).join(", ")}`,
+  `the four SemanticConventions packages no longer share a version: ${semconv.map((entry) => `${entry.name} ${entry.version}`).join(", ")}`,
 );
 
 // ------------------------------------------------- 2. literals that must hold

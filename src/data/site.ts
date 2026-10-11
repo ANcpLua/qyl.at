@@ -40,7 +40,7 @@ export const externalLinks = {
 // cannot fall behind the feeds while another page is current. The literals no
 // expression can replace are held to this array by `scripts/check-versions.mjs`,
 // which runs in `bun run check`.
-export const releaseWave = "2026-10-11" as const;
+export const releaseWave = "2026-10-12" as const;
 
 export const release = [
   {
@@ -69,21 +69,27 @@ export const release = [
   },
   {
     name: "Qyl.Telemetry.SemanticConventions",
-    version: "9.8.0",
+    version: "9.9.0",
     registry: "https://www.nuget.org/packages/Qyl.Telemetry.SemanticConventions",
-    summary: "Weaver-generated attribute and metric constants, committed to the repository.",
+    summary: "Weaver-generated C# attribute, enum, event and metric constants.",
   },
   {
     name: "Qyl.Telemetry.SemanticConventions.Incubating",
-    version: "9.8.0",
+    version: "9.9.0",
     registry: "https://www.nuget.org/packages/Qyl.Telemetry.SemanticConventions.Incubating",
     summary: "The same generation for conventions upstream has not stabilised.",
   },
   {
     name: "Qyl.Telemetry.SemanticConventions.Analyzers",
-    version: "9.8.0",
+    version: "9.9.0",
     registry: "https://www.nuget.org/packages/Qyl.Telemetry.SemanticConventions.Analyzers",
     summary: "Compile-time diagnostics against the generated vocabulary.",
+  },
+  {
+    name: "@ancplua/qyl-semantic-conventions",
+    version: "9.9.0",
+    registry: "https://www.npmjs.com/package/@ancplua/qyl-semantic-conventions",
+    summary: "TypeScript attribute, enum, event and metric constants from the same resolved registry as C#.",
   },
   {
     name: "Qyl.Api.Contracts",
@@ -106,8 +112,8 @@ export const release = [
 ] as const;
 
 // The footer states the wave on every page, so a reader never has to find the
-// documentation table to know which release the page describes. Six entries,
-// not ten: the three semantic-conventions ids share a version, and Hosting
+// documentation table to know which release the page describes. Six entries
+// cover eleven packages: four semantic-conventions packages share a version, and Hosting
 // ships in lockstep with AutoInstrumentation -- `scripts/check-versions.mjs`
 // asserts both. The versions come from `release`, never from a second literal.
 const headlineNames = [

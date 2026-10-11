@@ -4,6 +4,8 @@ description: Understand qyl’s OTLP ingest boundary, generated contract, MCP te
 order: 5
 ---
 
+import { versionOf } from "../../data/site";
+
 ## Ownership and compatibility
 
 OpenTelemetry defines the SDK APIs, exporters and OTLP wire format. qyl keeps the official .NET and JavaScript SDKs and exporters where it uses them, and receives standard OTLP from other languages. qyl owns its instrumentation, registry extensions, generated bindings and collector capture policy.
@@ -18,13 +20,13 @@ These responsibilities have separate sources:
 | OTLP messages | Official OpenTelemetry protobuf definitions |
 | MCP JSON-RPC and result envelopes | The official MCP SDK |
 
-Telemetry bindings name attributes and metrics. The product API contract describes the data qyl returns to clients. Updating one does not automatically change the other.
+Telemetry bindings name attributes, enum values, events and metrics. The product API contract describes the data qyl returns to clients. Updating one does not automatically change the other.
 
 ## One registry, two languages
 
-qyl generates C# and TypeScript semantic-convention bindings from the same resolved registry. The C# packages separate stable and incubating conventions; the TypeScript package exposes stable and incubating entry points. Generated outputs are committed and checked for drift, so a vocabulary change is reviewable alongside its registry input.
+qyl generates C# and TypeScript semantic-convention bindings from the same resolved registry. The three `Qyl.Telemetry.SemanticConventions` NuGet packages and `@ancplua/qyl-semantic-conventions` share version {versionOf("Qyl.Telemetry.SemanticConventions")}. The C# packages separate stable and incubating conventions and provide an analyzer; the TypeScript package exposes its stable bindings at the package root and its incubating bindings at `@ancplua/qyl-semantic-conventions/incubating`. Generated outputs are committed and checked for drift, so a vocabulary change is reviewable alongside its registry input.
 
-qyl-owned .NET instrumentation and MCP operation telemetry use these generated names with the official SDKs. Generated constants do not update third-party instrumentation: another library can still emit an older attribute name. A newer SDK or an OTLP `schema_url` does not, by itself, rewrite those attributes.
+qyl-owned .NET instrumentation and MCP operation telemetry use these generated names with the official SDKs. The qyl CLI runner already activates `Qyl.Telemetry.Hosting` through `AddQyl()` for its own diagnostics, exporting only when its dedicated diagnostics endpoint is configured. The collector and API hosts use the same producer pipeline. Generated constants do not update third-party instrumentation: another library can still emit an older attribute name. A newer SDK or an OTLP `schema_url` does not, by itself, rewrite those attributes.
 
 ## What the collector changes
 
