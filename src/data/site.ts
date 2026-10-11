@@ -39,30 +39,30 @@ export const externalLinks = {
 // this array and nothing else, so a page cannot fall behind the feeds while
 // another page is current. The three literals no expression can replace are
 // held here by `scripts/check-versions.mjs`, which runs in `npm run check`.
-export const releaseWave = "2026-10-10" as const;
+export const releaseWave = "2026-10-11" as const;
 
 export const release = [
   {
     name: "qyl",
-    version: "8.0.0",
+    version: "9.0.0",
     registry: "https://www.nuget.org/packages/qyl",
     summary: "The dotnet tool: native collector, embedded dashboard, product API.",
   },
   {
     name: "Qyl.Api.Sdk",
-    version: "8.0.0",
+    version: "9.0.0",
     registry: "https://www.nuget.org/packages/Qyl.Api.Sdk",
     summary: "MSBuild SDK for a Native AOT ASP.NET Core API behind one AddQylApi call.",
   },
   {
     name: "Qyl.Telemetry.AutoInstrumentation",
-    version: "22.0.0",
+    version: "23.0.0",
     registry: "https://www.nuget.org/packages/Qyl.Telemetry.AutoInstrumentation",
     summary: "Compile-time .NET instrumentation; writes generated constants only.",
   },
   {
     name: "Qyl.Telemetry.Hosting",
-    version: "22.0.0",
+    version: "23.0.0",
     registry: "https://www.nuget.org/packages/Qyl.Telemetry.Hosting",
     summary: "The AddQyl() activation line and the attribute-stamping processor.",
   },
@@ -86,19 +86,19 @@ export const release = [
   },
   {
     name: "Qyl.Api.Contracts",
-    version: "11.3.0",
+    version: "11.5.0",
     registry: "https://www.nuget.org/packages/Qyl.Api.Contracts",
     summary: "The generated .NET read contract for every Qyl request and response.",
   },
   {
     name: "@ancplua/qyl-api-schema",
-    version: "11.3.0",
+    version: "11.5.0",
     registry: "https://www.npmjs.com/package/@ancplua/qyl-api-schema",
     summary: "The same contract for TypeScript consumers, with its Zod export.",
   },
   {
     name: "qyl-mcp-server",
-    version: "7.1.1",
+    version: "7.2.3",
     registry: "https://www.npmjs.com/package/qyl-mcp-server",
     summary: "The MCP server: stdio locally, Streamable HTTP hosted.",
   },
@@ -109,12 +109,12 @@ export const release = [
 // not ten: the three semantic-conventions ids share a version, and Hosting
 // ships in lockstep with AutoInstrumentation.
 export const headline = [
-  "qyl 8.0.0",
-  "Qyl.Api.Sdk 8.0.0",
-  "Qyl.Telemetry.AutoInstrumentation 22.0.0",
+  "qyl 9.0.0",
+  "Qyl.Api.Sdk 9.0.0",
+  "Qyl.Telemetry.AutoInstrumentation 23.0.0",
   "Qyl.Telemetry.SemanticConventions 9.7.0",
-  "Qyl.Api.Contracts 11.3.0",
-  "qyl-mcp-server 7.1.1",
+  "Qyl.Api.Contracts 11.5.0",
+  "qyl-mcp-server 7.2.3",
 ] as const;
 
 // Prose states a version by asking for it here instead of repeating it. Before
