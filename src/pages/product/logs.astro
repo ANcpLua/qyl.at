@@ -11,7 +11,7 @@ import ProductPage from "../../components/ProductPage.astro";
   capabilities={[
     { name: "search_logs", description: "Search collected telemetry by text, severity, session, trace, or time window." },
     { name: "list_sessions", description: "Find session-scoped runs and their explicit token or cost evidence where the source reports it." },
-    { name: "GET /api/v1/logs", description: "Use the generated Qyl read contract directly when MCP is not the right consumer." },
+    { name: "GET /api/v1/logs", description: "Use the generated Qyl contract directly when MCP is not the right consumer." },
     { name: "OTLP /v1/logs", description: "Ingest official OTLP protobuf or JSON with optional gzip compression." },
   ]}
   command={`qyl up
