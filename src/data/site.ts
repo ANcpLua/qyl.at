@@ -45,13 +45,13 @@ export const releaseWave = "2026-10-11" as const;
 export const release = [
   {
     name: "qyl",
-    version: "11.0.0",
+    version: "11.1.0",
     registry: "https://www.nuget.org/packages/qyl",
     summary: "The dotnet tool: native collector, embedded dashboard, product API.",
   },
   {
     name: "Qyl.Api.Sdk",
-    version: "11.0.0",
+    version: "11.1.0",
     registry: "https://www.nuget.org/packages/Qyl.Api.Sdk",
     summary: "MSBuild SDK for a Native AOT ASP.NET Core API behind one AddQylApi call.",
   },
