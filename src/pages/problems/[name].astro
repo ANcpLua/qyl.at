@@ -1,0 +1,53 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { commonMembers, problems, problemTypeUri, type ProblemType } from "../../data/problems";
+
+export function getStaticPaths() {
+  return problems.map((problem) => ({ params: { name: problem.name }, props: { problem } }));
+}
+
+const { problem } = Astro.props as { problem: ProblemType };
+const uri = problemTypeUri(problem.name);
+---
+
+<BaseLayout title={`${problem.title} · problem type`} description={`${problem.summary} HTTP ${problem.status}, code ${problem.code}: the qyl problem type ${uri}.`}>
+  <section class="page-hero">
+    <div class="site-shell">
+      <span class="eyebrow">Problem type · HTTP {problem.status}</span>
+      <h1 class="page-title">{problem.title}</h1>
+      <p class="lede">{problem.summary} A qyl server reports it as an RFC 9457 problem body, served as <code>application/problem+json</code>, with the type URI and code below.</p>
+      <div class="fact-grid">
+        <div class="fact"><span>Type</span><code>{uri}</code></div>
+        <div class="fact"><span>Code</span><code>{problem.code}</code></div>
+        <div class="fact"><span>Status</span><strong>{problem.status}</strong></div>
+        <div class="fact"><span>Title</span><strong>{problem.title}</strong></div>
+      </div>
+    </div>
+  </section>
+  <section class="editorial-section editorial-section--raised">
+    <article class="reading-shell docs-content">
+      <h2>What to do</h2>
+      <p>{problem.action}</p>
+
+      <h2>Members</h2>
+      <table>
+        <thead>
+          <tr><th scope="col">Member</th><th scope="col">Type</th><th scope="col">Meaning</th></tr>
+        </thead>
+        <tbody>
+          {commonMembers.map((member) => (
+            <tr><td><code>{member.name}</code></td><td>{member.type}</td><td>{member.description}</td></tr>
+          ))}
+          {problem.members.map((member) => (
+            <tr><td><code>{member.name}</code></td><td>{member.type}</td><td>{member.description} Specific to this type.</td></tr>
+          ))}
+        </tbody>
+      </table>
+
+      <h2>Example</h2>
+      <pre><code>{JSON.stringify(problem.example, null, 2)}</code></pre>
+
+      <p>Every type a qyl server reports is listed at <a href="/problems/">/problems/</a>.</p>
+    </article>
+  </section>
+</BaseLayout>
