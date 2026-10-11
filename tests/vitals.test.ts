@@ -264,6 +264,7 @@ test("the Worker emits bounded OTLP log records through the owned collector boun
       resourceLogs: Array<{
         resource: { attributes: Array<{ key: string; value: { stringValue?: string } }> };
         scopeLogs: Array<{
+          schemaUrl?: string;
           logRecords: Array<{
             attributes: Array<{ key: string }>;
             body: { stringValue: string };
@@ -273,6 +274,7 @@ test("the Worker emits bounded OTLP log records through the owned collector boun
       }>;
     };
     const resource = envelope.resourceLogs[0];
+    assert.equal(resource.scopeLogs[0].schemaUrl, undefined);
     assert.deepEqual(resource.scopeLogs[0].logRecords.map((record) => record.eventName).sort(), [
       "web.vitals.cls",
       "web.vitals.inp",
@@ -365,9 +367,10 @@ test("canonical three-metric wire uses generated events and fields without priva
     assert.ok(task);
     await task;
     type Attribute = { key: string; value: { stringValue?: string; doubleValue?: number; intValue?: string } };
-    const wire = JSON.parse(capturedBody) as { resourceLogs: Array<{ resource: { attributes: Attribute[] }; scopeLogs: Array<{ logRecords: Array<{ eventName: string; attributes: Attribute[] }> }> }> };
+    const wire = JSON.parse(capturedBody) as { resourceLogs: Array<{ resource: { attributes: Attribute[] }; scopeLogs: Array<{ schemaUrl?: string; logRecords: Array<{ eventName: string; attributes: Attribute[] }> }> }> };
     const resource = wire.resourceLogs[0];
     assert.equal(resource.resource.attributes.find(a => a.key === "service.version")?.value.stringValue, "deploy123");
+    assert.equal(resource.scopeLogs[0].schemaUrl, "https://qyl.at/schemas/9.9.0");
     const logs = resource.scopeLogs[0].logRecords;
     assert.equal(logs.length, 3);
     const expectedNames = ["cls", "inp", "lcp"];

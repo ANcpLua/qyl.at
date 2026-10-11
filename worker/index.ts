@@ -1,4 +1,4 @@
-import { ATTR_SERVICE_NAME, ATTR_SERVICE_VERSION, ATTR_URL_PATH } from "@ancplua/qyl-semantic-conventions";
+import { ATTR_SERVICE_NAME, ATTR_SERVICE_VERSION, ATTR_URL_PATH, SCHEMA_URL } from "@ancplua/qyl-semantic-conventions";
 import {
   ATTR_BROWSER_LANGUAGE,
   ATTR_BROWSER_WEB_VITAL_DELTA,
@@ -146,8 +146,8 @@ async function exportVitals(payload: AcceptedVitalPayload, env: Env): Promise<vo
       [ATTR_SERVICE_VERSION]: env.QYL_SERVICE_VERSION ?? "dev",
     }),
   });
-  const logger = provider.getLogger("qyl.web-vitals", "1.0.0");
   if ("version" in payload) {
+    const logger = provider.getLogger("qyl.web-vitals", "1.0.0", { schemaUrl: SCHEMA_URL });
     for (const metric of payload.metrics) {
       logger.emit({
         attributes: {
@@ -166,6 +166,7 @@ async function exportVitals(payload: AcceptedVitalPayload, env: Env): Promise<vo
       });
     }
   } else {
+    const logger = provider.getLogger("qyl.web-vitals", "1.0.0");
     for (const metric of payload.metrics) {
       const definition = legacyVitalEvents[metric.name];
       logger.emit({
