@@ -1,0 +1,51 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { commonMembers, problems, problemTypeUri } from "../../data/problems";
+---
+
+<BaseLayout title="Problem types" description="The RFC 9457 problem types a qyl server reports: one page per type URI, with its code, HTTP status and members.">
+  <section class="page-hero">
+    <div class="reading-shell">
+      <span class="eyebrow">Problem types · RFC 9457</span>
+      <h1 class="page-title">Every error a qyl server reports has a stable type.</h1>
+      <p class="lede">A qyl server that cannot answer a request sends an RFC 9457 problem body as <code>application/problem+json</code>. Its <code>type</code> member is one of the URIs below, and its <code>code</code> member names the same type as a short string. Branch on either; never on <code>title</code> or <code>detail</code>, which are written for people.</p>
+    </div>
+  </section>
+  <section class="editorial-section editorial-section--raised">
+    <article class="reading-shell docs-content">
+      <h2>The types</h2>
+      <table>
+        <thead>
+          <tr><th scope="col">Type</th><th scope="col">Code</th><th scope="col">Status</th><th scope="col">When</th></tr>
+        </thead>
+        <tbody>
+          {problems.map((problem) => (
+            <tr>
+              <td><a href={`/problems/${problem.name}/`}>{problem.title}</a></td>
+              <td><code>{problem.code}</code></td>
+              <td>{problem.status}</td>
+              <td>{problem.summary}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p>Each type's URI is <code>{problemTypeUri("<name>")}</code>, and that URI is the page the row links to.</p>
+
+      <h2>Members every problem carries</h2>
+      <table>
+        <thead>
+          <tr><th scope="col">Member</th><th scope="col">Type</th><th scope="col">Meaning</th></tr>
+        </thead>
+        <tbody>
+          {commonMembers.map((member) => (
+            <tr><td><code>{member.name}</code></td><td>{member.type}</td><td>{member.description}</td></tr>
+          ))}
+        </tbody>
+      </table>
+      <p>A type may add members of its own; each type's page lists them. Headers are a property of the response, not of the body: the collector's 500 carries <code>X-Trace-Id</code> when a trace of the failure was recorded, and the hosted workbench's 401 carries <code>WWW-Authenticate</code>.</p>
+
+      <h2>Where problems come from</h2>
+      <p>The collector's product API at <code>api.qyl.at</code>, the local runner API of the qyl CLI and the hosted MCP workbench report problems from this list and no other. The list is fixed by the qyl API contract, which the <a href="/docs/api-sdk/">API SDK</a> and the <a href="/docs/mcp/">hosted MCP server</a> share.</p>
+    </article>
+  </section>
+</BaseLayout>

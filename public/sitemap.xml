@@ -7,6 +7,17 @@
   <url><loc>https://qyl.at/privacy/</loc></url>
   <url><loc>https://qyl.at/support/</loc></url>
   <url><loc>https://qyl.at/terms/</loc></url>
+  <url><loc>https://qyl.at/problems/</loc></url>
+  <url><loc>https://qyl.at/problems/validation-failed/</loc></url>
+  <url><loc>https://qyl.at/problems/unauthorized/</loc></url>
+  <url><loc>https://qyl.at/problems/forbidden/</loc></url>
+  <url><loc>https://qyl.at/problems/not-found/</loc></url>
+  <url><loc>https://qyl.at/problems/conflict/</loc></url>
+  <url><loc>https://qyl.at/problems/precondition-failed/</loc></url>
+  <url><loc>https://qyl.at/problems/precondition-required/</loc></url>
+  <url><loc>https://qyl.at/problems/internal-error/</loc></url>
+  <url><loc>https://qyl.at/problems/bad-gateway/</loc></url>
+  <url><loc>https://qyl.at/problems/service-unavailable/</loc></url>
   <url><loc>https://qyl.at/docs/</loc></url>
   <url><loc>https://qyl.at/docs/getting-started/</loc></url>
   <url><loc>https://qyl.at/docs/workbench/</loc></url>
