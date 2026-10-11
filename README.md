@@ -37,7 +37,7 @@ the stylesheet for the sixteen standalone design previews. Both layouts share `P
 
 ## Local development
 
-Use Node.js 24 LTS. Bun is the package manager, used by the local commands and CI through setup-bun.
+`mise.toml` pins Node.js 24 and Bun; `mise install` installs both, and CI installs them through jdx/mise-action. Bun is the package manager.
 
 ```bash
 bun install --frozen-lockfile
