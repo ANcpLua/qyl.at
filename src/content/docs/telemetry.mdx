@@ -4,29 +4,40 @@ description: Understand qyl’s OTLP ingest boundary, generated read contract, M
 order: 5
 ---
 
-## Three owned boundaries
+## Ownership and compatibility
 
-qyl keeps protocol ownership explicit:
+OpenTelemetry defines the SDK APIs, exporters and OTLP wire format. qyl keeps the official .NET and JavaScript SDKs and exporters where it uses them, and receives standard OTLP from other languages. qyl owns its instrumentation, registry extensions, generated bindings and collector capture policy.
 
-1. OpenTelemetry owns OTLP ingestion and the telemetry vocabulary.
-2. `qyl-api-schema` owns every Qyl read request, response, stream event, and error.
-3. The MCP SDK owns JSON-RPC, transport, tool-result, and resource-result envelopes.
+These responsibilities have separate sources:
 
-The collector maps internal DuckDB rows into generated Qyl contracts before data crosses an HTTP, streaming, MCP, or generated-client boundary.
+| Boundary | Source and owner |
+| --- | --- |
+| Telemetry attributes and metrics used by qyl | The qyl Weaver registry, resolved from upstream language-independent semantic conventions, verified vendor definitions and qyl extensions |
+| C# and TypeScript telemetry bindings | Generated from that registry in the SemanticConventions repository |
+| Product API requests, responses, stream events and errors | The independent `qyl-api-schema` contract, generated for .NET and TypeScript |
+| OTLP messages | Official OpenTelemetry protobuf definitions |
+| MCP JSON-RPC and result envelopes | The official MCP SDK |
 
-## One registry, generated everything
+Telemetry bindings name attributes and metrics. The product API contract describes the data qyl returns to clients. Updating one does not automatically change the other.
 
-The telemetry vocabulary has a single source: one Weaver registry that resolves the upstream OpenTelemetry semantic conventions, the gen-ai conventions, and qyl's own attributes as YAML in the same registry. There is no second vocabulary and no merge step after Weaver.
+## One registry, two languages
 
-The C# constants are emitted from that registry by Weaver templates and committed to the repository, so what the compiler sees is diffable and CI fails on a stale regeneration rather than on a mismatch at runtime.
+qyl generates C# and TypeScript semantic-convention bindings from the same resolved registry. The C# packages separate stable and incubating conventions; the TypeScript package exposes stable and incubating entry points. Generated outputs are committed and checked for drift, so a vocabulary change is reviewable alongside its registry input.
 
-Three rules follow, and each has exactly one owner:
+qyl-owned .NET instrumentation and MCP operation telemetry use these generated names with the official SDKs. Generated constants do not update third-party instrumentation: another library can still emit an older attribute name. A newer SDK or an OTLP `schema_url` does not, by itself, rewrite those attributes.
 
-- **The instrumentation never normalizes.** It writes only constants the generator produced. A vendor key travels as a tag; the application does not rename it. That is also what keeps an instrumented application Native AOT-safe: a runtime rewrite table would need reflection the trimmed binary does not carry.
-- **The collector renames and drops** according to the `AttributeMapping` generated from the same registry, and counts every drop on `qyl.collector.attributes.dropped`. A missing attribute is a number you can query, not silence.
-- **Nothing invents keys.** The mapping may only point at attributes the registry defines, and Weaver's live-check judges the telemetry qyl actually emits against the registry's own `.weaver.toml` and advice policies.
+## What the collector changes
 
-New term, new span, new vendor: registry YAML, instrumentation, mapping table. One place each.
+The collector normalizes known attribute names before capture policy decides what to retain:
+
+- Generated rename rules translate recognized deprecated keys into canonical keys. The collector also handles four legacy aliases: `gen_ai.system`, `gen_ai.usage.prompt_tokens`, `gen_ai.usage.completion_tokens` and `agents.tool.call_id`.
+- When both spellings are present, the value explicitly supplied under the canonical key wins, regardless of input order.
+- Verified vendor attributes keep their vendor spelling where pass-through is allowed. Privacy denials still apply; vendor pass-through is not permission to retain credentials or personal data.
+- Signal-specific capture policy can drop disallowed or unrecognized attributes. Dropped attributes are counted in `qyl.collector.attributes.dropped`.
+
+For example, a recognized `http.method` attribute becomes `http.request.method`. This is a known-key conversion, not a promise to translate any incoming schema. The incoming `schema_url` is metadata; it does not select or execute an arbitrary schema transformation.
+
+The collector must understand new vocabulary before qyl-owned emitters adopt it. Compatibility checks cover older and current keys, canonical-key precedence, vendor pass-through and capture denials. See the [SemanticConventions source](https://github.com/ANcpLua/Qyl.OpenTelemetry.SemanticConventions) and the [collector ingestion source](https://github.com/ANcpLua/qyl/tree/main/services/qyl.collector.ingestion).
 
 ## Ingestion
 
@@ -36,7 +47,7 @@ In production, the OTLP receiver requires `x-otlp-api-key`. Local development de
 
 ## MCP operation telemetry
 
-qyl.mcp records client and server operation spans and duration histograms using the pinned OpenTelemetry MCP semantic vocabulary. Standard W3C trace context and baggage travel in MCP `params._meta`; inbound server spans use valid remote context as their parent.
+qyl.mcp records client and server operation spans and duration histograms using the generated qyl registry bindings for the MCP semantic vocabulary. Standard W3C trace context and baggage travel in MCP `params._meta`; inbound server spans use valid remote context as their parent.
 
 The workbench does not record prompt variables, tool arguments, tool results, or
 arbitrary HTTP headers as span attributes. Operation logs and the live protocol

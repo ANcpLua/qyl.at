@@ -15,7 +15,6 @@
     "test:gates": "node scripts/check-artifacts.mjs && bun run test:unit && playwright test --project=surface",
     "test:perf": "playwright test --project=performance",
     "test": "bun run build && bun run test:gates",
-    "smoke": "bun run test",
     "preview": "wrangler dev",
     "deploy": "bun run test && wrangler deploy --var QYL_SERVICE_VERSION:$(git rev-parse --short HEAD)",
     "deploy:dry": "bun run build && wrangler deploy --dry-run",

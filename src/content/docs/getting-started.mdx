@@ -25,7 +25,7 @@ Open `http://127.0.0.1:5100`. The fixed local surface is:
 | `5200` | Isolated diagnostics collector |
 | `18889` | qyl host resource API |
 
-The separate MCP workbench owns loopback port `18888`.
+The separate MCP workbench owns loopback port `18888`. The optional stdio MCP server uses Node.js; the collector and embedded dashboard do not.
 
 ## Hello world from any OpenTelemetry SDK
 
@@ -66,7 +66,7 @@ That call discovers a local `qyl up` collector, applies the supported compile-ti
 
 <ReleaseTable />
 
-The three semantic-conventions ids move together, and `Qyl.Telemetry.Hosting` ships in lockstep with `Qyl.Telemetry.AutoInstrumentation`. Pin the versions above rather than a floating range: the collector's attribute mapping is generated from the same registry release as the constants the instrumentation writes.
+The semantic-convention bindings share a registry release, and `Qyl.Telemetry.Hosting` ships in lockstep with `Qyl.Telemetry.AutoInstrumentation`. Pin the versions above for reproducible builds. The collector and qyl-owned instrumentation must agree on supported vocabulary; older third-party keys still pass through the collector's known renames and capture policy. See [ownership and compatibility](/docs/telemetry/).
 
 ## Build an API on the same stack
 

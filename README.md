@@ -35,9 +35,25 @@ The main page has its own Tailwind entry, `src/styles/spatial.css`, so it does n
 the stylesheet for the sixteen standalone design previews. Both layouts share `PageFrame.astro`.
 
 
+## Architecture and release documentation
+
+The qyl registry generates C# and TypeScript telemetry bindings from upstream
+language-independent conventions, verified vendor definitions and qyl extensions.
+Official OpenTelemetry SDKs, exporters and OTLP protobuf definitions remain in use.
+The collector applies known generated attribute renames and legacy aliases, preserves
+canonical-key values, and enforces capture policy. `schema_url` is metadata, not an
+automatic migration engine. The independent `qyl-api-schema` product API contract
+provides generated request and response types. See the [telemetry guide](https://qyl.at/docs/telemetry/).
+
+Keep architecture prose free of package version literals. `src/data/site.ts` is the
+release display source; public claims are updated only after packages are indexed.
+The versioned semantic schema endpoint is an earlier release prerequisite. Validate
+normalization, capture-policy and generated-output claims against source, and record
+release evidence separately from durable architectural guidance.
+
 ## Local development
 
-`mise.toml` pins Node.js 24 and Bun; `mise install` installs both, and CI installs them through jdx/mise-action. Bun is the package manager.
+`mise.toml` pins Node.js and Bun; `mise install` installs both, and CI installs them through jdx/mise-action. Bun is the package manager.
 
 ```bash
 bun install --frozen-lockfile
