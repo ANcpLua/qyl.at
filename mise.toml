@@ -1,7 +1,10 @@
 # The toolchain this repository builds with. CI installs it with jdx/mise-action;
-# locally `mise install` does the same. dotnet also keeps global.json, which dotnet itself reads.
+# locally `mise install` does the same.
 [tools]
 "bun" = "1.4.2"
+# bun installs and runs the scripts; node runs the astro, wrangler and playwright CLIs,
+# the scripts/*.mjs checks and `node --test`, so it must stay inside engines.node.
+"node" = "24"
 
 [tasks.check]
 description = "The gate: what CI runs"
