@@ -13,7 +13,7 @@ export default defineConfig({
   // gate. `performance` throttles to a fixed 4G / 4x CPU profile and measures
   // wall-clock LCP, INP and long tasks: on a shared GitHub runner that reads
   // the noise of a neighbouring workload as a site regression, so it runs on a
-  // schedule and on demand (.github/workflows/performance.yml), never on a PR.
+  // schedule and on demand (the performance run), never on a PR.
   projects: [
     { name: "surface", testMatch: /(?:surface|lab|effects)\.spec\.ts$/ },
     { name: "performance", testMatch: /performance\.spec\.ts$/ },
@@ -46,7 +46,7 @@ export default defineConfig({
     // port. Wrangler renders that fault as a bare `✘ [ERROR]` with an empty
     // message, and the detail exists only in its debug log, so `pipe` is what
     // puts wrangler's request log next to the failing test in the job output.
-    // The debug log itself is uploaded by .github/workflows/ci.yml.
+    // The debug log itself is uploaded by the CI run.
     stdout: "pipe",
     stderr: "pipe",
   },
