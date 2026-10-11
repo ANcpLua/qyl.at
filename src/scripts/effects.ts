@@ -1,4 +1,5 @@
-type EffectKind = 'eclipse' | 'scroll-portal' | 'ascii-ripple' | 'depth-image' | 'bend-gallery' | 'glass-reveal' | 'tile-reveal';
+import type { EffectKind } from '../data/effects';
+
 type StopEffect = () => void;
 
 /** The small controller loads React and the selected original effect only on demand. */

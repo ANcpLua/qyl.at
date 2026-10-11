@@ -1,6 +1,8 @@
 ---
+import type { EffectKind } from '../data/effects';
+
 interface Props {
-  kind: 'eclipse' | 'scroll-portal' | 'ascii-ripple' | 'depth-image' | 'bend-gallery' | 'glass-reveal' | 'tile-reveal';
+  kind: EffectKind;
   class?: string;
   label: string;
   poster?: string;
