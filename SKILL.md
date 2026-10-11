@@ -42,7 +42,9 @@ package manager (`bun.lock`); the gates are `bun run check`, `bun run lint` and
 1. `./release.sh --dry-run`; fix whatever it refuses.
 2. `./release.sh`.
 3. Verify by reading: `curl -sI https://qyl.at/ | head -1` is 200, and the page that changed
-   shows the change.
+   shows the change. Then run
+   `/Users/alexandernachtmann/Downloads/qyl-codex-claude/refresh-published-versions.sh` so the
+   snapshot records the served schema and the site state.
 
 ## When a message lands and you are the consumer
 
