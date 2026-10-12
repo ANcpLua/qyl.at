@@ -7,7 +7,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     <div class="reading-shell">
       <span class="eyebrow">Terms · hosted qyl MCP service</span>
       <h1 class="page-title">Plain terms for a service that reads telemetry and never changes it.</h1>
-      <p class="lede">Effective 11 October 2026. These terms cover the hosted MCP service at <code>https://mcp.qyl.at/mcp</code> and the qyl plugin that connects to it. The open-source code is licensed separately under the MIT License.</p>
+      <p class="lede">Effective 12 October 2026. These terms cover the hosted MCP service at <code>https://mcp.qyl.at/mcp</code> and the qyl plugin that connects to it. The open-source code is licensed separately under the MIT License.</p>
     </div>
   </section>
   <section class="editorial-section editorial-section--raised">
@@ -16,7 +16,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       <p>The service is operated by Alexander Nachtmann (ancplua), Austria. Contact: <a href="mailto:anfh22@outlook.com">anfh22@outlook.com</a>.</p>
 
       <h2>What the service does</h2>
-      <p>qyl provides authenticated access to recorded telemetry through MCP tools and viewers. The read tools read traces, logs, metrics and sessions from the qyl collector project your account is authorized for and return the collector's actual results, including empty results and upstream errors. The write tools create, update and delete annotations (plain-text notes of at most 2000 characters on a trace, span or session) and saved queries (named filters for traces, logs or metrics) in that same project. Creating and updating need the <code>qyl:write</code> permission; deleting needs <code>qyl:delete</code>. In clients that support MCP Events, you can subscribe to trace-error notifications.</p>
+      <p>qyl provides authenticated access to recorded telemetry through MCP tools and viewers. The read tools read traces, logs, metrics and sessions from the qyl collector project your account is authorized for and return the collector's actual results, including empty results and upstream errors. The write tools create, update and delete annotations (plain-text notes of at most 2000 characters on a trace, span, session or failure) and saved queries (named filters for traces, logs or metrics) in that same project, and set a failure's status or assignee. Creating and updating need the <code>qyl:write</code> permission; deleting needs <code>qyl:delete</code>.</p>
       <p>The tools cannot delete telemetry, deploy or roll back software, or search the public internet. The write tools leave telemetry unchanged, and the delete tool removes only an annotation or a saved query. An update or deletion names the version of the object it replaces and is refused if the object has changed since. An empty result means no matching records were returned; it does not prove that an application is healthy.</p>
 
       <h2>Cost</h2>
@@ -25,8 +25,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       <h2>Your account and acceptable use</h2>
       <p>Use only accounts and telemetry you are authorized to access. Keep your sign-in credentials private. Do not attempt to reach another account's project, to bypass the authorization boundary, or to send credentials through tool arguments, telemetry or support requests. Telemetry you send to the collector, and the annotations and saved queries you create, must be appropriate for the people and clients allowed to read that project.</p>
 
-      <h2>Notifications and third-party clients</h2>
-      <p>Notifications depend on the collector, the subscribing client and the network between them. Connected clients such as ChatGPT or Claude apply their own terms and settings to data they receive. Stopping a subscription ends its delivery; it does not remove collector data or copies a client already holds.</p>
+      <h2>Connected clients</h2>
+      <p>Connected clients such as ChatGPT or Claude apply their own terms and settings to data they receive. Removing records from qyl does not remove copies a client already holds. Failure summaries and comparisons reflect recorded evidence; an empty result or insufficient traffic does not establish that an application is healthy or a fix has succeeded.</p>
 
       <h2>Availability and changes</h2>
       <p>The service is provided as is, without a guaranteed availability level. The operator may change, pause or discontinue the hosted service and will update these terms and the <a href="/privacy/">privacy page</a> when the service's behavior changes.</p>

@@ -35,7 +35,7 @@ The workbench explicitly sets `versionNegotiation: { mode: "auto" }`. It attempt
 
 MCP annotations are safety hints, not authorization. A tool runs without confirmation only when it is explicitly read-only, non-destructive, and closed-world. Missing, contradictory, mutating, destructive, or open-world hints require approval of the exact call.
 
-qyl's own write tools never meet that rule. `create_annotation` and `create_saved_query` declare `readOnlyHint: false` and count as mutating; `update_annotation`, `update_saved_query` and `delete` declare `destructiveHint: true` and count as potentially destructive. Every call to them therefore waits for approval of its exact arguments, and the execution record keeps that confirmation. `list_saved_queries` and `run_saved_query` are explicitly read-only, non-destructive, and closed-world, so they run without confirmation like the other read tools.
+qyl's own write tools never meet that rule. `create_annotation` and `create_saved_query` declare `readOnlyHint: false` and count as mutating; `update_annotation`, `update_saved_query`, `update_failure_status` and `delete` declare `destructiveHint: true` and count as potentially destructive. Every call to them therefore waits for approval of its exact arguments, and the execution record keeps that confirmation. `list_saved_queries` and `run_saved_query` are explicitly read-only, non-destructive, and closed-world, so they run without confirmation like the other read tools.
 
 ## Keep the evidence
 

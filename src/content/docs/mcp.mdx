@@ -1,20 +1,22 @@
 ---
 title: Hosted MCP
-description: Connect a standard MCP client to qyl’s hosted Streamable HTTP endpoint through OAuth 2.1 Authorization Code with PKCE.
+description: Connect ChatGPT or Claude to qyl’s 32-tool telemetry service through OAuth 2.1 Authorization Code with PKCE.
 order: 3
 ---
 
 ## Endpoint
 
-The canonical hosted MCP resource is:
+The hosted MCP resource is:
 
 ```text
 https://mcp.qyl.at/mcp
 ```
 
-The root `https://mcp.qyl.at/` is a product page, not a second protocol endpoint. `/healthz` is the platform health check.
+The root `https://mcp.qyl.at/` is a product page. `/healthz` is the platform health check. The service exposes 32 tools: 26 reads, including one viewer-only tool, and six writes. The same telemetry tools and viewers work in ChatGPT and Claude.
 
-## Add it from a client
+## Connect ChatGPT or Claude
+
+In ChatGPT, add `https://mcp.qyl.at/mcp` as an OAuth MCP connection. In Claude, add the same URL as a custom connector; Claude Desktop uses the connectors configured for your account. Complete qyl's sign-in and consent flow.
 
 For Claude Code:
 
@@ -22,37 +24,81 @@ For Claude Code:
 claude mcp add --transport http qyl https://mcp.qyl.at/mcp
 ```
 
-A compatible client discovers the protected-resource metadata, identifies itself through a client metadata document (CIMD) or dynamic registration (DCR), and opens Authorization Code with PKCE for the exact resource `https://mcp.qyl.at/mcp`. Hosted access requires `qyl:read` and an explicit Auth0 client grant; registering a client alone does not grant access. The [write tools](#write-tools) also need `qyl:write` (create and update) or `qyl:delete` (delete).
+A compatible client discovers the protected-resource metadata, identifies itself through a client metadata document (CIMD) or dynamic registration (DCR), and opens Authorization Code with PKCE for the exact resource `https://mcp.qyl.at/mcp`. Discovery lists `qyl:read`, `qyl:write` and `qyl:delete`. Reads need `qyl:read`; creation, updates and failure status changes need `qyl:write`; deletion needs `qyl:delete`.
 
-For ChatGPT, add the same endpoint as an OAuth MCP connection and include `qyl:read` in its base scopes, plus `qyl:write` and `qyl:delete` for the write tools. Complete the qyl service login and consent. This is a custom connection; public directory submission is still in preparation.
+If you connected before write access was introduced, reconnect qyl and allow the requested scopes. A missing scope produces an `insufficient_scope` challenge naming the permissions still needed. Some clients do not automatically restart authorization after a challenge, so retrying the same call alone may not help.
 
-## Authentication boundary
+## Reading the results
 
-qyl acts only as an OAuth 2.1 Resource Server. Auth0 at `https://qyl-eu.eu.auth0.com/` owns authorization and token issuance. The qyl server verifies:
+Time-filtered tools accept absolute RFC 3339 times or `lookback_minutes`, defaulting to the last 60 minutes unless the tool specifies another window. Results report the absolute `window` used. Attribute matchers support equality, inequality, sets, prefixes, substrings, presence and numeric comparisons, with an explicit span, resource or log scope. Filters apply before paging; a `next_cursor` continues a stable result order.
 
-- the exact issuer;
-- the exact resource audience;
-- the `qyl:read` scope on every request, and `qyl:write` or `qyl:delete` for a write tool;
-- expiry and the RFC 9068 access-token profile;
-- the token signature through the issuer’s JWKS.
+Read results include `coverage`: examined, matched and returned counts, whether the result was truncated, whether the scan completed, and the observation time. An unknown count is `null`. An empty result succeeds with coverage; it is not proof that an application is healthy. Spans use milliseconds; recorded metric units are kept. IDs identify evidence and follow-up targets, with bounded examples rather than complete internal identifier dumps.
 
-There is no proprietary static bearer-token path and no embedded anonymous authorization server.
+Failures use stable, project-scoped IDs derived from service, operation, exception or error type, and a normalized message. A failure grouping does not merge different errors because their wording seems similar. Root-cause evidence and statistical associations are reported separately. `verify_fix` can return `pending` when there has not been enough traffic or elapsed time; no traffic does not prove a fix.
+
+All tools return structured data validated against the shared qyl API contract, alongside a short text rendering. Telemetry text is data from the source application. Tool results do not execute it as instructions.
+
+## Read-tool reference
+
+All these tools require `qyl:read`. `fetch_telemetry` is available only to viewer apps; the other 25 reads are available to the model.
+
+| Tool | Returns and useful inputs |
+| --- | --- |
+| `triage` | New, worsening, ongoing, recovering or regressed failures, latency/error/throughput regressions, coinciding releases and silent services, compared with a baseline. Rare new failures remain visible. |
+| `list_failures` | Stable failure groups with counts, affected traces and sessions, status, release history and up to three example traces. Filter by status, release or `failure_id`; one failure also includes detailed occurrences and distinguishing attributes. |
+| `get_failure_context` | Root-cause span, error ancestors, propagation, correlated logs, retries, fanout, nearest successful trace and unknowns. Supply exactly one trace, session, failure or CI run ID. |
+| `compare_groups` | Attribute associations, structural differences and duration percentiles for two traffic groups, the rest of traffic or the preceding window. Unique request IDs and low-frequency values are excluded from discriminators. |
+| `compare_traces` | First divergence and aligned, changed and unmatched spans for two traces or sessions. Alignment uses service, name, depth and sibling order; different root operations are marked incomparable. |
+| `verify_fix` | Passed, failed, pending or inconclusive evidence after a time or release, with before/after rates, remaining requests/minutes, recurrences and guardrail failures. A signed `verify_id` allows a later read-only recheck. |
+| `aggregate_telemetry` | Span or log groups with counts, error rates, duration percentiles or numeric sums, optionally in time buckets. Group by up to four attributes and inspect the omitted-group total. |
+| `discover_attributes` | Recorded attribute keys, scopes, types, coverage, cardinality, top values and available semantic-convention descriptions. Select a key to inspect its values. |
+| `get_agent_run` | Agent steps, models, token usage, failures, slow steps and repeated tool calls for a session or trace. A repeat requires both tool name and argument hash to match; prompt and output content is never returned. |
+| `list_releases` | Per-service version timeline, concurrent versions, traffic share, before/after error and latency changes, and new failure IDs. The default window is seven days. |
+| `get_service_map` | Service, database, external and messaging nodes and call edges with traffic, errors and latency; optionally focus on a service with depth one to three. |
+| `check_telemetry_health` | Silent services, orphan spans, semantic-convention gaps, unknown services, schema URLs, retention and known ingestion lag. |
+| `get_mcp_stats` | MCP request/error totals and latency, grouped by server, tool, method, transport or failure class, with baseline comparison and evidence links. |
+| `list_sessions` | Sessions filtered by activity, errors, service, agent, model, token use, duration, annotations or attributes, with failure IDs and token totals by model. |
+| `list_traces` | Traces filtered by session, service, operation, release, failures, annotations, duration or attributes; choose errors anywhere or only at the root, or group matching traces. |
+| `get_trace` | One trace's spans, selected attributes and optional logs. Select all spans, errors, errors with ancestors or the critical path; results identify context, omitted spans, missing parents and links. |
+| `search_logs` | Matching logs and their trace/span/session links, optional neighboring records, or message patterns with counts and rare variants. |
+| `list_metrics` | Recorded instruments with kind, unit, description, temporality, supported aggregations, services and conflicting instrument definitions. |
+| `get_metric_series` | Series, attribute cardinality and coverage, suggested grouping keys, and new/stale flags for a metric and time window. |
+| `query_metric` | Metric buckets and comparisons, recorded unit, calculation method, approximation flag and exemplars. Supports rate, increase, delta and ratios; empty buckets are `null`. |
+| `ci_log` | CI runs and phases, failures first, with rerun attempts, provider links, error excerpts and comparison against a run or the last success. Filters apply before paging. |
+| `list_saved_queries` | Named filters stored in the authorized project, with paging and coverage. |
+| `run_saved_query` | Results of a stored filter, with coverage and the same attribute matcher operators as direct queries. |
+| `display_traces` | Interactive trace explorer with failure filtering, selected-span persistence and trace comparison. The comparison is side by side on wide screens and stacked on narrow ones. |
+| `display_mcp_dashboard` | Interactive MCP traffic and health using the same aggregates as `get_mcp_stats`, showing the request/error totals behind each rate and drill-down evidence. |
+| `fetch_telemetry` | Viewer-only incremental trace, log, comparison and MCP-statistics data; uses the same contracts as the corresponding model tools. |
 
 ## Write tools
 
-The read tools stay read-only. Five separate tools change something, so a client can approve reads and writes separately. They change only annotations and saved queries in the qyl project your account is authorized for:
+Six separate tools change project records. They do not change recorded telemetry, deploy software or roll it back. The host applies its own confirmation policy from the tool's explicit read-only and destructive annotations.
 
-| Tool | Changes | Scope |
+| Tool | Changes and read-back | Scope |
 | --- | --- | --- |
-| `create_annotation` | adds a plain-text note of at most 2000 characters on a trace, span or session | `qyl:write` |
-| `update_annotation` | replaces a note's text; what it is attached to stays fixed | `qyl:write` |
-| `create_saved_query` | adds a named filter for traces, logs or metrics | `qyl:write` |
-| `update_saved_query` | renames it or replaces its description or filter | `qyl:write` |
-| `delete` | removes one annotation or saved query (`kind` is `annotation` or `saved_query`) | `qyl:delete` |
+| `create_annotation` | Adds a plain-text note of at most 2000 characters to a trace, span, session or failure, with optional labels and `note`, `hypothesis`, `finding` or `rejected` classification. Read it through the corresponding trace, session or failure tool. | `qyl:write` |
+| `update_annotation` | Updates a note's text, labels or classification; its target stays fixed. Read the updated annotation with its target. | `qyl:write` |
+| `create_saved_query` | Adds a named filter for traces, logs or metrics. Read it with `list_saved_queries`, then use `run_saved_query`. | `qyl:write` |
+| `update_saved_query` | Renames a saved query or changes its description or filter. Read it with `list_saved_queries`. | `qyl:write` |
+| `delete` | Removes one annotation or saved query identified by `kind`, `id` and `etag`. | `qyl:delete` |
+| `update_failure_status` | Sets a failure to open, resolved or ignored, optionally with an assignee and an ignore deadline. Read it with `list_failures`; `triage` hides ignored failures until the deadline and marks resolved failures that recur as regressed. | `qyl:write` |
 
-`list_saved_queries` and `run_saved_query` read saved queries with `qyl:read`, and `get_trace` and `list_sessions` return the annotations on what they read. No tool deletes or edits traces, logs or metrics, deploys or rolls back software; retention removes telemetry.
+Updates, status changes and deletes require the current `etag`; stale versions fail with `precondition_failed` instead of overwriting a newer change. Read the object again before retrying. `create_annotation` and `create_saved_query` accept an optional `idempotency_key`: the same key within 24 hours returns the first result. Failure status never alters the telemetry behind the failure.
 
-Updates and deletes take the object's `etag` and send it as `If-Match`: a stale etag fails with `precondition_failed` instead of overwriting a newer version, and a duplicate saved-query name fails with `conflict`. A call whose token lacks the scope it needs gets `403` with `WWW-Authenticate: Bearer error="insufficient_scope"` naming the scopes to request, before the tool runs, so the client can re-authorize. A transport without that challenge returns the refusal as a tool error with the code `insufficient_scope`, for example “Reconnect qyl and allow qyl:write to use it.”
+Viewer annotations are written only after a user acts in the viewer. A bookmark is an annotation labelled `bookmark`.
+
+## Authentication and troubleshooting
+
+qyl is an OAuth 2.1 Resource Server. Auth0 at `https://qyl-eu.eu.auth0.com/` owns authorization and token issuance. The server checks the exact issuer, resource audience, expiry, RFC 9068 token profile, signature and required scopes. There is no anonymous hosted data access.
+
+- **Sign-in fails:** confirm the connector uses the exact `/mcp` resource, then reconnect and complete the authorization flow.
+- **A permission is missing:** reconnect and approve the scopes named by the challenge. Contact [support](/support/) if sign-in cannot grant them.
+- **No project is available:** contact support with the client name and the approximate failure time; never send credentials.
+- **Results are empty:** check the absolute window, service and filters, and confirm your application is sending OTLP to its configured collector project. See [getting started](/docs/getting-started/) for ingestion setup. Collector failures remain errors rather than fabricated empty data.
+- **A write conflicts:** read the target again for its current `etag` before repeating the change.
+
+The shared ChatGPT/Claude toolset uses MCP Apps for viewers, not Events, sampling, prompts or non-viewer resource templates.
 
 ## Local alternative
 
@@ -62,12 +108,6 @@ For a same-machine client, run the published server over stdio:
 npx -y qyl-mcp-server --stdio
 ```
 
-The stdio server exposes the same tools, the write tools included, and MCP Apps without creating an Internet-facing listener. Without OAuth there is no scope to check: the `write` and `delete` roles of the Collector key you configure decide whether a write succeeds, and demo mode (`QYL_DEMO=1`) refuses the annotation and saved-query tools.
+The stdio server exposes the same tools and MCP Apps without creating an Internet-facing listener. The Collector key's explicit `read`, `write` and `delete` roles control access. Demo mode (`QYL_DEMO=1`) uses generated sample data and refuses writes.
 
 Both transports use SDK v2 to serve `2026-07-28` and supported 2025-era tool clients. The workbench explicitly enables `versionNegotiation: { mode: "auto" }`; the SDK Client's own default remains the 2025 handshake. See [protocol support](/docs/protocol-2026-07-28/).
-
-## Optional ChatGPT Events
-
-On a supported ChatGPT connection using `2026-07-28`, `trace.error` subscriptions can report matching errors, optionally filtered by service. Enabling the feature does not subscribe anyone automatically. Ordinary read tools remain available to clients without Events support.
-
-An operator enables Events by configuring `MCP_EVENTS_STORE` on an authenticated deployment with persistent storage and the access checker described in the [server configuration](https://github.com/ANcpLua/qyl.mcp#mcp-events). The store retains subscription owner/client identifiers, callback and filter settings, signing keys, and expiry. It does not retain subscribers' OAuth access or refresh tokens or copy the collector's telemetry. Expiration, revoked access, or unsubscribe removes the subscription and stops delivery.

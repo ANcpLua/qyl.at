@@ -18,11 +18,11 @@ The stdio entry uses `serveStdio(factory)`. The opening exchange selects the pro
 
 The workbench explicitly configures `versionNegotiation: { mode: "auto" }`: try modern discovery, then use the SDK's 2025 fallback when appropriate. It records the revision actually negotiated. An SDK Client without this option still defaults to the 2025 handshake. Exact protocol pins remain in conformance tests for a particular era.
 
-## Modern requests and Events
+## Modern requests
 
 Modern discovery uses `server/discover`. Requests carry revision and capabilities in the reserved `_meta` envelope; `clientInfo` is optional. The SDK supplies server identity through `_meta["io.modelcontextprotocol/serverInfo"]` on responses.
 
-ChatGPT Events require `2026-07-28` and configured subscription storage. Ordinary tools remain available through both protocol eras.
+The shared ChatGPT and Claude deployment exposes the same 32-tool catalog through both protocol eras. Events are disabled; viewers use MCP Apps and fetch their data through the app-only `fetch_telemetry` tool.
 
 ## Reproducible dependencies
 
