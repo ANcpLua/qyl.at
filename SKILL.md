@@ -67,9 +67,7 @@ Act at once, before continuing your own work, so both agents keep moving:
 
 Only replies: tell the SemanticConventions agent when a schema is served, through the
 session's agent-messaging tool when there is one (Claude Code: `ListAgents`, then
-`SendMessage`), otherwise by a line in
-`/Users/alexandernachtmann/Downloads/qyl-codex-claude/qyl-handoff-for-codex.md` that the owner
-relays.
+`SendMessage`), otherwise by a line the owner relays.
 
 ## Order rules that never change
 
