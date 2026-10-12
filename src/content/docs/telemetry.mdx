@@ -26,7 +26,11 @@ Telemetry bindings name attributes, enum values, events and metrics. The product
 
 qyl generates C# and TypeScript semantic-convention bindings from the same resolved registry. The three `Qyl.Telemetry.SemanticConventions` NuGet packages and `@ancplua/qyl-semantic-conventions` share version {versionOf("Qyl.Telemetry.SemanticConventions")}. The C# packages separate stable and incubating conventions and provide an analyzer; the TypeScript package exposes its stable bindings at the package root and its incubating bindings at `@ancplua/qyl-semantic-conventions/incubating`. Generated outputs are committed and checked for drift, so a vocabulary change is reviewable alongside its registry input.
 
-qyl-owned .NET instrumentation and MCP operation telemetry use these generated names with the official SDKs. The qyl CLI runner already activates `Qyl.Telemetry.Hosting` through `AddQyl()` for its own diagnostics, exporting only when its dedicated diagnostics endpoint is configured. The collector and API hosts use the same producer pipeline. Generated constants do not update third-party instrumentation: another library can still emit an older attribute name. A newer SDK or an OTLP `schema_url` does not, by itself, rewrite those attributes.
+qyl-owned .NET instrumentation, MCP operation telemetry and the qyl.at browser Web Vitals emitter use these generated names with the official SDKs. The qyl CLI runner already activates `Qyl.Telemetry.Hosting` through `AddQyl()` for its own diagnostics, exporting only when its dedicated diagnostics endpoint is configured. The collector and API hosts use the same producer pipeline. Generated constants do not update third-party instrumentation: another library can still emit an older attribute name. A newer SDK or an OTLP `schema_url` does not, by itself, rewrite those attributes.
+
+## Browser Web Vitals
+
+qyl.at sends the generated `browser.web_vital` event through the official OpenTelemetry JavaScript log SDK and exporter. Each event carries the Web Vitals library’s real metric-instance ID, value, delta, rating and navigation type, with a bounded pathname and browser language. LCP and INP values and deltas are milliseconds; CLS is unitless. The instrumentation scope identifies the qyl schema. Cached pages using the older payload remain accepted through a legacy event path without inventing missing IDs or deltas. Viewport dimensions and device memory are not forwarded.
 
 ## What the collector changes
 
