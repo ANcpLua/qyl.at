@@ -93,13 +93,13 @@ export const release = [
   },
   {
     name: "Qyl.Api.Contracts",
-    version: "12.1.0",
+    version: "12.1.1",
     registry: "https://www.nuget.org/packages/Qyl.Api.Contracts",
     summary: "The generated .NET contract for every Qyl request and response.",
   },
   {
     name: "@ancplua/qyl-api-schema",
-    version: "12.1.0",
+    version: "12.1.1",
     registry: "https://www.npmjs.com/package/@ancplua/qyl-api-schema",
     summary: "The same contract for TypeScript consumers, with its Zod export.",
   },
