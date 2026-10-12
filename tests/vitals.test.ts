@@ -3,6 +3,7 @@ import { createServer } from "node:http";
 import test from "node:test";
 import { handleVitals, validPayload } from "../worker/index.ts";
 import { readingFromMetric, type VitalPayload } from "../src/lib/vitals-payload.ts";
+import { versionOf } from "../src/data/site.ts";
 import type { Metric } from "web-vitals";
 
 
@@ -370,7 +371,7 @@ test("canonical three-metric wire uses generated events and fields without priva
     const wire = JSON.parse(capturedBody) as { resourceLogs: Array<{ resource: { attributes: Attribute[] }; scopeLogs: Array<{ schemaUrl?: string; logRecords: Array<{ eventName: string; attributes: Attribute[] }> }> }> };
     const resource = wire.resourceLogs[0];
     assert.equal(resource.resource.attributes.find(a => a.key === "service.version")?.value.stringValue, "deploy123");
-    assert.equal(resource.scopeLogs[0].schemaUrl, "https://qyl.at/schemas/9.9.0");
+    assert.equal(resource.scopeLogs[0].schemaUrl, `https://qyl.at/schemas/${versionOf("Qyl.Telemetry.SemanticConventions")}`);
     const logs = resource.scopeLogs[0].logRecords;
     assert.equal(logs.length, 3);
     const expectedNames = ["cls", "inp", "lcp"];
