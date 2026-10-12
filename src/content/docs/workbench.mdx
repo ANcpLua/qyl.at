@@ -6,9 +6,9 @@ order: 2
 
 ## Start the workbench
 
-The workbench lives in the separate `qyl.mcp` repository. Bun 1.4 is the runtime
-and the only package manager there — one `bun.lock`, no npm install path — and
-the repository runs on Node.js 24.
+The workbench lives in the separate `qyl.mcp` repository. Bun 1.4 is the package manager and runs the MCP server executable. The workbench
+and dashboard library consumers run on Node.js 24. The repository uses one
+`bun.lock` for all three workspaces.
 
 ```bash
 git clone https://github.com/ANcpLua/qyl.mcp.git

@@ -45,13 +45,13 @@ export const releaseWave = "2026-10-12" as const;
 export const release = [
   {
     name: "qyl",
-    version: "12.1.0",
+    version: "12.1.1",
     registry: "https://www.nuget.org/packages/qyl",
     summary: "The dotnet tool: native collector, embedded dashboard, product API.",
   },
   {
     name: "Qyl.Api.Sdk",
-    version: "12.1.0",
+    version: "12.1.1",
     registry: "https://www.nuget.org/packages/Qyl.Api.Sdk",
     summary: "MSBuild SDK for a Native AOT ASP.NET Core API behind one AddQylApi call.",
   },
@@ -69,25 +69,25 @@ export const release = [
   },
   {
     name: "Qyl.Telemetry.SemanticConventions",
-    version: "9.9.0",
+    version: "9.9.1",
     registry: "https://www.nuget.org/packages/Qyl.Telemetry.SemanticConventions",
     summary: "Weaver-generated C# attribute, enum, event and metric constants.",
   },
   {
     name: "Qyl.Telemetry.SemanticConventions.Incubating",
-    version: "9.9.0",
+    version: "9.9.1",
     registry: "https://www.nuget.org/packages/Qyl.Telemetry.SemanticConventions.Incubating",
     summary: "The same generation for conventions upstream has not stabilised.",
   },
   {
     name: "Qyl.Telemetry.SemanticConventions.Analyzers",
-    version: "9.9.0",
+    version: "9.9.1",
     registry: "https://www.nuget.org/packages/Qyl.Telemetry.SemanticConventions.Analyzers",
     summary: "Compile-time diagnostics against the generated vocabulary.",
   },
   {
     name: "@ancplua/qyl-semantic-conventions",
-    version: "9.9.0",
+    version: "9.9.1",
     registry: "https://www.npmjs.com/package/@ancplua/qyl-semantic-conventions",
     summary: "TypeScript attribute, enum, event and metric constants from the same resolved registry as C#.",
   },
@@ -105,7 +105,7 @@ export const release = [
   },
   {
     name: "qyl-mcp-server",
-    version: "7.7.0",
+    version: "8.0.0",
     registry: "https://www.npmjs.com/package/qyl-mcp-server",
     summary: "The MCP server: stdio locally, Streamable HTTP hosted.",
   },

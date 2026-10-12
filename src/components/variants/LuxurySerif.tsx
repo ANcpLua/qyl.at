@@ -122,7 +122,7 @@ export default function LuxurySerif() {
               </div>
               <div className="border-t border-[#D8D1C4] py-6">
                 <p className="mb-4 text-[11px] uppercase tracking-[0.16em] text-[#5A5348]">03 — Connect your coding agent</p>
-                <pre tabIndex={0} className="overflow-x-auto font-mono text-[13px] leading-7 focus-visible:outline focus-visible:outline-offset-2"><code><span className="font-semibold">npx</span> -y qyl-mcp-server --stdio</code></pre>
+                <pre tabIndex={0} className="overflow-x-auto font-mono text-[13px] leading-7 focus-visible:outline focus-visible:outline-offset-2"><code><span className="font-semibold">bunx</span> qyl-mcp-server --stdio</code></pre>
                 <a href="/docs/mcp/" className={`${link} mt-3`}>MCP configuration <span aria-hidden="true" className="ml-3 text-base">↗</span></a>
               </div>
               <p className="border-t border-[#D8D1C4] pt-5 text-[12px] leading-relaxed text-[#5A5348]">Dashboard at <code className="font-mono">127.0.0.1:5100</code> after startup.<br />qyl is free. <a href="/pricing/" className="underline decoration-[#1A1712]/40 underline-offset-4 focus-visible:outline">Read what’s included.</a></p>

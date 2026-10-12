@@ -102,12 +102,14 @@ The shared ChatGPT/Claude toolset uses MCP Apps for viewers, not Events, samplin
 
 ## Local alternative
 
-For a same-machine client, run the published server over stdio:
+Install Bun 1.4 or newer, then run the published server over stdio for a same-machine client:
 
 ```bash
-npx -y qyl-mcp-server --stdio
+bunx qyl-mcp-server --stdio
 ```
 
-The stdio server exposes the same tools and MCP Apps without creating an Internet-facing listener. The Collector key's explicit `read`, `write` and `delete` roles control access. Demo mode (`QYL_DEMO=1`) uses generated sample data and refuses writes.
+The stdio server exposes the same tools and MCP Apps without creating an Internet-facing listener. The Collector key's explicit `read`, `write` and `delete` roles control access.
+
+`npx` and `pnpm dlx` also run the executable when Bun is installed.
 
 Both transports use SDK v2 to serve `2026-07-28` and supported 2025-era tool clients. The workbench explicitly enables `versionNegotiation: { mode: "auto" }`; the SDK Client's own default remains the 2025 handshake. See [protocol support](/docs/protocol-2026-07-28/).

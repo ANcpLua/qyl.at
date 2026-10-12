@@ -145,7 +145,7 @@ export default function SystemClassic() {
                   </tbody>
                 </table>
               </div>
-              <p className="px-4 py-3 font-mono text-xs font-bold break-all">npx -y qyl-mcp-server --stdio</p>
+              <p className="px-4 py-3 font-mono text-xs font-bold break-all">bunx qyl-mcp-server --stdio</p>
             </Window>
           </div>
         </section>

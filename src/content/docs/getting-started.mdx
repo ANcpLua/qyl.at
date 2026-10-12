@@ -8,7 +8,7 @@ import ReleaseTable from "../../components/ReleaseTable.astro";
 
 ## What starts locally
 
-qyl ships as a .NET tool. The package contains the native collector and embedded dashboard for your current runtime identifier; it does not clone a repository or require Node.js. The optional stdio MCP server needs Node.js.
+qyl ships as a .NET tool. The package contains the native collector and embedded dashboard for your current runtime identifier; it does not clone a repository or require Node.js. The optional local MCP server needs Bun 1.4 or newer.
 
 ```bash
 dotnet tool install --global qyl
@@ -39,7 +39,7 @@ export OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
 Run the application, then connect an MCP client and ask your agent about the run rather than reading a dashboard yourself:
 
 ```bash
-npx -y qyl-mcp-server --stdio
+bunx qyl-mcp-server --stdio
 ```
 
 The server uses MCP TypeScript SDK v2 to serve `2026-07-28` and supported 2025-era clients, including clients that open with `initialize`. See [protocol support](/docs/protocol-2026-07-28/) for how the two paths are selected.
@@ -73,7 +73,7 @@ The three SemanticConventions NuGet packages and `@ancplua/qyl-semantic-conventi
 `Qyl.Api.Sdk` is an MSBuild SDK for a Native AOT ASP.NET Core API. One line registers validation, problem details, the OpenAPI document and the telemetry above; see [API SDK](/docs/api-sdk/).
 
 ```xml
-<Project Sdk="Qyl.Api.Sdk/12.1.0">
+<Project Sdk="Qyl.Api.Sdk/12.1.1">
 ```
 
 ## What is retained

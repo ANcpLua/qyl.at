@@ -79,7 +79,7 @@ export default function CorporateTrust() {
           <ol className="min-w-0 space-y-6">{[
             { title: "Run qyl on your machine", text: "The dotnet tool includes the native collector, dashboard and product API.", cmd: "qyl", rest: " up" },
             { title: "Point your SDK at the receiver", text: "Export telemetry from your application using its OpenTelemetry SDK.", cmd: "export", rest: " OTEL_EXPORTER_OTLP_ENDPOINT=http://127.0.0.1:4318" },
-            { title: "Connect your MCP client", text: "Use the stdio server with your client, then ask what the last run did.", cmd: "npx", rest: " -y qyl-mcp-server --stdio" },
+            { title: "Connect your MCP client", text: "Use the stdio server with your client, then ask what the last run did.", cmd: "bunx", rest: " qyl-mcp-server --stdio" },
           ].map(({title,text,cmd,rest},i)=><li key={title} className="grid grid-cols-[36px_minmax(0,1fr)] gap-4"><span className="flex h-9 w-9 items-center justify-center rounded-full border border-[#D3DAE5] bg-white font-mono text-xs tabular-nums">0{i+1}</span><div><h3 className="pt-1 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-relaxed text-[#4A5666]">{text}</p><pre className="mt-3 overflow-x-auto rounded-md border border-[#E1E7EF] bg-white p-4 text-xs leading-6"><code><span className="text-[#1B4DB1]">{cmd}</span>{rest}</code></pre></div></li>)}</ol>
         </div>
       </section>

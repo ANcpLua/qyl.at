@@ -8,7 +8,7 @@ import { externalLinks, primaryNavigation, productNavigation, versionOf } from "
 // The two-tone split hero follows the installed Hero6 source; real commands replace its slideshow.
 const startCommand = "dotnet tool install --global qyl\nqyl up";
 const exporterCommand = "export OTEL_EXPORTER_OTLP_ENDPOINT=http://127.0.0.1:4318\nexport OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf";
-const mcpCommand = "npx -y qyl-mcp-server --stdio";
+const mcpCommand = "bunx qyl-mcp-server --stdio";
 const focus = "focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-700";
 const shell = "mx-auto max-w-6xl px-5 sm:px-8";
 

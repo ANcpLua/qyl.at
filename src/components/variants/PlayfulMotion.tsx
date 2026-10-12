@@ -4,7 +4,7 @@ import { ArrowDown, ArrowRight, ArrowUpRight, Check, ChevronDown, Code2, Copy, D
 import { externalLinks, versionOf } from "../../data/site";
 
 const installCommand = "dotnet tool install --global qyl\nqyl up";
-const mcpCommand = "npx -y qyl-mcp-server --stdio";
+const mcpCommand = "bunx qyl-mcp-server --stdio";
 const focus = "focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#ab371d]";
 const feedback = "motion-safe:transition-transform motion-safe:duration-200 motion-safe:hover:-translate-y-0.5 motion-safe:active:scale-[0.97] motion-reduce:transform-none";
 
@@ -133,7 +133,7 @@ export default function PlayfulMotion() {
             <div className="self-center">
               <div className="rounded-[20px] bg-[#fffdf8] p-5 sm:p-6">
                 <div className="mb-5 flex items-center justify-between gap-3"><span className="flex items-center gap-2 text-xs font-medium"><Terminal className="size-4" aria-hidden="true" /> Local MCP · stdio</span><button type="button" data-copy-command={mcpCommand} aria-label="Copy local MCP command" className={`inline-flex min-h-11 items-center gap-1.5 rounded-full px-3 text-xs font-semibold hover:bg-[#f3eee5] ${focus}`}><Copy className="size-3.5" aria-hidden="true" /><span data-copy-label aria-live="polite">Copy</span></button></div>
-                <pre className="overflow-x-auto pb-2 font-mono text-xs leading-7 sm:text-sm"><code><span className="text-[#ab371d]">npx</span> -y qyl-mcp-server --stdio</code></pre>
+                <pre className="overflow-x-auto pb-2 font-mono text-xs leading-7 sm:text-sm"><code><span className="text-[#ab371d]">bunx</span> qyl-mcp-server --stdio</code></pre>
               </div>
               <details className="group mt-4 rounded-[20px] border border-[#d8cfc2]">
                 <summary className={`flex min-h-14 cursor-pointer list-none items-center justify-between gap-5 rounded-[20px] px-5 py-4 text-sm font-semibold [&::-webkit-details-marker]:hidden ${focus}`}>
