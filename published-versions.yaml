@@ -1,7 +1,7 @@
 # Published and indexed versions of the qyl-dev repos, read from the registries.
-# The registries are the truth; after a release is indexed the releasing agent runs
-# qyl.at/scripts/refresh-published-versions.sh (SKILL.md in each repo), which rewrites,
-# commits and pushes this file; git log dates each refresh.
+# The registries are the truth; each producer's release.sh runs
+# qyl.at/scripts/refresh-published-versions.sh once its release is indexed and verified,
+# which rewrites, commits and pushes this file; git log dates each refresh.
 repos:
   qyl:
     nuget: {qyl: 12.2.1, qyl.osx-arm64: 12.2.1, qyl.osx-x64: 12.2.1, qyl.linux-arm64: 12.2.1, qyl.linux-x64: 12.2.1, qyl.win-x64: 12.2.1, qyl.win-arm64: 12.2.1, Qyl.Api.Sdk: 12.2.1}
