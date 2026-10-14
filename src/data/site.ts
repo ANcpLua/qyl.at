@@ -93,19 +93,19 @@ export const release = [
   },
   {
     name: "Qyl.Api.Contracts",
-    version: "12.1.1",
+    version: "12.1.2",
     registry: "https://www.nuget.org/packages/Qyl.Api.Contracts",
     summary: "The generated .NET contract for every Qyl request and response.",
   },
   {
     name: "@ancplua/qyl-api-schema",
-    version: "12.1.1",
+    version: "12.1.2",
     registry: "https://www.npmjs.com/package/@ancplua/qyl-api-schema",
     summary: "The same contract for TypeScript consumers, with its Zod export.",
   },
   {
     name: "qyl-mcp-server",
-    version: "8.0.0",
+    version: "8.1.0",
     registry: "https://www.npmjs.com/package/qyl-mcp-server",
     summary: "The MCP server: stdio locally, Streamable HTTP hosted.",
   },
