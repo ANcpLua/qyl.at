@@ -54,13 +54,11 @@ artifact gate and the unit tests, which `./release.sh` runs; the Playwright suit
 
 Act at once, before continuing your own work, so both agents keep moving:
 
-- `SCHEMA <version>` from SemanticConventions: create `public/schemas/<version>` from the
-  previous version's file, with `schema_url: https://qyl.at/schemas/<version>` and the new
-  version entry; set the SemanticConventions version in `src/data/site.ts` only after that
-  release is indexed (so the schema can be served while `site.ts` still lists the previous
-  version); run `bun run check`; commit `chore: serve schema <version>`; push `main`;
-  `./release.sh`; reply to SemanticConventions' agent when `https://qyl.at/schemas/<version>`
-  returns 200.
+- Schema for a SemanticConventions release: no message arrives any more. SemanticConventions'
+  `release.sh` creates `public/schemas/<version>` in this clone from the previous file, commits
+  `chore: serve schema <version>`, pushes `main` and runs `./release.sh` here, so pull before
+  you touch `main`. `src/data/site.ts` moves to that version only after the release is indexed
+  (RELEASE message below).
 - `RELEASE <package> <version>` from any producer: set the version in `src/data/site.ts` and
   any literal `scripts/check-versions.mjs` names; `bun install` only if a `package.json` pin
   changed (not frozen: it rewrites `bun.lock`); `bun run check`; commit
