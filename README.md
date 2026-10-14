@@ -71,8 +71,11 @@ remain out-of-band deployed release evidence.
 
 ## Deploy
 
-`./release.sh` owns the deploy (see `SKILL.md`): it builds, runs the gates and deploys the
-Worker from the current `main` commit; nothing deploys on push. It refuses without Cloudflare
+Nothing deploys on push: `./release.sh` is the release entry and, on a clean `main` equal to
+`origin/main`, builds, runs the artifact gate and unit tests, runs `wrangler deploy` to the
+`qyl-at` Worker and checks that https://qyl.at/ answers 200; `bun run deploy` runs the same
+`wrangler deploy` after the full `bun run test` (Playwright included), without the branch and
+HTTP checks. `./release.sh` refuses without Cloudflare
 credentials (`bunx wrangler login` once, or a token registered in Vitals) rather than
 skipping, because a silently skipped deploy leaves the live site on whatever was last deployed.
 
@@ -108,8 +111,8 @@ and on a `public/sitemap.xml` that disagrees with the built routes.
 
 `astro`, `@astrojs/mdx` and `vite` are pinned to exact versions: they decide the emitted
 HTML and asset graph that the byte budgets in `scripts/check-artifacts.mjs` measure, so
-each upgrade arrives as its own Renovate PR and is merged only after `bun run test` re-clears
-the gate locally, rather than riding along inside a lockfile-maintenance bump. Everything else floats on a
+each upgrade arrives as its own Renovate update and is applied after `bun run test` passes
+locally, rather than riding along inside a lockfile-maintenance bump. Everything else floats on a
 caret range.
 
 ## React Bits Pro and MCP
@@ -122,8 +125,7 @@ The installed `shadcn` CLI reads that file. Verify the real MCP initialize/tool 
 bun run check:mcp
 ```
 
-The local Codex MCP server uses `shadcn mcp --cwd <this checkout>`. Restart Codex after
-changing its MCP configuration. Registry search and installation require network access.
+Registry search and installation require network access.
 Licensed design instructions under `src/skills`, `src/prompts`, and `src/recipes` are
 local-only; the adapted application components under `src/components/variants` are source.
 The byte gate also counts hydrated islands if a future component introduces one. `finalize-site.mjs`
@@ -134,10 +136,7 @@ works under the existing deployed Content-Security-Policy.
 
 The variant sources live in `src/components/variants`; `src/data/variants.ts` controls
 labels and ordering. `src/styles/variants.css` contains only Tailwind import/source directives.
-`VariantLayout.astro` handles metadata and shared behavior. Each variant has a separate
-Git worktree under `/private/tmp/qyl-ui-lab/worktrees/` on this workstation, including the
-original setup skill and all 19 remaining Agent Kit documents under `upstream/`.
-Those instructions and licensed unmodified source references are local-only.
+`VariantLayout.astro` handles metadata and shared behavior.
 
 Run the design checks and refresh real preview screenshots with:
 

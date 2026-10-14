@@ -105,7 +105,7 @@ export const release = [
   },
   {
     name: "qyl-mcp-server",
-    version: "8.1.0",
+    version: "8.1.1",
     registry: "https://www.npmjs.com/package/qyl-mcp-server",
     summary: "The MCP server: stdio locally, Streamable HTTP hosted.",
   },

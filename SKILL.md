@@ -17,8 +17,11 @@ artifact gate and the unit tests, which `./release.sh` runs; the Playwright suit
   the only place a product version is written (`scripts/check-versions.mjs` holds every literal
   on the site to it, and requires `public/schemas/<version>` for the SemanticConventions
   version it names).
-- Deploy command: `./release.sh` (build, artifact gate, unit tests, deploy, HTTP 200 check);
-  `./release.sh --dry-run` only when unsure.
+- Deploy: nothing deploys on push; `./release.sh` is the release entry and, on a clean `main`
+  equal to `origin/main`, builds, runs the artifact gate and unit tests, runs `wrangler deploy`
+  to the `qyl-at` Worker and checks that https://qyl.at/ answers 200; `bun run deploy` runs the
+  same `wrangler deploy` after the full `bun run test` (Playwright included), without the branch
+  and HTTP checks. `./release.sh --dry-run` only when unsure.
 - Credentials: a wrangler login session on this Mac (`bunx wrangler login`, once), or a
   Cloudflare API token registered in Vitals at `~/.config/vitals/cloudflare-qyl-at-token`,
   which the command exports as `CLOUDFLARE_API_TOKEN`. Never print, paste, commit or log a
@@ -33,7 +36,7 @@ artifact gate and the unit tests, which `./release.sh` runs; the Playwright suit
 
 1. `git pull --ff-only origin main`.
 2. `mise install`, then `bun install --frozen-lockfile`.
-3. Read `/Users/alexandernachtmann/Downloads/qyl-codex-claude/qyl-published-versions.yaml`, then compare every version in `src/data/site.ts` with the index: npm `npm view <package> version`;
+3. Compare every version in `src/data/site.ts` with the index: npm `npm view <package> version`;
    NuGet `curl -fsSL https://api.nuget.org/v3-flatcontainer/<id, lowercase>/index.json` (last
    entry). List a version only when the index confirms it; if the index is ahead, re-pin first
    (section "When a release lands"), then start the actual work.
@@ -73,4 +76,4 @@ session's agent-messaging tool when there is one (Claude Code: `ListAgents`, the
 
 - Serve the schema before SemanticConventions pushes; list the version after the index
   confirms it.
-- Pushing `main` here deploys nothing; `./release.sh` does.
+- Pushing `main` here deploys nothing; `./release.sh` (or `bun run deploy`) does.
