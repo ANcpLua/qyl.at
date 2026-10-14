@@ -138,14 +138,10 @@ The variant sources live in `src/components/variants`; `src/data/variants.ts` co
 labels and ordering. `src/styles/variants.css` contains only Tailwind import/source directives.
 `VariantLayout.astro` handles metadata and shared behavior.
 
-Run the design checks and refresh real preview screenshots with:
-
-```bash
-bun run build:site
-bunx playwright test --project=surface tests/lab.spec.ts
-bun run build:site
-```
-
-The last build includes the screenshots created in `public/lab-previews/`. Full desktop
-and mobile evidence stays outside the published site in `evidence/designs/`. Vite caches
+Run the design checks with `mise run test-gates` (or, after `bun run build:site`,
+`bunx playwright test --project=surface tests/lab.spec.ts`). The gallery serves the tracked
+`public/lab-previews/<slug>.png`; the gate compares each against a fresh capture and never
+writes it. After an intended design change, copy `evidence/designs/<slug>-preview.png` over
+the preview and rebuild. Full desktop and mobile evidence stays outside the published site
+in `evidence/designs/`. Vite caches
 are scoped to each checkout so parallel worktree builds do not share optimizer state.

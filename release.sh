@@ -3,7 +3,7 @@
 #
 #   ./release.sh            build, artifact gate, unit tests, deploy main to qyl.at
 #   ./release.sh --dry-run  build, artifact gate and `wrangler deploy --dry-run`; nothing is deployed
-# The Playwright suite (`bun run test:gates`) is on demand, not a deploy precondition.
+# The Playwright suite (`mise run test-gates`) is on demand, not a deploy precondition.
 #
 # qyl.at has no package version of its own: a "release" is a deploy of main. What it
 # carries for the other repos: public/schemas/<version> (served before a SemanticConventions

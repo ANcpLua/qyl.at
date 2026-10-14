@@ -1,6 +1,9 @@
+import { readFileSync } from "node:fs";
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
+import { PNG } from "pngjs";
 import { variants } from "../src/data/variants";
+import { maxSurfaceDifferenceRatio, surfaceDifferenceRatio } from "./surface-comparison";
 
 for (const variant of variants) {
   test(`${variant.name} is light, accessible, responsive and works without React hydration`, async ({ page, context }) => {
@@ -25,7 +28,14 @@ for (const variant of variants) {
       expect(layout.width, `overflow at ${width}: ${JSON.stringify(layout.overflow)}`).toBeLessThanOrEqual(width);
     }
     await page.goto(`/lab/${variant.slug}/`, { waitUntil: "networkidle" });
-    await page.screenshot({ path: `public/lab-previews/${variant.slug}.png`, animations: "disabled" });
+    // The gallery serves the tracked public/lab-previews/<slug>.png; the gate compares
+    // against it and never writes it, so a run leaves the tree clean. A deliberate
+    // design change copies evidence/designs/<slug>-preview.png over it.
+    const preview = PNG.sync.read(await page.screenshot({ path: `evidence/designs/${variant.slug}-preview.png`, animations: "disabled" }));
+    const served = PNG.sync.read(readFileSync(`public/lab-previews/${variant.slug}.png`));
+    const stale = `public/lab-previews/${variant.slug}.png no longer matches the page; if the change is intended, copy evidence/designs/${variant.slug}-preview.png over it`;
+    expect({ width: preview.width, height: preview.height }, stale).toEqual({ width: served.width, height: served.height });
+    expect(surfaceDifferenceRatio(served, preview), stale).toBeLessThanOrEqual(maxSurfaceDifferenceRatio);
     await page.screenshot({ path: `evidence/designs/${variant.slug}-desktop.png`, fullPage: true, animations: "disabled" });
     await page.setViewportSize({ width: 390, height: 844 });
     await page.screenshot({ path: `evidence/designs/${variant.slug}-mobile.png`, fullPage: true, animations: "disabled" });
