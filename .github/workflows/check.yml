@@ -1,0 +1,54 @@
+# The gates, reporting only: `mise run check` and `mise run test-gates` (site build + the
+# Playwright surface suite in Chromium) on every push to main and every pull request. Nothing
+# deploys or waits for this run; qyl.at deploys only through ./release.sh. A failed run keeps
+# artifacts/logs, wrangler's debug log and Playwright's test-results as gate-log.
+name: check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: jdx/mise-action@2d8d4cafcbd33be2ea37d2b6f5ad595363d1f1ca # v5.1.1
+
+      - name: Gate
+        run: mise run check
+
+      - name: Playwright Chromium
+        run: bunx playwright install --with-deps chromium
+
+      # wrangler dev (the Playwright webServer) writes its only readable failure detail to its
+      # debug log; keep it in the workspace so a failed run carries it.
+      - name: Test gates
+        run: mise run test-gates
+        env:
+          WRANGLER_LOG_PATH: ${{ github.workspace }}/wrangler-logs
+
+      - name: Keep the gate log
+        if: failure()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: gate-log
+          path: |
+            artifacts/logs/
+            wrangler-logs/
+            test-results/
+          if-no-files-found: ignore
+          retention-days: 7
