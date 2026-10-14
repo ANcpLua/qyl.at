@@ -28,6 +28,17 @@ qyl generates C# and TypeScript semantic-convention bindings from the same resol
 
 qyl-owned .NET instrumentation, MCP operation telemetry and the qyl.at browser Web Vitals emitter use these generated names with the official SDKs. The qyl CLI runner already activates `Qyl.Telemetry.Hosting` through `AddQyl()` for its own diagnostics, exporting only when its dedicated diagnostics endpoint is configured. The collector and API hosts use the same producer pipeline. Generated constants do not update third-party instrumentation: another library can still emit an older attribute name. A newer SDK or an OTLP `schema_url` does not, by itself, rewrite those attributes.
 
+## Instrumenting a .NET application
+
+The instrumentation API is written for a model that instruments an application on its first attempt, with the compiler and the analyzers as its only reviewer. `Qyl.Telemetry.Hosting` {versionOf("Qyl.Telemetry.Hosting")} carries the consumer guide as `SKILL.md` at its package root; this is the short version.
+
+- `builder.AddQyl()` already records HTTP server and client calls, Npgsql commands, Kafka produce and receive and, after `UseOpenTelemetry()`, chat and tool spans. `service.name`, `service.version` and `deployment.environment.name` come from the build and the host.
+- Your own spans start through the starters in `Qyl.Spans` and `Qyl.IncubatingSpans`, never `new ActivitySource` or a raw `StartActivity` (QYL0111, an error): `Spans.Work("checkout")` for business work no convention describes, `Spans.DbClient(...)` for a store no library records, `IncubatingSpans.MessagingProcessConsumer(...)`, `GenAiInvokeAgent(...)` and `GenAiExecuteTool(...)`.
+- Business facts go on the span with `SetAppTag("order.id", orderId)`, which writes `qyl.app.order.id`. The collector keeps at most 16 such keys per span, values up to 256 characters, and drops a key that names a denied token or a key the registry does not persist (`qyl.app.user.email` is dropped like `user.email`).
+- A failure is recorded with `span.RecordFailure(ErrorType.Custom("rate_limit_exceeded"), "...")`.
+
+Three things the compiler cannot see: the messaging parent context (`MessagingProcessConsumer` needs the producer's `ActivityContext` from the message headers, or the message starts a new trace); `UseOpenTelemetry()` with a custom source name, whose spans nothing exports; and which business keys identify the work, which only the application knows.
+
 ## Browser Web Vitals
 
 qyl.at sends the generated `browser.web_vital` event through the official OpenTelemetry JavaScript log SDK and exporter. Each event carries the Web Vitals library’s real metric-instance ID, value, delta, rating and navigation type, with a bounded pathname and browser language. LCP and INP values and deltas are milliseconds; CLS is unitless. The instrumentation scope identifies the qyl schema. Cached pages using the older payload remain accepted through a legacy event path without inventing missing IDs or deltas. Viewport dimensions and device memory are not forwarded.
