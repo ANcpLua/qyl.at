@@ -19,7 +19,10 @@ concurrency:
 
 jobs:
   check:
-    runs-on: ubuntu-latest
+    # macOS, like the machine the served lab previews (public/lab-previews) are rendered on:
+    # tests/lab.spec.ts holds each page to its preview within 0.5 % of the pixels, and Linux
+    # Chromium rasterizes the same text 2-4 % differently.
+    runs-on: macos-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
