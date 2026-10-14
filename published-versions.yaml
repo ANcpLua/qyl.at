@@ -1,0 +1,27 @@
+# Published and indexed versions of the qyl-dev repos, read from the registries.
+# The registries are the truth; the releasing agent rewrites this file right after its
+# release is indexed: ./refresh-published-versions.sh (SKILL.md in each repo). Generated 2026-10-14T13:26Z.
+repos:
+  qyl:
+    nuget: {qyl: 12.2.0, qyl.osx-arm64: 12.2.0, qyl.osx-x64: 12.2.0, qyl.linux-arm64: 12.2.0, qyl.linux-x64: 12.2.0, qyl.win-x64: 12.2.0, qyl.win-arm64: 12.2.0, Qyl.Api.Sdk: 12.2.0}
+    latest: 12.2.0
+    deploys: https://api.qyl.at (qyl-collector, Railway) on push to main; serving contract revision sha256:41d5630fd3633e2a
+  qyl-api-schema:
+    nuget: {Qyl.Api.Contracts: 12.1.2}
+    npm: {"@ancplua/qyl-api-schema": 12.1.2}
+    latest: 12.1.2
+    contract_revision_served: sha256:41d5630fd3633e2a
+  qyl.mcp:
+    npm: {qyl-mcp-server: 8.1.1}
+    latest: 8.1.1
+    deploys: https://mcp.qyl.at (qyl-mcp, Railway) on push to main; healthz 200
+  Qyl.Telemetry.AutoInstrumentation:   # renamed from Qyl.OpenTelemetry.AutoInstrumentation on 2026-10-11; the old URL redirects
+    nuget: {Qyl.Telemetry.AutoInstrumentation: 24.1.0, Qyl.Telemetry.AutoInstrumentation.Hosting: 24.1.0, Qyl.Telemetry.AutoInstrumentation.SqlClient: 24.1.0, Qyl.Telemetry.AutoInstrumentation.DiagnosticListeners: 24.1.0, Qyl.Telemetry.AutoInstrumentation.EntityFrameworkCore: 24.1.0, Qyl.Telemetry.Hosting: 24.1.0}
+    latest: 24.1.0
+  Qyl.Telemetry.SemanticConventions:   # renamed from Qyl.OpenTelemetry.SemanticConventions on 2026-10-11; the old URL redirects
+    nuget: {Qyl.Telemetry.SemanticConventions: 9.9.2, Qyl.Telemetry.SemanticConventions.Incubating: 9.9.2, Qyl.Telemetry.SemanticConventions.Analyzers: 9.9.2}
+    npm: {"@ancplua/qyl-semantic-conventions": 9.9.2}
+    latest: 9.9.2
+    schema_served: https://qyl.at/schemas/9.9.2 (200)
+  qyl.at:
+    publishes: nothing; ./release.sh deploys https://qyl.at from main (nothing deploys on push); https://qyl.at/ 200

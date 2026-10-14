@@ -5,7 +5,7 @@ One agent per qyl-dev repo (qyl, qyl.mcp, qyl-api-schema, Qyl.Telemetry.AutoInst
 ## This repository
 
 - Publishes nothing to a registry. A release is `./release.sh`: a deploy of `main` to the `qyl-at` Worker (its header lists what it runs). The Playwright suite (`mise run test-gates`) runs on demand, not before every deploy.
-- Carries for the other repos: `public/schemas/<version>`, served before a SemanticConventions release, and `src/data/site.ts`, the only place a product version is written; `scripts/check-versions.mjs` holds every literal to it and requires `public/schemas/<version>` for the SemanticConventions version it names.
+- Carries for the other repos: `public/schemas/<version>`, served before a SemanticConventions release, and `src/data/site.ts`, the only place a product version is written; `scripts/check-versions.mjs` holds every literal to it and requires `public/schemas/<version>` for the SemanticConventions version it names; and `published-versions.yaml`, the release record every agent reads first, which `scripts/refresh-published-versions.sh` rewrites from the registries, commits alone and pushes (every repo's SKILL.md runs it after a release).
 - Credentials: a `bunx wrangler login` session, or the Cloudflare API token in Vitals at `~/.config/vitals/cloudflare-qyl-at-token`, exported by the script as `CLOUDFLARE_API_TOKEN`. Never print, paste, commit or log it. Neither present: stop and tell the owner.
 - Upstream pins: every version in `src/data/site.ts` (`qyl`, `Qyl.Api.Sdk`, `Qyl.Telemetry.AutoInstrumentation`, `Qyl.Telemetry.SemanticConventions`, `@ancplua/qyl-api-schema`, `@ancplua/qyl-semantic-conventions`, `Qyl.Api.Contracts`, `qyl-mcp-server`). Consumers: none.
 
@@ -18,7 +18,7 @@ One agent per qyl-dev repo (qyl, qyl.mcp, qyl-api-schema, Qyl.Telemetry.AutoInst
 
 1. `./release.sh` (`--dry-run` first only when unsure; fix whatever it refuses).
 2. The changed page shows the change (the script already checks that https://qyl.at/ answers 200).
-3. Run `/Users/alexandernachtmann/Downloads/qyl-codex-claude/refresh-published-versions.sh` so the snapshot records the served schema and the site state.
+3. Run `scripts/refresh-published-versions.sh` so the snapshot records the served schema and the site state.
 
 ## When a release lands
 
