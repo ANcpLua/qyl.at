@@ -4,7 +4,7 @@
 # commits and pushes this file; git log dates each refresh.
 repos:
   qyl:
-    nuget: {qyl: 12.2.0, qyl.osx-arm64: 12.2.0, qyl.osx-x64: 12.2.0, qyl.linux-arm64: 12.2.0, qyl.linux-x64: 12.2.0, qyl.win-x64: 12.2.0, qyl.win-arm64: 12.2.0, Qyl.Api.Sdk: 12.2.0}
+    nuget: {qyl: 12.2.0, qyl.osx-arm64: 12.2.1, qyl.osx-x64: 12.2.1, qyl.linux-arm64: 12.2.0, qyl.linux-x64: 12.2.0, qyl.win-x64: 12.2.0, qyl.win-arm64: 12.2.0, Qyl.Api.Sdk: 12.2.0}
     latest: 12.2.0
     deploys: https://api.qyl.at (qyl-collector, Railway) on push to main; serving contract revision sha256:41d5630fd3633e2a
   qyl-api-schema:
@@ -17,8 +17,8 @@ repos:
     latest: 8.1.2
     deploys: https://mcp.qyl.at (qyl-mcp, Railway) on push to main; healthz 200
   Qyl.Telemetry.AutoInstrumentation:   # renamed from Qyl.OpenTelemetry.AutoInstrumentation on 2026-10-11; the old URL redirects
-    nuget: {Qyl.Telemetry.AutoInstrumentation: 24.1.0, Qyl.Telemetry.AutoInstrumentation.Hosting: 24.1.0, Qyl.Telemetry.AutoInstrumentation.SqlClient: 24.1.0, Qyl.Telemetry.AutoInstrumentation.DiagnosticListeners: 24.1.0, Qyl.Telemetry.AutoInstrumentation.EntityFrameworkCore: 24.1.0, Qyl.Telemetry.Hosting: 24.1.0}
-    latest: 24.1.0
+    nuget: {Qyl.Telemetry.AutoInstrumentation: 24.1.1, Qyl.Telemetry.AutoInstrumentation.Hosting: 24.1.1, Qyl.Telemetry.AutoInstrumentation.SqlClient: 24.1.1, Qyl.Telemetry.AutoInstrumentation.DiagnosticListeners: 24.1.1, Qyl.Telemetry.AutoInstrumentation.EntityFrameworkCore: 24.1.1, Qyl.Telemetry.Hosting: 24.1.1}
+    latest: 24.1.1
   Qyl.Telemetry.SemanticConventions:   # renamed from Qyl.OpenTelemetry.SemanticConventions on 2026-10-11; the old URL redirects
     nuget: {Qyl.Telemetry.SemanticConventions: 9.9.2, Qyl.Telemetry.SemanticConventions.Incubating: 9.9.2, Qyl.Telemetry.SemanticConventions.Analyzers: 9.9.2}
     npm: {"@ancplua/qyl-semantic-conventions": 9.9.2}
