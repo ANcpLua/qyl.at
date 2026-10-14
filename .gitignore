@@ -3,6 +3,8 @@ dist
 # Per-route budget evidence from scripts/check-artifacts.mjs. Outside dist/ on
 # purpose: everything in dist/ is uploaded and served by the Worker.
 evidence
+# Gate logs written by scripts/quiet.sh.
+artifacts
 .astro
 .wrangler
 .playwright

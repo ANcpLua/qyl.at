@@ -6,8 +6,11 @@
 "node" = "24.21.0"
 
 [tasks.check]
-description = "The gate before a push or a deploy"
-run = [
-  "bun install --frozen-lockfile",
-  "bun run check",
-]
+description = "The gate before a push or a deploy; a line per step, full log in artifacts/logs, QYL_VERBOSE=1 prints everything"
+quiet = true
+run = "scripts/quiet.sh check 'bun install --frozen-lockfile' 'bun run check'"
+
+[tasks.test-gates]
+description = "The on-demand Playwright suite (bun run test:gates) after a build; quiet like check"
+quiet = true
+run = "scripts/quiet.sh test-gates 'bun run build' 'bun run test:gates'"
