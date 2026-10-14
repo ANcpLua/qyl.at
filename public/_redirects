@@ -1,4 +1,4 @@
-# The URL structure is a redirect obligation from launch onward (AGENTS.md).
+# The URL structure is a redirect obligation from launch onward (README.md).
 # /welcome/ was a live, indexed URL on the GitHub Pages site whose whole job was
 # to point at the homepage; the Astro rebuild deleted the stub, so without this
 # rule every existing link, bookmark and search result for it lands on the 404

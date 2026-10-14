@@ -1,77 +1,28 @@
 # qyl.at: deploy, served schemas and listed versions
 
-Who reads this: the one agent working on this repository's `main`. Agent, user and owner are
-the same word. There is one agent per repository, six in all (qyl, qyl.mcp, qyl-api-schema,
-Qyl.Telemetry.AutoInstrumentation, Qyl.Telemetry.SemanticConventions, qyl.at), each on its own
-`main`. Commit and push to `main` directly: no pull requests, no CI, no branch rules. bun is the
-package manager (`bun.lock`). The deploy gate is `bun run build` (check and site build), the
-artifact gate and the unit tests, which `./release.sh` runs; the Playwright suite
-(`bun run test:gates`) runs on demand, not before every deploy.
+One agent per qyl-dev repo (qyl, qyl.mcp, qyl-api-schema, Qyl.Telemetry.AutoInstrumentation, Qyl.Telemetry.SemanticConventions, qyl.at), each on its own `main`; agent, user and owner are one word. No PR, no CI, no deploy workflow.
 
 ## This repository
 
-- Publishes nothing to a registry. A "release" is a deploy of `main` to the `qyl-at` Cloudflare
-  Worker at qyl.at. Nothing deploys on push: run the command.
-- What it carries for the other repos: `public/schemas/<version>`, the telemetry schema a
-  SemanticConventions release must have served before its NuGet push; and `src/data/site.ts`,
-  the only place a product version is written (`scripts/check-versions.mjs` holds every literal
-  on the site to it, and requires `public/schemas/<version>` for the SemanticConventions
-  version it names).
-- Deploy: nothing deploys on push; `./release.sh` is the release entry and, on a clean `main`
-  equal to `origin/main`, builds, runs the artifact gate and unit tests, runs `wrangler deploy`
-  to the `qyl-at` Worker and checks that https://qyl.at/ answers 200; `bun run deploy` runs the
-  same `wrangler deploy` after the full `bun run test` (Playwright included), without the branch
-  and HTTP checks. `./release.sh --dry-run` only when unsure.
-- Credentials: a wrangler login session on this Mac (`bunx wrangler login`, once), or a
-  Cloudflare API token registered in Vitals at `~/.config/vitals/cloudflare-qyl-at-token`,
-  which the command exports as `CLOUDFLARE_API_TOKEN`. Never print, paste, commit or log a
-  token. If neither exists, stop and tell the owner.
-- Upstream pins this repo must keep fresh: every version in `src/data/site.ts` (`qyl`,
-  `Qyl.Api.Sdk`, `Qyl.Telemetry.AutoInstrumentation`, `Qyl.Telemetry.SemanticConventions`,
-  `@ancplua/qyl-api-schema`, `@ancplua/qyl-semantic-conventions`, `Qyl.Api.Contracts`, `qyl-mcp-server`), and
-  `public/schemas/<version>` for the SemanticConventions version listed.
-- Consumers to notify: none.
+- Publishes nothing to a registry. A release is `./release.sh`: a deploy of `main` to the `qyl-at` Worker (its header lists what it runs). The Playwright suite (`bun run test:gates`) runs on demand, not before every deploy.
+- Carries for the other repos: `public/schemas/<version>`, served before a SemanticConventions release, and `src/data/site.ts`, the only place a product version is written; `scripts/check-versions.mjs` holds every literal to it and requires `public/schemas/<version>` for the SemanticConventions version it names.
+- Credentials: a `bunx wrangler login` session, or the Cloudflare API token in Vitals at `~/.config/vitals/cloudflare-qyl-at-token`, exported by the script as `CLOUDFLARE_API_TOKEN`. Never print, paste, commit or log it. Neither present: stop and tell the owner.
+- Upstream pins: every version in `src/data/site.ts` (`qyl`, `Qyl.Api.Sdk`, `Qyl.Telemetry.AutoInstrumentation`, `Qyl.Telemetry.SemanticConventions`, `@ancplua/qyl-api-schema`, `@ancplua/qyl-semantic-conventions`, `Qyl.Api.Contracts`, `qyl-mcp-server`). Consumers: none.
 
-## Before any work: the stale-version guard
+## Stale-version guard, before any work
 
-1. `git pull --ff-only origin main`.
-2. `mise install`, then `bun install --frozen-lockfile`.
-3. Compare every version in `src/data/site.ts` with the index: npm `npm view <package> version`;
-   NuGet `curl -fsSL https://api.nuget.org/v3-flatcontainer/<id, lowercase>/index.json` (last
-   entry). List a version only when the index confirms it; if the index is ahead, re-pin first
-   (section "When a release lands"), then start the actual work.
+1. `git pull --ff-only origin main`, `mise install`, `bun install --frozen-lockfile`.
+2. Compare every `site.ts` version with the index: `npm view <package> version`; NuGet `curl -fsSL https://api.nuget.org/v3-flatcontainer/<id, lowercase>/index.json` (last entry). If the index is ahead, re-pin first.
 
-## Deploying
+## Deploy
 
-1. `./release.sh --dry-run`; fix whatever it refuses.
-2. `./release.sh`.
-3. Verify by reading: `curl -sI https://qyl.at/ | head -1` is 200, and the page that changed
-   shows the change. Then run
-   `/Users/alexandernachtmann/Downloads/qyl-codex-claude/refresh-published-versions.sh` so the
-   snapshot records the served schema and the site state.
+1. `./release.sh` (`--dry-run` first only when unsure; fix whatever it refuses).
+2. The changed page shows the change (the script already checks that https://qyl.at/ answers 200).
+3. Run `/Users/alexandernachtmann/Downloads/qyl-codex-claude/refresh-published-versions.sh` so the snapshot records the served schema and the site state.
 
-## When a message lands and you are the consumer
+## When a release lands
 
-Act at once, before continuing your own work, so both agents keep moving:
+Act at once, before your own work:
 
-- Schema for a SemanticConventions release: no message arrives any more. SemanticConventions'
-  `release.sh` creates `public/schemas/<version>` in this clone from the previous file, commits
-  `chore: serve schema <version>`, pushes `main` and runs `./release.sh` here, so pull before
-  you touch `main`. `src/data/site.ts` moves to that version only after the release is indexed
-  (RELEASE message below).
-- `RELEASE <package> <version>` from any producer: set the version in `src/data/site.ts` and
-  any literal `scripts/check-versions.mjs` names; `bun install` only if a `package.json` pin
-  changed (not frozen: it rewrites `bun.lock`); `bun run check`; commit
-  `chore: list <package> <version>`; push `main`; `./release.sh`.
-
-## Notify
-
-Only replies: tell the SemanticConventions agent when a schema is served, through the
-session's agent-messaging tool when there is one (Claude Code: `ListAgents`, then
-`SendMessage`), otherwise by a line the owner relays.
-
-## Order rules that never change
-
-- Serve the schema before SemanticConventions pushes; list the version after the index
-  confirms it.
-- Pushing `main` here deploys nothing; `./release.sh` (or `bun run deploy`) does.
+- SemanticConventions schema: its `release.sh` creates `public/schemas/<version>` in this clone, commits `chore: serve schema <version>`, pushes `main` and runs `./release.sh` here; pull before you touch `main`.
+- `RELEASE <package> <version>`, listed only once the index confirms it: set it in `src/data/site.ts` and any literal `scripts/check-versions.mjs` names; `bun install` only if a `package.json` pin changed (not frozen, it rewrites `bun.lock`); `bun run check`; commit `chore: list <package> <version>`; push `main`; `./release.sh`.

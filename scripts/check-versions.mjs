@@ -182,7 +182,7 @@ const schemaFile = path.join(root, "public", "schemas", semconvVersion);
 const schemaRelative = relativePath(schemaFile);
 check(
   fs.existsSync(schemaFile) && fs.statSync(schemaFile).isFile(),
-  `${schemaRelative}: missing. site.ts says Qyl.Telemetry.SemanticConventions ${semconvVersion}, and https://qyl.at/schemas/${semconvVersion} is the schema_url that version's packages carry; serve the file before the version is listed (AGENTS.md, release ripple).`,
+  `${schemaRelative}: missing. site.ts says Qyl.Telemetry.SemanticConventions ${semconvVersion}, and https://qyl.at/schemas/${semconvVersion} is the schema_url that version's packages carry; serve the file before the version is listed (SKILL.md).`,
 );
 if (fs.existsSync(schemaFile) && fs.statSync(schemaFile).isFile()) {
   const schema = fs.readFileSync(schemaFile, "utf8");
