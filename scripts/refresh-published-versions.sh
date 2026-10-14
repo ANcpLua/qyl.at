@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Rewrites published-versions.yaml at the qyl.at repo root from the registries (npm, nuget.org),
-# api.qyl.at/health and qyl.at, commits it alone and pushes main when it changed. Every qyl-dev
-# repo's SKILL.md runs it after a release is indexed; the registries are the truth.
+# api.qyl.at/health and qyl.at, commits it alone and pushes main when it changed. Every producer's
+# release.sh runs it at the end of its detached verification, after the release smoke passed
+# (qyl.at's SKILL.md runs it after a deploy); the registries are the truth.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 # Use Node's HTTPS implementation: npm already requires Node, and this avoids
@@ -52,9 +53,9 @@ version_snapshot=$(mktemp "./.published-versions.XXXXXX")
 trap 'rm -f "$version_snapshot"' EXIT
 {
 echo "# Published and indexed versions of the qyl-dev repos, read from the registries."
-echo "# The registries are the truth; after a release is indexed the releasing agent runs"
-echo "# qyl.at/scripts/refresh-published-versions.sh (SKILL.md in each repo), which rewrites,"
-echo "# commits and pushes this file; git log dates each refresh."
+echo "# The registries are the truth; each producer's release.sh runs"
+echo "# qyl.at/scripts/refresh-published-versions.sh once its release is indexed and verified,"
+echo "# which rewrites, commits and pushes this file; git log dates each refresh."
 echo "repos:"
 echo "  qyl:"
 echo "    nuget: {qyl: $(nu qyl), qyl.osx-arm64: $(nu qyl.osx-arm64), qyl.osx-x64: $(nu qyl.osx-x64), qyl.linux-arm64: $(nu qyl.linux-arm64), qyl.linux-x64: $(nu qyl.linux-x64), qyl.win-x64: $(nu qyl.win-x64), qyl.win-arm64: $(nu qyl.win-arm64), Qyl.Api.Sdk: $(nu Qyl.Api.Sdk)}"
