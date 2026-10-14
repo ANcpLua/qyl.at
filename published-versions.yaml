@@ -13,8 +13,8 @@ repos:
     latest: 12.1.2
     contract_revision_served: sha256:41d5630fd3633e2a
   qyl.mcp:
-    npm: {qyl-mcp-server: 8.1.3}
-    latest: 8.1.3
+    npm: {qyl-mcp-server: 8.1.4}
+    latest: 8.1.4
     deploys: https://mcp.qyl.at (qyl-mcp, Railway) on push to main; healthz 200
   Qyl.Telemetry.AutoInstrumentation:   # renamed from Qyl.OpenTelemetry.AutoInstrumentation on 2026-10-11; the old URL redirects
     nuget: {Qyl.Telemetry.AutoInstrumentation: 25.0.0, Qyl.Telemetry.AutoInstrumentation.Hosting: 25.0.0, Qyl.Telemetry.AutoInstrumentation.SqlClient: 25.0.0, Qyl.Telemetry.AutoInstrumentation.DiagnosticListeners: 25.0.0, Qyl.Telemetry.AutoInstrumentation.EntityFrameworkCore: 25.0.0, Qyl.Telemetry.Hosting: 25.0.0}
