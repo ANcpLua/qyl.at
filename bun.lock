@@ -5,7 +5,7 @@
     "": {
       "name": "qyl.at",
       "dependencies": {
-        "@ancplua/qyl-semantic-conventions": "9.9.1",
+        "@ancplua/qyl-semantic-conventions": "9.9.2",
         "@opentelemetry/api": "^1.9.1",
         "@opentelemetry/exporter-logs-otlp-http": "^0.223.0",
         "@opentelemetry/resources": "^2.12.0",
@@ -48,7 +48,7 @@
     },
   },
   "packages": {
-    "@ancplua/qyl-semantic-conventions": ["@ancplua/qyl-semantic-conventions@9.9.1", "", {}, "sha512-ETdD+Rp5KcO85ansG0o1Vy0zZ0siRx/0HNG74XiFJfeZE/iwG4JLhcgAKA1MG796PXM+a5VFbV/UWomHMuON8A=="],
+    "@ancplua/qyl-semantic-conventions": ["@ancplua/qyl-semantic-conventions@9.9.2", "", {}, "sha512-tY5B0icGS2OGXTAj7XqBD96kLaVFEgPHaTBN/O+YdPmMDTtVIfnaL+fEj9uNH9AjGmb/riuMn4AFV768ZCpL6A=="],
 
     "@astrojs/astro2tsx": ["@astrojs/astro2tsx@0.1.2", "", { "dependencies": { "@emnapi/core": "1.11.3", "@napi-rs/wasm-runtime": "1.2.4" } }, "sha512-Uj/M9zbrhu5cIZEvWAGTbQJRKSxXWJ/E59BZwt7F+chrKhbfttW+9rkS/l+1QxoJP1KU3UnpM62M7yszfAI0WA=="],
 
