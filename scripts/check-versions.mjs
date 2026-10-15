@@ -16,7 +16,7 @@
 // Four independent checks, any of which can go red on its own:
 //   1. The two lockstep claims site.ts documents hold. The footer `headline` is
 //      derived from `release`, so it cannot disagree with it, but it states six
-//      entries for eleven packages on the strength of these two facts, and so does
+//      entries for twelve packages on the strength of these two facts, and so does
 //      the FAQ.
 //   2. Every literal that must exist, exists verbatim where it is anchored,
 //      built from `release`.
