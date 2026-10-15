@@ -45,31 +45,31 @@ export const releaseWave = "2026-10-15" as const;
 export const release = [
   {
     name: "qyl",
-    version: "13.1.0",
+    version: "13.2.0",
     registry: "https://www.nuget.org/packages/qyl",
     summary: "The dotnet tool: native collector, embedded dashboard, product API.",
   },
   {
     name: "Qyl.Api.Sdk",
-    version: "13.1.0",
+    version: "13.2.0",
     registry: "https://www.nuget.org/packages/Qyl.Api.Sdk",
     summary: "MSBuild SDK for a Native AOT ASP.NET Core API behind one AddQylApi call.",
   },
   {
     name: "Qyl.Orchestration",
-    version: "13.1.0",
+    version: "13.2.0",
     registry: "https://www.nuget.org/packages/Qyl.Orchestration",
     summary: "Reusable process host with service references, readiness checks and application cleanup.",
   },
   {
     name: "Qyl.Telemetry.AutoInstrumentation",
-    version: "25.0.3",
+    version: "25.1.0",
     registry: "https://www.nuget.org/packages/Qyl.Telemetry.AutoInstrumentation",
     summary: "Compile-time .NET instrumentation; writes generated constants only.",
   },
   {
     name: "Qyl.Telemetry.Hosting",
-    version: "25.0.3",
+    version: "25.1.0",
     registry: "https://www.nuget.org/packages/Qyl.Telemetry.Hosting",
     summary: "The AddQyl() activation line and the attribute-stamping processor.",
   },
@@ -119,7 +119,7 @@ export const release = [
 
 // The footer states the wave on every page, so a reader never has to find the
 // documentation table to know which release the page describes. Six entries
-// cover eleven packages: four semantic-conventions packages share a version, and Hosting
+// cover twelve packages: four semantic-conventions packages share a version, and Hosting
 // ships in lockstep with AutoInstrumentation -- `scripts/check-versions.mjs`
 // asserts both. The versions come from `release`, never from a second literal.
 const headlineNames = [
