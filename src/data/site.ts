@@ -40,20 +40,26 @@ export const externalLinks = {
 // cannot fall behind the feeds while another page is current. The literals no
 // expression can replace are held to this array by `scripts/check-versions.mjs`,
 // which runs in `bun run check`.
-export const releaseWave = "2026-10-14" as const;
+export const releaseWave = "2026-10-15" as const;
 
 export const release = [
   {
     name: "qyl",
-    version: "13.0.1",
+    version: "13.1.0",
     registry: "https://www.nuget.org/packages/qyl",
     summary: "The dotnet tool: native collector, embedded dashboard, product API.",
   },
   {
     name: "Qyl.Api.Sdk",
-    version: "13.0.1",
+    version: "13.1.0",
     registry: "https://www.nuget.org/packages/Qyl.Api.Sdk",
     summary: "MSBuild SDK for a Native AOT ASP.NET Core API behind one AddQylApi call.",
+  },
+  {
+    name: "Qyl.Orchestration",
+    version: "13.1.0",
+    registry: "https://www.nuget.org/packages/Qyl.Orchestration",
+    summary: "Reusable process host with service references, readiness checks and application cleanup.",
   },
   {
     name: "Qyl.Telemetry.AutoInstrumentation",

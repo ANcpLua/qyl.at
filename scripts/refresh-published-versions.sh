@@ -1,19 +1,32 @@
 #!/usr/bin/env bash
 # Rewrites published-versions.yaml at the qyl.at repo root from the registries (npm, nuget.org),
 # api.qyl.at/health and qyl.at, commits it alone and pushes main when it changed. Every producer's
-# release.sh runs it at the end of its detached verification, after the release smoke passed
+# release.sh runs it after its release verification and smoke pass
 # (qyl.at's SKILL.md runs it after a deploy); the registries are the truth.
 set -euo pipefail
 cd "$(dirname "$0")/.."
+expected_nuget_version=
+expected_nuget_ids=()
+if (($#)); then
+  [[ $1 == --expect-nuget && $# -ge 3 ]] || {
+    echo "usage: $0 [--expect-nuget <version> <package-id> ...]" >&2; exit 2;
+  }
+  expected_nuget_version=$2
+  shift 2
+  expected_nuget_ids=("$@")
+fi
 # Use Node's HTTPS implementation: npm already requires Node, and this avoids
 # the system curl TLS/HTTP2 failures observed during release recovery.
 fetch_public() {
-  node - "$1" "$2" <<'NODE'
+  [[ ! -f $query_cache/failed ]] || return 1
+  if node - "$1" "$2" <<'NODE'
 const https = require('node:https');
 const [url, mode] = process.argv.slice(2);
 function get(address, redirects = 0) {
   return new Promise((resolve, reject) => {
-    const request = https.get(address, { agent: false }, response => {
+    const requestUrl = new URL(address);
+    if (requestUrl.hostname === 'api.nuget.org') requestUrl.searchParams.set('qyl-refresh', `${Date.now()}-${process.pid}`);
+    const request = https.get(requestUrl, { agent: false, headers: { 'Cache-Control': 'no-cache' } }, response => {
       if (response.statusCode >= 300 && response.statusCode < 400 && response.headers.location && redirects < 5) {
         response.resume();
         resolve(get(new URL(response.headers.location, address), redirects + 1));
@@ -24,7 +37,7 @@ function get(address, redirects = 0) {
       response.on('error', reject);
       response.on('end', () => resolve({ status: response.statusCode, body: Buffer.concat(chunks).toString('utf8') }));
     });
-    request.setTimeout(120000, () => request.destroy(new Error('HTTPS timeout')));
+    request.setTimeout(30000, () => request.destroy(new Error('HTTPS timeout')));
     request.on('error', reject);
   });
 }
@@ -43,14 +56,43 @@ function get(address, redirects = 0) {
   }
 })().catch(error => { console.error(error.message); process.exitCode = 1; });
 NODE
+  then
+    return 0
+  else
+    : >"$query_cache/failed"
+    return 1
+  fi
 }
-nu() { fetch_public "https://api.nuget.org/v3-flatcontainer/$(tr '[:upper:]' '[:lower:]' <<<"$1")/index.json" body 2>/dev/null | python3 -I -c 'import json,sys; print(json.load(sys.stdin)["versions"][-1])' 2>/dev/null || echo "QUERY_FAILED"; }
-np() { npm view "$1" version --fetch-timeout=30000 --fetch-retries=2 2>/dev/null || echo "QUERY_FAILED"; }
+# Read each registry entry once per refresh, including a failed query. Repeated fields then
+# describe the same registry response instead of racing another publisher between requests.
+nu() {
+  local id cache_file
+  id=$(tr '[:upper:]' '[:lower:]' <<<"$1")
+  cache_file="$query_cache/nuget-$id"
+  if [[ ! -f $cache_file ]]; then
+    fetch_public "https://api.nuget.org/v3-flatcontainer/$id/index.json" body 2>/dev/null |
+      python3 -I -c 'import json,sys; print(json.load(sys.stdin)["versions"][-1])' >"$cache_file" 2>/dev/null ||
+      echo "QUERY_FAILED" >"$cache_file"
+  fi
+  cat "$cache_file"
+}
+np() {
+  local cache_file="$query_cache/npm-${1//\//_}"
+  [[ ! -f $query_cache/failed ]] || { echo "QUERY_FAILED"; return; }
+  if [[ ! -f $cache_file ]]; then
+    npm view "$1" version --fetch-timeout=30000 --fetch-retries=2 >"$cache_file" 2>/dev/null || {
+      echo "QUERY_FAILED" >"$cache_file"
+      : >"$query_cache/failed"
+    }
+  fi
+  cat "$cache_file"
+}
 code() { fetch_public "$1" status || echo 000; }
+query_cache=$(mktemp -d "${TMPDIR:-/tmp}/qyl-published-queries.XXXXXX")
+version_snapshot=$(mktemp "./.published-versions.XXXXXX")
+trap 'rm -rf "$query_cache"; rm -f "$version_snapshot"' EXIT
 rev=$(fetch_public https://api.qyl.at/health body | python3 -I -c 'import json,sys; print(json.load(sys.stdin).get("contract_revision"))' 2>/dev/null || echo QUERY_FAILED)
 sc=$(nu Qyl.Telemetry.SemanticConventions)
-version_snapshot=$(mktemp "./.published-versions.XXXXXX")
-trap 'rm -f "$version_snapshot"' EXIT
 {
 echo "# Published and indexed versions of the qyl-dev repos, read from the registries."
 echo "# The registries are the truth; each producer's release.sh runs"
@@ -58,7 +100,7 @@ echo "# qyl.at/scripts/refresh-published-versions.sh once its release is indexed
 echo "# which rewrites, commits and pushes this file; git log dates each refresh."
 echo "repos:"
 echo "  qyl:"
-echo "    nuget: {qyl: $(nu qyl), qyl.osx-arm64: $(nu qyl.osx-arm64), qyl.osx-x64: $(nu qyl.osx-x64), qyl.linux-arm64: $(nu qyl.linux-arm64), qyl.linux-x64: $(nu qyl.linux-x64), qyl.win-x64: $(nu qyl.win-x64), qyl.win-arm64: $(nu qyl.win-arm64), Qyl.Api.Sdk: $(nu Qyl.Api.Sdk)}"
+echo "    nuget: {qyl: $(nu qyl), qyl.osx-arm64: $(nu qyl.osx-arm64), qyl.osx-x64: $(nu qyl.osx-x64), qyl.linux-arm64: $(nu qyl.linux-arm64), qyl.linux-x64: $(nu qyl.linux-x64), qyl.win-x64: $(nu qyl.win-x64), qyl.win-arm64: $(nu qyl.win-arm64), Qyl.Api.Sdk: $(nu Qyl.Api.Sdk), Qyl.Orchestration: $(nu Qyl.Orchestration)}"
 echo "    latest: $(nu qyl)"
 echo "    deploys: https://api.qyl.at (qyl-collector, Railway) on push to main; serving contract revision $rev"
 echo "  qyl-api-schema:"
@@ -85,6 +127,13 @@ if grep -Eq 'QUERY_FAILED|not published|\(000\)' "$version_snapshot"; then
   echo "Registry refresh failed; previous complete snapshot was preserved." >&2
   exit 1
 fi
+for package in ${expected_nuget_ids[@]+"${expected_nuget_ids[@]}"}; do
+  actual=$(nu "$package")
+  if [[ $actual != "$expected_nuget_version" ]]; then
+    echo "Expected $package $expected_nuget_version, registry returned $actual; previous snapshot preserved." >&2
+    exit 1
+  fi
+done
 mv -f "$version_snapshot" published-versions.yaml
 cat published-versions.yaml
 
