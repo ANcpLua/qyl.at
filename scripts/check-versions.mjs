@@ -3,7 +3,7 @@
 // `src/data/site.ts` is the only place a product version is written, and pages
 // state versions by calling `versionOf`. A few places cannot: an MDX frontmatter
 // `description` is YAML, and a fenced code example showing
-// `<Project Sdk="Qyl.Api.Sdk/13.0.0">` has to show the literal a reader will
+// `<Project Sdk="Qyl.Api.Sdk/13.0.1">` has to show the literal a reader will
 // copy. Those stay literals, and this gate holds each of them to `site.ts` at
 // its exact location, so a wave that bumps the array turns red instead of
 // leaving a stale number in a copy-paste example. (The example in this comment

@@ -45,25 +45,25 @@ export const releaseWave = "2026-10-14" as const;
 export const release = [
   {
     name: "qyl",
-    version: "13.0.0",
+    version: "13.0.1",
     registry: "https://www.nuget.org/packages/qyl",
     summary: "The dotnet tool: native collector, embedded dashboard, product API.",
   },
   {
     name: "Qyl.Api.Sdk",
-    version: "13.0.0",
+    version: "13.0.1",
     registry: "https://www.nuget.org/packages/Qyl.Api.Sdk",
     summary: "MSBuild SDK for a Native AOT ASP.NET Core API behind one AddQylApi call.",
   },
   {
     name: "Qyl.Telemetry.AutoInstrumentation",
-    version: "25.0.1",
+    version: "25.0.2",
     registry: "https://www.nuget.org/packages/Qyl.Telemetry.AutoInstrumentation",
     summary: "Compile-time .NET instrumentation; writes generated constants only.",
   },
   {
     name: "Qyl.Telemetry.Hosting",
-    version: "25.0.1",
+    version: "25.0.2",
     registry: "https://www.nuget.org/packages/Qyl.Telemetry.Hosting",
     summary: "The AddQyl() activation line and the attribute-stamping processor.",
   },
