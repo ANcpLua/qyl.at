@@ -47,3 +47,23 @@ assertions. Completed runs can be compared and exported as contract-validated JS
 or Markdown.
 
 Workbench state defaults to `~/.qyl/mcp-workbench.json` and uses atomic replacement with private filesystem modes.
+
+
+## Inspect with mcpdo
+
+For terminal debugging, read the installed tool's guidance first:
+
+```bash
+mcpdo --help
+mcpdo agent-help
+mcpdo connect --help
+```
+
+After connecting an authenticated named target, inspect its actual tools and make a read call:
+
+```bash
+mcpdo @qyl tools/list --format json
+mcpdo @qyl tools/call search_logs --tool-args-json '{"query":"error","limit":20}' --format json
+```
+
+`qyl` above is the connection name you chose. Use the client's credential store and registered OAuth configuration; do not put bearer tokens in command history. A read-scoped login can verify reads and permission errors, but does not prove write behavior. Keep response coverage and continuation cursors when inspecting a large result; the first page is not the full record set.

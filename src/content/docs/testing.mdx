@@ -1,0 +1,27 @@
+---
+title: Telemetry testing
+description: Test exported traces, logs and metrics with a real OTLP receiver and native MSTest execution.
+order: 6
+---
+
+import { versionOf } from "../../data/site";
+
+`Qyl.Telemetry.Testing` captures what an application exports over OTLP/HTTP protobuf, including gzip. The current package is **{versionOf("Qyl.Telemetry.Testing")}**. It targets .NET 10; its MSTest integration uses the official framework and runner.
+
+```bash
+dotnet add package Qyl.Telemetry.Testing
+```
+
+Start an owned `OtlpReceiver`, configure the application's exporters with its endpoint, exercise the real application, and await the evidence your test requires. `AwaitAsync` has a bounded deadline and preserves caller cancellation. Stop and flush producers before disposing the receiver.
+
+The capture includes traces, logs and all five metric shapes, with typed values, resource and scope metadata, span events, links and exemplars. `Snapshot().Requests` retains original protobuf payloads before decoding, including rejected records and unknown fields. Export receipts retain diagnostics. Diagnostic JSON includes the complete metric shape and points.
+
+`QylTrace` selects a trace without deleting the full capture. Its service-call graph uses unique span identities, so retransmitting an export does not invent another call. Database identity includes system, server and namespace.
+
+Metrics usually describe a process or aggregation window. Attribute them to an invocation only through an explicit resource partition or matching exemplar. Seeing a metric near a request is not correlation.
+
+`RegistryConformance.Check(capture)` checks observed attribute types and registered metric units. Custom application names remain valid; deprecated conventions remain visible. An empty capture cannot pass conformance. The audit does not invent required attributes or infer the originating SDK instrument from an exported aggregation.
+
+The optional `[QylTelemetry]` integration delegates to the original MSTest method attribute. The consuming test assembly owns the documented global initialize and cleanup hooks. Discovery locations, data-row identity, duration and original failures remain the runner's responsibility.
+
+See the [package source and executable examples](https://github.com/ANcpLua/Qyl.Telemetry.Testing) and the [MSTest 4.5.1 living reference](https://github.com/ANcpLua/mstest-samples-with-docs-4.5.1). Capturing an export proves its wire content; query the collector separately when the assertion concerns persistence.

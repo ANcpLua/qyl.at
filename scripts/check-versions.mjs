@@ -3,7 +3,7 @@
 // `src/data/site.ts` is the only place a product version is written, and pages
 // state versions by calling `versionOf`. A few places cannot: an MDX frontmatter
 // `description` is YAML, and a fenced code example showing
-// `<Project Sdk="Qyl.Api.Sdk/13.2.0">` has to show the literal a reader will
+// `<Project Sdk="Qyl.Api.Sdk/14.0.0">` has to show the literal a reader will
 // copy. Those stay literals, and this gate holds each of them to `site.ts` at
 // its exact location, so a wave that bumps the array turns red instead of
 // leaving a stale number in a copy-paste example. (The example in this comment
@@ -15,8 +15,8 @@
 //
 // Four independent checks, any of which can go red on its own:
 //   1. The two lockstep claims site.ts documents hold. The footer `headline` is
-//      derived from `release`, so it cannot disagree with it, but it states six
-//      entries for twelve packages on the strength of these two facts, and so does
+//      derived from `release`, so it cannot disagree with it, but it states seven
+//      entries for thirteen packages on the strength of these two facts, and so does
 //      the FAQ.
 //   2. Every literal that must exist, exists verbatim where it is anchored,
 //      built from `release`.

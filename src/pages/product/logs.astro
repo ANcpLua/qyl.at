@@ -7,7 +7,7 @@ import ProductPage from "../../components/ProductPage.astro";
   eyebrow="Product · logs"
   intro="Search the records around a failure without leaving the code or losing the trace that led you there."
   heading="Runtime evidence, correlated before it reaches the agent."
-  description="Logs share the collector and product contract with traces. Search stays read-only, bounded, and credential-redacted; live collector failure remains a real error rather than switching to generated data."
+  description="Severity, service and text filters apply to stored records before pagination. Continue through older pages, including errors beyond the live tail. A missing event time uses its observation time for display; historical unknown times stay unknown. Logs retain their trace identity, typed body and named events."
   capabilities={[
     { name: "search_logs", description: "Search collected telemetry by text, severity, session, trace, or time window." },
     { name: "list_sessions", description: "Find session-scoped runs and their explicit token or cost evidence where the source reports it." },
