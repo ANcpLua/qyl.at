@@ -20,9 +20,9 @@ repos:
     nuget: {Qyl.Telemetry.AutoInstrumentation: 25.1.0, Qyl.Telemetry.AutoInstrumentation.Hosting: 25.1.0, Qyl.Telemetry.AutoInstrumentation.SqlClient: 25.1.0, Qyl.Telemetry.AutoInstrumentation.DiagnosticListeners: 25.1.0, Qyl.Telemetry.AutoInstrumentation.EntityFrameworkCore: 25.1.0, Qyl.Telemetry.Hosting: 25.1.0}
     latest: 25.1.0
   Qyl.Telemetry.SemanticConventions:   # renamed from Qyl.OpenTelemetry.SemanticConventions on 2026-10-11; the old URL redirects
-    nuget: {Qyl.Telemetry.SemanticConventions: 11.0.0, Qyl.Telemetry.SemanticConventions.Incubating: 11.0.0, Qyl.Telemetry.SemanticConventions.Analyzers: 11.0.0}
-    npm: {"@ancplua/qyl-semantic-conventions": 11.0.0}
-    latest: 11.0.0
-    schema_served: https://qyl.at/schemas/11.0.0 (200)
+    nuget: {Qyl.Telemetry.SemanticConventions: 12.0.0, Qyl.Telemetry.SemanticConventions.Incubating: 12.0.0, Qyl.Telemetry.SemanticConventions.Analyzers: 12.0.0}
+    npm: {"@ancplua/qyl-semantic-conventions": 12.0.0}
+    latest: 12.0.0
+    schema_served: https://qyl.at/schemas/12.0.0 (200)
   qyl.at:
     publishes: nothing; ./release.sh deploys https://qyl.at from main (nothing deploys on push); https://qyl.at/ 200
