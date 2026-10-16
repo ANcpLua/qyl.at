@@ -8,9 +8,9 @@ repos:
     latest: 13.2.1
     deploys: https://api.qyl.at (qyl-collector, Railway) on push to main; serving contract revision sha256:41d5630fd3633e2a
   qyl-api-schema:
-    nuget: {Qyl.Api.Contracts: 13.0.0}
-    npm: {"@ancplua/qyl-api-schema": 13.0.0}
-    latest: 13.0.0
+    nuget: {Qyl.Api.Contracts: 14.0.0}
+    npm: {"@ancplua/qyl-api-schema": 14.0.0}
+    latest: 14.0.0
     contract_revision_served: sha256:41d5630fd3633e2a
   qyl.mcp:
     npm: {qyl-mcp-server: 8.2.0}
