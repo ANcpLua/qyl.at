@@ -4,8 +4,8 @@
 # which rewrites, commits and pushes this file; git log dates each refresh.
 repos:
   qyl:
-    nuget: {qyl: 15.0.1, qyl.osx-arm64: 15.0.1, qyl.osx-x64: 15.0.1, qyl.linux-arm64: 15.0.1, qyl.linux-x64: 15.0.1, qyl.win-x64: 15.0.1, qyl.win-arm64: 15.0.1, Qyl.Api.Sdk: 15.0.1, Qyl.Orchestration: 15.0.1}
-    latest: 15.0.1
+    nuget: {qyl: 15.0.2, qyl.osx-arm64: 15.0.2, qyl.osx-x64: 15.0.2, qyl.linux-arm64: 15.0.2, qyl.linux-x64: 15.0.2, qyl.win-x64: 15.0.2, qyl.win-arm64: 15.0.2, Qyl.Api.Sdk: 15.0.2, Qyl.Orchestration: 15.0.2}
+    latest: 15.0.2
     deploys: https://api.qyl.at (qyl-collector, Railway) on push to main; serving contract revision sha256:f2930dd99ff08bb5
   qyl-api-schema:
     nuget: {Qyl.Api.Contracts: 14.0.1}
