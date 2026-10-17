@@ -6,13 +6,27 @@ order: 6
 
 import { versionOf } from "../../data/site";
 
-`Qyl.Telemetry.Testing` captures what an application exports over OTLP/HTTP protobuf, including gzip. The current package is **{versionOf("Qyl.Telemetry.Testing")}**. It targets .NET 10; its MSTest integration uses the official framework and runner.
+`Qyl.Telemetry.Testing` captures what an application exports over OTLP/HTTP protobuf and OTLP/gRPC, including gzip. The current package is **{versionOf("Qyl.Telemetry.Testing")}**. It targets .NET 10; its MSTest integration uses the official framework and runner.
 
 ```bash
 dotnet add package Qyl.Telemetry.Testing
 ```
 
-Start an owned `OtlpReceiver`, configure the application's exporters with its endpoint, exercise the real application, and await the evidence your test requires. `AwaitAsync` has a bounded deadline and preserves caller cancellation. Stop and flush producers before disposing the receiver.
+Start an owned `OtlpReceiver` through `OtlpReceiver.StartAsync()`, configure the application's exporters, exercise the real application, and await the evidence your test requires. HTTP uses `receiver.Endpoint` plus `v1/traces`, `v1/logs` or `v1/metrics`; gRPC uses `receiver.GrpcEndpoint` without a signal path. `AwaitAsync` has a bounded deadline and preserves caller cancellation. Stop and flush producers before disposing the receiver.
+
+Both transports default to **16 MiB**. Override the positive `maxPayloadBytes` argument at startup, or pass it to
+`QylTest.TraceAsync`:
+
+```csharp
+await using var receiver = await OtlpReceiver.StartAsync(
+    maxPayloadBytes: 4 * 1024 * 1024,
+    cancellationToken: TestContext.CancellationToken);
+```
+
+Select 4 MiB when matching the production Collector's default gRPC limit. HTTP bounds encoded and decompressed bytes
+independently, including chunked gzip. gRPC bounds each message and its decompressed output. Overflow returns HTTP 413
+with an OTLP Status or gRPC `ResourceExhausted`; malformed protobuf returns HTTP 400 or gRPC `InvalidArgument`.
+Diagnostics report the configured byte limit. The testing receiver accepts protobuf, not OTLP JSON.
 
 The capture includes traces, logs and all five metric shapes, with typed values, resource and scope metadata, span events, links and exemplars. `Snapshot().Requests` retains original protobuf payloads before decoding, including rejected records and unknown fields. Export receipts retain diagnostics. Diagnostic JSON includes the complete metric shape and points.
 

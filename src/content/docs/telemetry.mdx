@@ -30,14 +30,28 @@ qyl-owned .NET instrumentation, MCP operation telemetry and the qyl.at browser W
 
 ## Instrumenting a .NET application
 
-The instrumentation API is written for a model that instruments an application on its first attempt, with the compiler and the analyzers as its only reviewer. `Qyl.Telemetry.Hosting` {versionOf("Qyl.Telemetry.Hosting")} carries the consumer guide as `SKILL.md` at its package root; this is the short version.
+`Qyl.Telemetry.Hosting` {versionOf("Qyl.Telemetry.Hosting")} configures instrumentation and export through
+`builder.AddQyl()`. Its packaged `SKILL.md` contains the complete consumer guide.
 
-- `builder.AddQyl()` already records HTTP server and client calls, Npgsql commands, Kafka produce and receive and, after `UseOpenTelemetry()`, chat and tool spans. `service.name`, `service.version` and `deployment.environment.name` come from the build and the host.
-- Your own spans start through the starters in `Qyl.Spans` and `Qyl.IncubatingSpans`, never `new ActivitySource` or a raw `StartActivity` (QYL0111, an error): `Spans.Work("checkout")` for business work no convention describes, `Spans.DbClient(...)` for a store no library records, `IncubatingSpans.MessagingProcessConsumer(...)`, `GenAiInvokeAgent(...)` and `GenAiExecuteTool(...)`.
-- Business facts go on the span with `SetAppTag("order.id", orderId)`, which writes `qyl.app.order.id`. The collector keeps at most 16 such keys per span, values up to 256 characters, and drops a key that names a denied token or a key the registry does not persist (`qyl.app.user.email` is dropped like `user.email`).
-- A failure is recorded with `span.RecordFailure(ErrorType.Custom("rate_limit_exceeded"), "...")`.
+- HTTP server/client calls, Npgsql commands and Kafka operations are instrumented automatically. AI chat and tool
+  spans require `UseOpenTelemetry()` on the AI client. Build and host metadata supply `service.name`, `service.version`
+  and `deployment.environment.name`.
+- For application spans, create an `ActivitySource` and register its name with
+  `options.AdditionalSources.Add(sourceName)`. The generated `Qyl.Spans` and `Qyl.IncubatingSpans` starters are optional
+  alternatives for operations described by the registry.
+- Use native `span?.SetTag("order.id", orderId)` attributes. Application-owned names and native values, including
+  booleans, integers and arrays, retain their types. No prefix is added or required. Explicit Collector persistence
+  and privacy rules still apply.
+- Generated starters support `span?.RecordFailure(exception)`, which records error status and an exception event.
+  A failure without an exception can use `RecordFailure(ErrorType.Custom("rate_limited"), "The provider answered 429")`.
 
-Three things the compiler cannot see: the messaging parent context (`MessagingProcessConsumer` needs the producer's `ActivityContext` from the message headers, or the message starts a new trace); `UseOpenTelemetry()` with a custom source name, whose spans nothing exports; and which business keys identify the work, which only the application knows.
+Propagate the producer's `ActivityContext` when processing a message. Register custom AI source names with the tracer
+provider, and choose the business attributes that identify the application's work. Those decisions belong to the
+application; the compiler cannot infer them.
+
+Exporter transport is explicit. `options.CollectorProtocol` defaults to HTTP/protobuf; set
+`OpenTelemetry.Exporter.OtlpExportProtocol.Grpc` when the configured endpoint serves gRPC. A port number does not select
+the protocol.
 
 ## Browser Web Vitals
 
@@ -50,11 +64,31 @@ The collector normalizes known attribute names before capture policy decides wha
 - Generated rename rules translate recognized deprecated keys into canonical keys. The collector also handles four legacy aliases: `gen_ai.system`, `gen_ai.usage.prompt_tokens`, `gen_ai.usage.completion_tokens` and `agents.tool.call_id`.
 - When both spellings are present, the value explicitly supplied under the canonical key wins, regardless of input order.
 - Verified vendor attributes keep their vendor spelling where pass-through is allowed. Privacy denials still apply; vendor pass-through is not permission to retain credentials or personal data.
-- Signal-specific capture policy can drop disallowed or unrecognized attributes. Dropped attributes are counted in `qyl.collector.attributes.dropped`.
+- Custom attributes do not need registry membership. Explicit persistence and privacy denials still apply; dropped attributes are counted in `qyl.collector.attributes.dropped`.
 
 For example, a recognized `http.method` attribute becomes `http.request.method`. This is a known-key conversion, not a promise to translate any incoming schema. The incoming `schema_url` is metadata; it does not select or execute an arbitrary schema transformation.
 
 The collector must understand new vocabulary before qyl-owned emitters adopt it. Compatibility checks cover older and current keys, canonical-key precedence, vendor pass-through and capture denials. See the [SemanticConventions source](https://github.com/ANcpLua/Qyl.Telemetry.SemanticConventions) and the [collector ingestion source](https://github.com/ANcpLua/qyl/tree/main/services/qyl.collector.ingestion).
+
+## Exception details
+
+The exact canonical attributes `exception.message` and `exception.stacktrace` are retained after value sanitization,
+including span events and structured log-body maps. These key exemptions do not permit other message keys, case variants
+or descendants, and do not bypass credential or privacy denials.
+
+Sanitization preserves useful text, line breaks and stack frames while redacting labeled credentials in connection
+strings and headers, bearer/API tokens, JWTs, known token prefixes, and URL user information, queries and fragments.
+Input work is bounded at 131,072 UTF-16 code units per field. Sanitized values are capped at 32,768 UTF-8 bytes, with
+truncation applied after redaction.
+
+Invalid input or a sanitization failure replaces only the affected value with `[SANITIZATION_FAILED]`. Sibling
+attributes and the record survive. Failure diagnostics contain a canonical key and fixed category, without the original
+text or sanitizer exception message.
+
+Unlabeled unknown secret formats, encoded/encrypted values, plain log bodies, span status descriptions and unrelated
+attribute names are outside this exception-text policy. Existing stored data is unchanged. The
+[persistence contract](https://github.com/ANcpLua/qyl/blob/main/docs/attribute-persistence.md) lists supported locations,
+redaction forms and limits.
 
 ## Ingestion
 
