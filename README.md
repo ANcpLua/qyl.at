@@ -79,6 +79,12 @@ HTTP checks. `./release.sh` refuses without Cloudflare
 credentials (`bunx wrangler login` once, or a token registered in Vitals) rather than
 skipping, because a silently skipped deploy leaves the live site on whatever was last deployed.
 
+The Cloudflare configuration rule `qyl API clients` matches
+`http.host in {"api.qyl.at" "mcp.qyl.at"}` and disables Browser Integrity Check
+for those hosts. API-key and OAuth checks remain in the services. This lets telemetry
+and MCP clients use their actual user agents without Cloudflare error 1010;
+the zone's browser protection remains enabled elsewhere.
+
 The manual path below is for first provisioning and recovery. The Worker secret carries
 the collector credential used to forward bounded OTLP log records:
 
