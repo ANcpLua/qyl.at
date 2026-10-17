@@ -46,19 +46,19 @@ export const releaseWave = "2026-10-17" as const;
 export const release = [
   {
     name: "qyl",
-    version: "15.0.0",
+    version: "15.0.2",
     registry: "https://www.nuget.org/packages/qyl",
     summary: "The .NET tool: collector, embedded dashboard and query API.",
   },
   {
     name: "Qyl.Api.Sdk",
-    version: "15.0.0",
+    version: "15.0.2",
     registry: "https://www.nuget.org/packages/Qyl.Api.Sdk",
     summary: "MSBuild SDK for a Native AOT ASP.NET Core API behind one AddQylApi call.",
   },
   {
     name: "Qyl.Orchestration",
-    version: "15.0.0",
+    version: "15.0.2",
     registry: "https://www.nuget.org/packages/Qyl.Orchestration",
     summary: "Reusable process host with service references, readiness checks and application cleanup.",
   },
@@ -100,13 +100,13 @@ export const release = [
   },
   {
     name: "Qyl.Api.Contracts",
-    version: "14.0.0",
+    version: "14.0.1",
     registry: "https://www.nuget.org/packages/Qyl.Api.Contracts",
     summary: "The generated .NET contract for every Qyl request and response.",
   },
   {
     name: "@ancplua/qyl-api-schema",
-    version: "14.0.0",
+    version: "14.0.1",
     registry: "https://www.npmjs.com/package/@ancplua/qyl-api-schema",
     summary: "The same contract for TypeScript consumers, with its Zod export.",
   },
