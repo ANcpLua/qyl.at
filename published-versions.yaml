@@ -17,8 +17,8 @@ repos:
     latest: 10.0.0
     deploys: https://mcp.qyl.at (qyl-mcp, Railway) on push to main; healthz 200
   Qyl.Telemetry.AutoInstrumentation:   # renamed from Qyl.OpenTelemetry.AutoInstrumentation on 2026-10-11; the old URL redirects
-    nuget: {Qyl.Telemetry.AutoInstrumentation: 26.0.0, Qyl.Telemetry.AutoInstrumentation.Hosting: 26.0.0, Qyl.Telemetry.AutoInstrumentation.SqlClient: 26.0.0, Qyl.Telemetry.AutoInstrumentation.DiagnosticListeners: 26.0.0, Qyl.Telemetry.AutoInstrumentation.EntityFrameworkCore: 26.0.0, Qyl.Telemetry.Hosting: 26.0.0}
-    latest: 26.0.0
+    nuget: {Qyl.Telemetry.AutoInstrumentation: 27.0.0, Qyl.Telemetry.AutoInstrumentation.Hosting: 27.0.0, Qyl.Telemetry.AutoInstrumentation.SqlClient: 27.0.0, Qyl.Telemetry.AutoInstrumentation.DiagnosticListeners: 27.0.0, Qyl.Telemetry.AutoInstrumentation.EntityFrameworkCore: 27.0.0, Qyl.Telemetry.Hosting: 27.0.0}
+    latest: 27.0.0
   Qyl.Telemetry.SemanticConventions:   # renamed from Qyl.OpenTelemetry.SemanticConventions on 2026-10-11; the old URL redirects
     nuget: {Qyl.Telemetry.SemanticConventions: 13.1.1, Qyl.Telemetry.SemanticConventions.Incubating: 13.1.1, Qyl.Telemetry.SemanticConventions.Analyzers: 13.1.1}
     npm: {"@ancplua/qyl-semantic-conventions": 13.1.1}
