@@ -4,8 +4,8 @@
 # which rewrites, commits and pushes this file; git log dates each refresh.
 repos:
   qyl:
-    nuget: {qyl: 15.0.3, qyl.osx-arm64: 15.0.3, qyl.osx-x64: 15.0.3, qyl.linux-arm64: 15.0.3, qyl.linux-x64: 15.0.3, qyl.win-x64: 15.0.3, qyl.win-arm64: 15.0.3, Qyl.Api.Sdk: 15.0.3, Qyl.Orchestration: 15.0.3}
-    latest: 15.0.3
+    nuget: {qyl: 15.0.4, qyl.osx-arm64: 15.0.4, qyl.osx-x64: 15.0.4, qyl.linux-arm64: 15.0.4, qyl.linux-x64: 15.0.4, qyl.win-x64: 15.0.4, qyl.win-arm64: 15.0.4, Qyl.Api.Sdk: 15.0.4, Qyl.Orchestration: 15.0.4}
+    latest: 15.0.4
     deploys: https://api.qyl.at (qyl-collector, Railway) on push to main; serving contract revision sha256:f2930dd99ff08bb5
   qyl-api-schema:
     nuget: {Qyl.Api.Contracts: 14.0.1}
@@ -13,17 +13,17 @@ repos:
     latest: 14.0.1
     contract_revision_served: sha256:f2930dd99ff08bb5
   qyl.mcp:
-    npm: {qyl-mcp-server: 10.1.1}
-    latest: 10.1.1
+    npm: {qyl-mcp-server: 10.1.2}
+    latest: 10.1.2
     deploys: https://mcp.qyl.at (qyl-mcp, Railway) on push to main; healthz 200
   Qyl.Telemetry.AutoInstrumentation:   # renamed from Qyl.OpenTelemetry.AutoInstrumentation on 2026-10-11; the old URL redirects
-    nuget: {Qyl.Telemetry.AutoInstrumentation: 28.1.0, Qyl.Telemetry.AutoInstrumentation.Hosting: 28.1.0, Qyl.Telemetry.AutoInstrumentation.SqlClient: 28.1.0, Qyl.Telemetry.AutoInstrumentation.DiagnosticListeners: 28.1.0, Qyl.Telemetry.AutoInstrumentation.EntityFrameworkCore: 28.1.0, Qyl.Telemetry.Hosting: 28.1.0}
-    latest: 28.1.0
+    nuget: {Qyl.Telemetry.AutoInstrumentation: 28.1.1, Qyl.Telemetry.AutoInstrumentation.Hosting: 28.1.1, Qyl.Telemetry.AutoInstrumentation.SqlClient: 28.1.1, Qyl.Telemetry.AutoInstrumentation.DiagnosticListeners: 28.1.1, Qyl.Telemetry.AutoInstrumentation.EntityFrameworkCore: 28.1.1, Qyl.Telemetry.Hosting: 28.1.1}
+    latest: 28.1.1
   Qyl.Telemetry.SemanticConventions:   # renamed from Qyl.OpenTelemetry.SemanticConventions on 2026-10-11; the old URL redirects
-    nuget: {Qyl.Telemetry.SemanticConventions: 13.1.2, Qyl.Telemetry.SemanticConventions.Incubating: 13.1.2, Qyl.Telemetry.SemanticConventions.Analyzers: 13.1.2}
-    npm: {"@ancplua/qyl-semantic-conventions": 13.1.2}
-    latest: 13.1.2
-    schema_served: https://qyl.at/schemas/13.1.2 (200)
+    nuget: {Qyl.Telemetry.SemanticConventions: 13.2.0, Qyl.Telemetry.SemanticConventions.Incubating: 13.2.0, Qyl.Telemetry.SemanticConventions.Analyzers: 13.2.0}
+    npm: {"@ancplua/qyl-semantic-conventions": 13.2.0}
+    latest: 13.2.0
+    schema_served: https://qyl.at/schemas/13.2.0 (200)
   Qyl.Telemetry.Testing:
     nuget: {Qyl.Telemetry.Testing: 3.0.3}
     latest: 3.0.3
