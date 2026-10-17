@@ -4,8 +4,8 @@
 # which rewrites, commits and pushes this file; git log dates each refresh.
 repos:
   qyl:
-    nuget: {qyl: 15.0.2, qyl.osx-arm64: 15.0.2, qyl.osx-x64: 15.0.2, qyl.linux-arm64: 15.0.2, qyl.linux-x64: 15.0.2, qyl.win-x64: 15.0.2, qyl.win-arm64: 15.0.2, Qyl.Api.Sdk: 15.0.2, Qyl.Orchestration: 15.0.2}
-    latest: 15.0.2
+    nuget: {qyl: 15.0.3, qyl.osx-arm64: 15.0.3, qyl.osx-x64: 15.0.3, qyl.linux-arm64: 15.0.3, qyl.linux-x64: 15.0.3, qyl.win-x64: 15.0.3, qyl.win-arm64: 15.0.3, Qyl.Api.Sdk: 15.0.3, Qyl.Orchestration: 15.0.3}
+    latest: 15.0.3
     deploys: https://api.qyl.at (qyl-collector, Railway) on push to main; serving contract revision sha256:f2930dd99ff08bb5
   qyl-api-schema:
     nuget: {Qyl.Api.Contracts: 14.0.1}
@@ -24,5 +24,8 @@ repos:
     npm: {"@ancplua/qyl-semantic-conventions": 13.1.2}
     latest: 13.1.2
     schema_served: https://qyl.at/schemas/13.1.2 (200)
+  Qyl.Telemetry.Testing:
+    nuget: {Qyl.Telemetry.Testing: 3.0.3}
+    latest: 3.0.3
   qyl.at:
     publishes: nothing; ./release.sh deploys https://qyl.at from main (nothing deploys on push); https://qyl.at/ 200
