@@ -22,7 +22,8 @@ if tool == 'node':
         if package == 'qyl.orchestration' and os.environ['SNAPSHOT_TEST_MODE'] == 'missing': sys.exit(1)
         version = '13.1.0'
         if package == 'qyl' and any(e['tool'] == 'node' and e['args'][1] == url for e in events): version = '13.2.0'
-        if package.startswith('qyl.telemetry.semanticconventions'): version = '10.0.1'
+        if package == 'qyl.telemetry.testing': version = '3.0.3'
+        elif package.startswith('qyl.telemetry.semanticconventions'): version = '10.0.1'
         elif package.startswith('qyl.telemetry.'): version = '25.0.2'
         elif package == 'qyl.api.contracts': version = '12.1.2'
         print(json.dumps(dict(versions=[version])))
@@ -62,13 +63,14 @@ function fixture(mode: "complete" | "missing") {
   };
 }
 
-test("published snapshot reads each registry entry once and includes orchestration", () => {
+test("published snapshot reads each registry entry once and includes orchestration and testing", () => {
   const run = fixture("complete");
   try {
     const result = run.run("--expect-nuget", "13.1.0", "qyl", "Qyl.Orchestration");
     assert.equal(result.status, 0, result.stdout + result.stderr);
     const snapshot = readFileSync(join(run.root, "published-versions.yaml"), "utf8");
     assert.match(snapshot, /Qyl\.Orchestration: 13\.1\.0/);
+    assert.match(snapshot, /  Qyl\.Telemetry\.Testing:\n    nuget: \{Qyl\.Telemetry\.Testing: 3\.0\.3\}\n    latest: 3\.0\.3/);
     assert.doesNotMatch(snapshot, /13\.2\.0/);
     const registryCalls = run.events().filter((event) => event.tool === "node" && event.args[1]?.includes("flatcontainer"));
     assert.equal(new Set(registryCalls.map((event) => event.args[1])).size, registryCalls.length);
