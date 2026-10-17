@@ -13,17 +13,17 @@ repos:
     latest: 14.0.1
     contract_revision_served: sha256:f2930dd99ff08bb5
   qyl.mcp:
-    npm: {qyl-mcp-server: 11.0.0}
-    latest: 11.0.0
+    npm: {qyl-mcp-server: 11.1.0}
+    latest: 11.1.0
     deploys: https://mcp.qyl.at (qyl-mcp, Railway) on push to main; healthz 200
   Qyl.Telemetry.AutoInstrumentation:   # renamed from Qyl.OpenTelemetry.AutoInstrumentation on 2026-10-11; the old URL redirects
     nuget: {Qyl.Telemetry.AutoInstrumentation: 28.2.0, Qyl.Telemetry.AutoInstrumentation.Hosting: 28.2.0, Qyl.Telemetry.AutoInstrumentation.SqlClient: 28.2.0, Qyl.Telemetry.AutoInstrumentation.DiagnosticListeners: 28.2.0, Qyl.Telemetry.AutoInstrumentation.EntityFrameworkCore: 28.2.0, Qyl.Telemetry.Hosting: 28.2.0}
     latest: 28.2.0
   Qyl.Telemetry.SemanticConventions:   # renamed from Qyl.OpenTelemetry.SemanticConventions on 2026-10-11; the old URL redirects
-    nuget: {Qyl.Telemetry.SemanticConventions: 14.0.0, Qyl.Telemetry.SemanticConventions.Incubating: 14.0.0, Qyl.Telemetry.SemanticConventions.Analyzers: 14.0.0}
-    npm: {"@ancplua/qyl-semantic-conventions": 14.0.0}
-    latest: 14.0.0
-    schema_served: https://qyl.at/schemas/14.0.0 (200)
+    nuget: {Qyl.Telemetry.SemanticConventions: 14.1.0, Qyl.Telemetry.SemanticConventions.Incubating: 14.1.0, Qyl.Telemetry.SemanticConventions.Analyzers: 14.1.0}
+    npm: {"@ancplua/qyl-semantic-conventions": 14.1.0}
+    latest: 14.1.0
+    schema_served: https://qyl.at/schemas/14.1.0 (200)
   Qyl.Telemetry.Testing:
     nuget: {Qyl.Telemetry.Testing: 3.0.3}
     latest: 3.0.3
