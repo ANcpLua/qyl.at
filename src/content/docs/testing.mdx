@@ -6,7 +6,13 @@ order: 6
 
 import { versionOf } from "../../data/site";
 
-`Qyl.Telemetry.Testing` captures what an application exports over OTLP/HTTP protobuf and OTLP/gRPC, including gzip. The current package is **{versionOf("Qyl.Telemetry.Testing")}**. It targets .NET 10; its MSTest integration uses the official framework and runner.
+[Qyl.Telemetry.Tests](https://github.com/ANcpLua/Qyl.Telemetry.Tests) is the active repository for shared telemetry support and the unit, integration and end-to-end suites. It combines the retained receiver and architecture code. Its shared project is source support, not a newly published NuGet package.
+
+The former receiver and architecture-prototype repositories are archived. Existing consumers can continue using the published receiver package documented below.
+
+## Existing receiver package
+
+`Qyl.Telemetry.Testing` captures what an application exports over OTLP/HTTP protobuf and OTLP/gRPC, including gzip. The last released package is **{versionOf("Qyl.Telemetry.Testing")}**. It targets .NET 10; its MSTest integration uses the official framework and runner.
 
 ```bash
 dotnet add package Qyl.Telemetry.Testing
@@ -38,4 +44,4 @@ Metrics usually describe a process or aggregation window. Attribute them to an i
 
 The optional `[QylTelemetry]` integration delegates to the original MSTest method attribute. The consuming test assembly owns the documented global initialize and cleanup hooks. Discovery locations, data-row identity, duration and original failures remain the runner's responsibility.
 
-See the [package source and executable examples](https://github.com/ANcpLua/Qyl.Telemetry.Testing) and the [MSTest 4.5.1 living reference](https://github.com/ANcpLua/mstest-samples-with-docs-4.5.1). Capturing an export proves its wire content; query the collector separately when the assertion concerns persistence.
+See the [archived package source and executable examples](https://github.com/ANcpLua/Qyl.Telemetry.Testing) and the [MSTest 4.5.1 living reference](https://github.com/ANcpLua/mstest-samples-with-docs-4.5.1). Capturing an export proves its wire content; query the collector separately when the assertion concerns persistence.
