@@ -17,7 +17,7 @@ export const docsNavigation = [
   {
     href: "/docs/mcp/",
     label: "Connect an agent",
-    description: "The qyl plugin for Claude Code and Codex, the ChatGPT connector and local stdio; scopes, tools, skills and Events.",
+    description: "Claude, Claude Code, ChatGPT, Codex, the Claude and OpenAI APIs and local stdio; sign-in, scopes, tools, skills and Events.",
   },
   {
     href: "/docs/protocol-2026-07-28/",
@@ -27,12 +27,7 @@ export const docsNavigation = [
   {
     href: "/docs/telemetry/",
     label: "Telemetry",
-    description: "What the Collector ingests, how it normalizes attributes, and what it never retains.",
-  },
-  {
-    href: "/docs/testing/",
-    label: "Telemetry testing",
-    description: "Test exported traces, logs and metrics against a real OTLP receiver.",
+    description: "What the Collector ingests, how it normalizes and redacts attributes, and which captured headers it keeps.",
   },
   {
     href: "/docs/api-sdk/",
@@ -50,6 +45,10 @@ export const productNavigation = [
   { href: "/product/ci/", label: "CI runs" },
 ] as const;
 
+// The one sentence of how qyl came to be. The landing page, the header of every page,
+// the FAQ and both plugin listings say it in these words.
+export const story = "One developer built all of it using Anthropic and OpenAI models to the fullest.";
+
 export const externalLinks = {
   github: "https://github.com/ANcpLua/qyl",
   npm: "https://www.npmjs.com/package/qyl-mcp-server",
@@ -60,21 +59,20 @@ export const externalLinks = {
 // the footer call `versionOf`, and scripts/check-versions.mjs fails on a version
 // written anywhere else. Each entry states what its registry serves.
 //
-// The qyl repository releases the tool, Qyl.Api.Sdk and Qyl.Orchestration at one
-// version. qyl-mcp-server joins that version with its first release from the qyl
-// repository; set its entry to `qylVersion` then.
-const qylVersion = "16.0.1";
+// The qyl repository releases the tool, Qyl.Api.Sdk, Qyl.Orchestration and
+// qyl-mcp-server from one revision at one version (Version.props QylVersion).
+const qylVersion = "17.0.0";
 
 export const packages = [
   {
     name: "qyl",
     version: qylVersion,
     registry: "https://www.nuget.org/packages/qyl",
-    summary: "The .NET tool: the NativeAOT Collector (OTLP ingest, storage, analysis) and the qyl CLI.",
+    summary: "The .NET tool: the qyl CLI and the Collector (OTLP ingest, storage, analysis) that qyl up runs on .NET 10.",
   },
   {
     name: "qyl-mcp-server",
-    version: "11.1.4",
+    version: qylVersion,
     registry: "https://www.npmjs.com/package/qyl-mcp-server",
     summary: "The MCP server for local stdio. mcp.qyl.at runs the same server.",
   },
@@ -100,7 +98,7 @@ export const packages = [
     name: "Qyl.Telemetry.AutoInstrumentation",
     version: "28.2.3",
     registry: "https://www.nuget.org/packages/Qyl.Telemetry.AutoInstrumentation",
-    summary: "Compile-time .NET instrumentation; writes generated constants only.",
+    summary: "Compile-time .NET instrumentation that records with the generated convention constants.",
   },
   {
     name: "Qyl.Telemetry.SemanticConventions",
@@ -113,12 +111,6 @@ export const packages = [
     version: "15.0.2",
     registry: "https://www.npmjs.com/package/@ancplua/qyl-semantic-conventions",
     summary: "The same constants for TypeScript, from the same resolved registry.",
-  },
-  {
-    name: "Qyl.Telemetry.Testing",
-    version: "3.0.3",
-    registry: "https://www.nuget.org/packages/Qyl.Telemetry.Testing",
-    summary: "OTLP receiver package for existing test consumers; development continues in Qyl.Telemetry.Tests.",
   },
 ] as const;
 

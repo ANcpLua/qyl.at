@@ -1,29 +1,23 @@
 # qyl.at
 
 The public documentation site for [qyl](https://github.com/ANcpLua/qyl), an analytical
-engine for agents, live at [qyl.at](https://qyl.at/). It describes the NativeAOT Collector,
-the MCP server and how an agent connects to them. This is production: a moved page keeps
-its old URL as a redirect in `public/_redirects`; the page of a removed feature is deleted.
+engine for agents, live at [qyl.at](https://qyl.at/). It describes the Collector, the MCP
+server and how an agent connects to them. One developer built all of it using
+Anthropic and OpenAI models to the fullest. This is production: a moved page keeps its old
+URL as a redirect in `public/_redirects`; the page of a removed feature is deleted.
 
 The site is Astro 7 with static output, MDX documentation, build-time Shiki syntax
 highlighting, Tailwind CSS 4, and on-demand Pagefind search. Cloudflare Workers Static
 Assets serves the generated files and handles the same-origin Core Web Vitals endpoint.
-The spatial landing page renders its reading surface as static HTML. A small visibility
-controller loads React and the selected React Bits effect when a scene enters the viewport.
-The design variants remain static React output without hydration. All new visual styling
-uses Tailwind utilities; the original effects retain their animation-time transforms.
-Existing documentation remains static MDX with its established reading styles.
+`/` is a sixteen-chapter landing page that renders its reading surface as static HTML; a
+native chapter navigator links to every part and the setup. A small visibility controller
+loads React and the selected React Bits effect when a scene enters the viewport. All visual
+styling uses Tailwind utilities; the original effects retain their animation-time transforms.
+The documentation is static MDX with its own reading styles.
 
-`/lab/` compares the light design directions, including the eight original React Bits Pro styles:
-Apple Minimal, Swiss Grid, Editorial, Corporate Trust, Luxury Serif, Neobrutalism,
-Playful Motion, and Terminal Light (the terminal skill adapted to the requested light palette).
-The gallery supports filtering, full-page previews, and paired comparisons. Preview routes
-are marked noindex. `/` uses a continuous sixteen-chapter spatial landing page, with one
-composition inspired by each direction and all seven original React Bits effects placed
-throughout the story. A native chapter navigator links directly to every part and the setup.
-`/lab/effects/` contains isolated working examples of all seven requested effects: Eclipse,
-Scroll Portal, ASCII Ripple, Depth Image, Bend Gallery, Glass Reveal and Tile Reveal.
-The original Apple Minimal page remains at `/lab/apple-minimal/`.
+`/lab/effects/` holds isolated working examples of the seven React Bits Pro effects the
+landing page uses: Eclipse, Scroll Portal, ASCII Ripple, Depth Image, Bend Gallery, Glass
+Reveal and Tile Reveal. Its routes are marked noindex.
 
 Motion starts after the static reading surface paints. Pause, an offscreen scene, and a
 hidden tab unmount the effect and release its resources. Reduced-motion and data-saving
@@ -32,8 +26,9 @@ effects do not start automatically on narrow screens. All textures and posters a
 `check-artifacts.mjs` measures initial and deferred JavaScript separately, retains the
 initial byte limits, and caps the complete deferred graph. `tests/effects.spec.ts` exercises
 the actual renderers, pause/resume, viewport cleanup, chapter navigation and the static/mobile paths.
-The main page has its own Tailwind entry, `src/styles/spatial.css`, so it does not load
-the stylesheet for the sixteen standalone design previews. Both layouts share `PageFrame.astro`.
+The landing page has its own Tailwind entry, `src/styles/spatial.css`, and the effects lab
+its own, `src/styles/effects-lab.css` (through `EffectsLayout.astro`); both layouts share
+`PageFrame.astro`.
 
 
 ## Local development
@@ -151,21 +146,15 @@ bun run check:mcp
 
 Registry search and installation require network access.
 Licensed design instructions under `src/skills`, `src/prompts`, and `src/recipes` are
-local-only; the adapted application components under `src/components/variants` are source.
+local-only; the adapted effect components under `src/components/react-bits` are source.
 The byte gate also counts hydrated islands if a future component introduces one. `finalize-site.mjs`
 externalizes Astro's inline island bootstrap into content-hashed local scripts so hydration
 works under the existing deployed Content-Security-Policy.
 
-## Design study
+## Effects lab
 
-The variant sources live in `src/components/variants`; `src/data/variants.ts` controls
-labels and ordering. `src/styles/variants.css` contains only Tailwind import/source directives.
-`VariantLayout.astro` handles metadata and shared behavior.
-
-Run the design checks with `mise run test-gates` (or, after `bun run build:site`,
-`bunx playwright test --project=surface tests/lab.spec.ts`). The gallery serves the tracked
-`public/lab-previews/<slug>.png`; the gate compares each against a fresh capture and never
-writes it. After an intended design change, copy `evidence/designs/<slug>-preview.png` over
-the preview and rebuild. Full desktop and mobile evidence stays outside the published site
-in `evidence/designs/`. Vite caches
-are scoped to each checkout so parallel worktree builds do not share optimizer state.
+Run the browser checks with `mise run test-gates` (or, after `bun run build:site`,
+`bunx playwright test --project=surface`). Screenshots go to `evidence/effects/`, outside the
+published site. `tests/fixtures/` holds the two page captures that calibrate the pixel
+comparator in `tests/surface-comparison.ts`. Vite caches are scoped to each checkout so
+parallel worktree builds do not share optimizer state.

@@ -142,7 +142,7 @@ test("deployed headers are represented by the local Workers asset server", async
   expect(response.headers()["content-security-policy"]).toContain("'wasm-unsafe-eval'");
   expect(response.headers()["speculation-rules"]).toBe('"/speculation-rules.json"');
   expect(response.headers()["link"]).toBeUndefined();
-  const lab = await request.get("/lab/");
+  const lab = await request.get("/lab/effects/");
   expect(lab.headers()["link"]).toBeUndefined();
   const speculationRules = await request.get("/speculation-rules.json");
   expect(speculationRules.headers()["content-type"]).toContain("application/speculationrules+json");

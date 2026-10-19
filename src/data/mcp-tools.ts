@@ -117,7 +117,7 @@ export const mcpTools = [
   {
     "name": "get_mcp_stats",
     "title": "Get MCP Stats",
-    "description": "Return MCP request totals, failure classes and latency aggregates when investigating MCP tool health.",
+    "description": "Return MCP request totals, failure classes, latency, per-tool statistics, time buckets and server, transport and method breakdowns when investigating MCP tool health.",
     "scopes": [
       "qyl:read"
     ],

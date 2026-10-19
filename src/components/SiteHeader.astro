@@ -1,6 +1,6 @@
 ---
 import Wordmark from "./Wordmark.astro";
-import { primaryNavigation } from "../data/site";
+import { primaryNavigation, story } from "../data/site";
 
 interface Props {
   announcement?: boolean;
@@ -15,7 +15,7 @@ const isCurrent = (section: string) => section === "/" ? pathname === section : 
   announcement && (
     <div class="announcement">
       <div class="site-shell announcement__inner">
-        <span><b>One qyl plugin.</b> Claude Code, Codex and ChatGPT connect to the same endpoint.</span>
+        <span>{story}</span>
         <a href="/docs/mcp/">Connect an agent</a>
       </div>
     </div>

@@ -2,7 +2,7 @@
 import EffectStage from "./EffectStage.astro";
 import SignalChapters from "./journey/SignalChapters.astro";
 import ContextChapters from "./journey/ContextChapters.astro";
-import { externalLinks, versionOf } from "../data/site";
+import { externalLinks, story, versionOf } from "../data/site";
 import { journey } from "../data/journey";
 
 const focus = "focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#174aff]";
@@ -43,6 +43,7 @@ const evidence = [
             <p class="mb-8 text-[11px] font-medium uppercase tracking-[0.12em] text-[#555650]">An analytical engine for agents.</p>
             <h1 id="spatial-hero-title" class="text-[clamp(3.9rem,8.9vw,8rem)] font-semibold leading-[0.95] tracking-[-0.065em]">See beyond<br />the surface<span class="text-[#74766c]">.</span></h1>
             <p class="mt-8 max-w-[31ch] text-[19px] leading-[1.5] tracking-[-0.018em] text-[#555650] sm:text-[21px]">Your agent reads the code. qyl shows it what the code did when it ran.</p>
+            <p data-story class="mt-6 max-w-[36ch] border-l-2 border-[#174aff] pl-4 text-[15px] font-medium leading-6 tracking-[-0.01em] text-[#20211e]">{story}</p>
             <div class="mt-10 flex flex-wrap items-center gap-x-7 gap-y-3">
               <a href="/docs/getting-started/" class={`inline-flex min-h-14 items-center justify-center gap-7 rounded-full bg-[#174aff] px-7 text-[15px] text-white transition-colors hover:bg-[#103ad6] motion-reduce:transition-none ${focus}`}>Get started <span aria-hidden="true" class="text-xl">↗</span></a>
               <a href="#inside" class={`inline-flex min-h-11 items-center gap-2 text-[14px] ${focus}`}>Look inside <svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 4v16m-6-6 6 6 6-6" /></svg></a>
@@ -84,7 +85,7 @@ const evidence = [
             <h2 id="spatial-inside-title" class="text-[clamp(2.75rem,5.7vw,5.25rem)] font-medium leading-[1.02] tracking-[-0.055em]">Go a layer<br />deeper.</h2>
           </div>
           <div class="pb-1">
-            <p class="max-w-[36ch] text-[19px] leading-[1.5] tracking-[-0.018em] text-[#555650] sm:text-[21px]">One request can cross a lot of boundaries. qyl follows the trace and the logs around it, and hands your agent the moment that matters.</p>
+            <p class="max-w-[36ch] text-[19px] leading-[1.5] tracking-[-0.018em] text-[#555650] sm:text-[21px]">One request can cross a lot of boundaries. qyl returns the trace with the logs recorded in it, down to the span that failed.</p>
             <a href="/product/tracing/" class={`${textLink} mt-6 text-[14px]`}>Explore tracing <span aria-hidden="true">↗</span></a>
           </div>
         </div>
@@ -119,7 +120,7 @@ const evidence = [
           <h2 id="spatial-context-title" class="text-[clamp(2.75rem,5.7vw,5.25rem)] font-medium leading-[1.02] tracking-[-0.055em]">A clearer<br />conversation.</h2>
           <p class="mt-8 max-w-[32ch] text-[19px] leading-[1.5] tracking-[-0.018em] text-[#555650] sm:text-[21px]">Your coding agent can read the code. Connect qyl over MCP so it can inspect what happened when the code ran.</p>
           <a href="/docs/mcp/" class={`${textLink} mt-6 text-[14px]`}>Connect your agent <span aria-hidden="true">↗</span></a>
-          <p class="mt-10 max-w-[37ch] border-t border-[#20211e]/15 pt-5 text-[12px] leading-6 text-[#555650]">One plugin for Claude Code and Codex, a connector for ChatGPT, or stdio next to a local Collector.</p>
+          <p class="mt-10 max-w-[37ch] border-t border-[#20211e]/15 pt-5 text-[12px] leading-6 text-[#555650]">A custom connector in Claude or ChatGPT, the qyl plugin in Claude Code or Codex, the MCP tool of the Claude or OpenAI API, or stdio next to a local Collector.</p>
         </div>
         <figure class="min-w-0 lg:order-1">
           <div class="relative aspect-[4/5] w-full overflow-hidden bg-[#e3e5da]">
@@ -170,7 +171,6 @@ const evidence = [
         <nav aria-label="Footer navigation" class="flex flex-wrap gap-x-7 gap-y-1 text-[12px] text-[#555650]">
           <a href="/docs/" class={`inline-flex min-h-11 items-center hover:underline ${focus}`}>Documentation</a>
           <a href="/lab/effects/" class={`inline-flex min-h-11 items-center hover:underline ${focus}`}>Explore the effects</a>
-          <a href="/lab/" class={`inline-flex min-h-11 items-center hover:underline ${focus}`}>All designs</a>
           <a href={externalLinks.github} class={`inline-flex min-h-11 items-center hover:underline ${focus}`}>GitHub</a>
           <a href="/privacy/" class={`inline-flex min-h-11 items-center hover:underline ${focus}`}>Privacy</a>
           <a href="/support/" class={`inline-flex min-h-11 items-center hover:underline ${focus}`}>Support</a>
@@ -178,7 +178,7 @@ const evidence = [
         </nav>
       </div>
       <div class="mt-10 flex flex-col justify-between gap-3 text-[11px] leading-5 text-[#555650] sm:flex-row">
-        <p>See the signals. Find the story.</p>
+        <p>{story}</p>
         <p>An analytical engine for agents · qyl {versionOf("qyl")}</p>
       </div>
     </div>

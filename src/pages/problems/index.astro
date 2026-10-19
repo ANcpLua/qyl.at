@@ -3,12 +3,12 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import { commonMembers, problems, problemTypeUri } from "../../data/problems";
 ---
 
-<BaseLayout title="Problem types" description="The RFC 9457 problem types a qyl server reports: one page per type URI, with its code, HTTP status and members.">
+<BaseLayout title="Problem types" description="The RFC 9457 problem types of the qyl API contract: one page per type URI, with its code, HTTP status and members.">
   <section class="page-hero">
     <div class="reading-shell">
       <span class="eyebrow">Problem types · RFC 9457</span>
-      <h1 class="page-title">Every error a qyl server reports has a stable type.</h1>
-      <p class="lede">A qyl server that cannot answer a request sends an RFC 9457 problem body as <code>application/problem+json</code>. Its <code>type</code> member is one of the URIs below, and its <code>code</code> member names the same type as a short string. Branch on either; never on <code>title</code> or <code>detail</code>, which are written for people.</p>
+      <h1 class="page-title">The errors of the qyl API, by stable type.</h1>
+      <p class="lede">When the Collector or the qyl runner refuses a request, it sends an RFC 9457 problem body as <code>application/problem+json</code>. Apart from the three answers named at the end of this page, its <code>type</code> member is one of the URIs below, and its <code>code</code> member names the same type as a short string. Branch on either; never on <code>title</code> or <code>detail</code>, which are written for people.</p>
     </div>
   </section>
   <section class="editorial-section editorial-section--raised">
@@ -42,10 +42,10 @@ import { commonMembers, problems, problemTypeUri } from "../../data/problems";
           ))}
         </tbody>
       </table>
-      <p>A type may add members of its own; each type's page lists them. Headers are a property of the response, not of the body: the Collector's 500 carries <code>X-Trace-Id</code> when a trace of the failure was recorded.</p>
+      <p>A type may add members of its own; each type's page lists them. Headers are a property of the response, not of the body: the 500 of an unexpected Collector failure carries <code>X-Trace-Id</code>.</p>
 
       <h2>Where problems come from</h2>
-      <p>The Collector's API at <code>api.qyl.at</code> and the local runner API of the qyl CLI report problems from this list and no other. The list is fixed by the qyl API contract, which the <a href="/docs/api-sdk/">API SDK</a> and the <a href="/docs/mcp/">MCP server</a> share. A tool call the Collector refused returns its problem type as <code>problem_type</code> in the call's <code>structuredContent.error</code>.</p>
+      <p>The list is fixed by the qyl API contract, which the Collector's API at <code>api.qyl.at</code>, the local runner API of the qyl CLI and the <a href="/docs/mcp/">MCP server</a> share. Three answers fall outside it: the Collector reports an analysis that runs out of time with the service-unavailable type and HTTP 504, a failure lookup that exceeds its scan budget with a plain HTTP 503 problem that carries no qyl type, and the runner answers an unknown route or method with a bare 404 or 405. A tool call the Collector refused returns its problem type as <code>problem_type</code> in the call's <code>structuredContent.error</code>.</p>
     </article>
   </section>
 </BaseLayout>

@@ -9,7 +9,7 @@ import ReleaseTable from "../../components/ReleaseTable.astro";
 
 ## Run the Collector
 
-qyl ships as a .NET tool. The package contains the NativeAOT Collector for your runtime identifier; it needs no repository clone and no Node.js.
+qyl ships as a .NET tool. Its package for your platform carries the Collector, which `qyl up` runs on the .NET 10 runtime with ASP.NET Core; the .NET 10 SDK that installs the tool brings both. It needs no repository clone and no Node.js. (The hosted Collector at `api.qyl.at` is the same Collector, built with NativeAOT into a container.)
 
 ```bash
 dotnet tool install --global qyl
@@ -45,7 +45,7 @@ Run the MCP server over stdio next to the local Collector. It needs Bun 1.4 or n
 npx qyl-mcp-server --stdio
 ```
 
-Add that command to the agent's MCP configuration, for example `claude mcp add qyl -- npx qyl-mcp-server --stdio` in Claude Code. Then ask the agent about the run. The `qyl-investigate` skill, served with the tools, starts an investigation with `triage`. The hosted endpoint, the plugin for Claude Code and Codex, and the ChatGPT connector are described in [Connect an agent](/docs/mcp/).
+Add that command to the agent's MCP configuration, for example `claude mcp add qyl -- npx qyl-mcp-server --stdio` in Claude Code. Then ask the agent about the run. The `qyl-investigate` skill, served with the tools, starts an investigation with `triage`. [Connect an agent](/docs/mcp/) covers every host: Claude, Claude Code, ChatGPT, Codex, the Claude and OpenAI APIs, and the hosted endpoint.
 
 ## The .NET fast path
 
@@ -55,13 +55,13 @@ A .NET host needs no environment variables. Add the instrumentation package:
 dotnet add package Qyl.Telemetry.Hosting
 ```
 
-The package changes nothing on its own. `AddQyl()` is the activation line, and it belongs in application setup:
+Referencing the package compiles its instrumentation into the application; nothing is recorded or exported until `AddQyl()` runs. That call is the activation line, and it belongs in application setup:
 
 ```csharp
 builder.AddQyl();
 ```
 
-That call discovers a local `qyl up` Collector, applies the supported compile-time instrumentation, copies `session.id` from a span to every descendant span in the same process, and exports through the OpenTelemetry SDK. Standard `OTEL_*` settings still take precedence, so the fast path and the generic path never disagree.
+That call starts the compiled instrumentation, copies `session.id` from a span to every descendant span in the same process that has none, and exports through the OpenTelemetry SDK. It discovers a local `qyl up` Collector unless `OTEL_EXPORTER_OTLP_ENDPOINT`, `QYL_ENDPOINT` or an explicit collector endpoint in its options names one; `OTEL_SERVICE_NAME` still names the service.
 
 ## Published versions
 

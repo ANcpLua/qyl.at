@@ -72,7 +72,7 @@ const phases = [
             <a href="/docs/mcp/#tools" class={`${link} mt-6`}>See the write tools <span aria-hidden="true">↗</span></a>
             <div class="mt-10 border-l-2 border-[#1746dd] pl-5">
               <h3 class="text-[16px] font-medium">Records change. Telemetry does not.</h3>
-              <p class="mt-3 max-w-[40ch] text-[14px] leading-6 text-[#555650]">The write tools need qyl:write or qyl:delete and send the current etag, so a stale version is refused instead of overwritten.</p>
+              <p class="mt-3 max-w-[40ch] text-[14px] leading-6 text-[#555650]">Updates and deletes send the current etag, so a stale version is refused instead of overwritten. On the hosted endpoint the write tools need qyl:write or qyl:delete.</p>
             </div>
           </div>
           <figure class="min-w-0 border-t-2 border-[#20211e]">
@@ -93,7 +93,7 @@ const phases = [
     <div class="mb-12 flex items-center gap-4 text-[11px] text-[#555650]"><span aria-hidden="true" class="size-2 bg-[#1746dd]"></span><span>12 / Build operations</span><span class="ml-auto font-mono">CI → OTLP</span></div>
     <div class="mb-14 grid items-end gap-8 lg:grid-cols-[1.1fr_1fr] lg:gap-24">
       <h2 id="ci-evidence-title" class={heading}>Your build has<br />a timeline, too.</h2>
-      <div><p class={`${body} max-w-[35ch]`}>A CI job that exports its phases as OpenTelemetry spans becomes a run qyl can compare: outcomes, durations and failure evidence, in the same system as the code it verifies.</p><a href="/product/ci/" class={`${link} mt-5`}>Follow the CI evidence <span aria-hidden="true">↗</span></a></div>
+      <div><p class={`${body} max-w-[35ch]`}>A CI job that exports its phases as OpenTelemetry spans under a qyl-ci service name becomes a run qyl can compare: outcomes, durations and failure evidence, in the same system as the code it verifies.</p><a href="/product/ci/" class={`${link} mt-5`}>Follow the CI evidence <span aria-hidden="true">↗</span></a></div>
     </div>
     <figure class="border border-[#20211e]/30 bg-[#eeefe8] p-4 sm:p-8">
       <figcaption class="flex flex-wrap items-center justify-between gap-3 border-b border-[#20211e]/25 pb-5 text-[11px] text-[#555650]"><span class="font-mono text-[#20211e]">release / operation map</span><span>Illustrative sequence · no measured timings</span></figcaption>
@@ -160,7 +160,7 @@ const phases = [
     </div>
     <div class="mt-16 grid gap-7 border-y border-[#20211e]/25 py-8 lg:grid-cols-[1fr_1.25fr_1fr] lg:gap-14">
       <h3 class="text-[26px] font-medium leading-tight tracking-[-0.035em]">And one telemetry<br />vocabulary.</h3>
-      <p class="text-[15px] leading-7 text-[#555650]">The qyl Weaver registry generates C# and TypeScript telemetry bindings from upstream conventions, verified vendor definitions and qyl extensions. The collector applies known renames and capture policy; the separate API contract describes what clients read.</p>
+      <p class="text-[15px] leading-7 text-[#555650]">One Weaver registry, built from upstream conventions, verified vendor definitions and qyl extensions, is the source of qyl’s C# and TypeScript telemetry bindings. The Collector applies known renames and capture policy; the separate API contract describes what clients read.</p>
       <div><p class="text-[15px] leading-7 text-[#555650]">Building an API? Qyl.Api.Sdk brings the Native AOT path and telemetry together.</p><a href="/docs/api-sdk/" class={`${link} mt-3`}>Explore the API SDK <span aria-hidden="true">↗</span></a></div>
     </div>
   </div>

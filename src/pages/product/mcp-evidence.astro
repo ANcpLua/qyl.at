@@ -10,10 +10,10 @@ import ProductPage from "../../components/ProductPage.astro";
   description="A session groups the traces one run produced. get_agent_run reconstructs its steps, models, token usage, failures and repeated tool calls without returning prompt or output content. get_mcp_stats aggregates MCP requests by server, tool, method, transport or failure class and compares them with a baseline window. The qyl MCP server exports its own operation spans, duration metrics and logs to the caller's Collector project, without arguments or results."
   tools={["list_sessions", "get_agent_run", "get_mcp_stats"]}
   capabilities={[
-    { name: "baggage: session.id", description: "An API built with Qyl.Api.Sdk copies it onto the server span and every descendant span, so one request header names a whole run." },
+    { name: "baggage: session.id", description: "An ASP.NET Core application that calls AddQyl(), as every Qyl.Api.Sdk API does, copies it onto the server span and every descendant span, so one request header names a whole run." },
   ]}
   command={`# a request to an API built with Qyl.Api.Sdk
-curl -H 'baggage: session.id=my-agent-run' http://localhost:5062/todos/
+curl -H 'baggage: session.id=my-agent-run' http://localhost:5062/todos
 # then, from an agent connected to qyl:
 get_agent_run { "session_id": "my-agent-run" }`}
 />

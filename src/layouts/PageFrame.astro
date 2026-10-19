@@ -1,7 +1,7 @@
 ---
-interface Props { title: string; preview?: boolean; description?: string }
+interface Props { title: string; description?: string }
 const isLab = Astro.url.pathname.startsWith("/lab/");
-const { title, preview = false, description = "qyl is an analytical engine for agents: its Collector ingests OpenTelemetry traces, logs and metrics and answers your coding agent over MCP." } = Astro.props;
+const { title, description = "qyl is an analytical engine for agents: its Collector ingests OpenTelemetry traces, logs and metrics and answers your coding agent over MCP." } = Astro.props;
 ---
 <!doctype html>
 <html lang="en" class="bg-white text-zinc-950">
@@ -18,7 +18,6 @@ const { title, preview = false, description = "qyl is an analytical engine for a
   </head>
   <body>
     <slot />
-    {preview && <aside aria-label="Design comparison" class="fixed bottom-4 right-4 z-50 rounded-full border border-zinc-300 bg-white px-4 py-2 font-sans text-xs text-zinc-900 shadow-sm"><a class="inline-flex min-h-7 items-center gap-2 hover:underline focus-visible:outline-2" href="/lab/"><span aria-hidden="true">←</span> All designs</a></aside>}
     <script>
       import { startVitals } from "../scripts/vitals";
       if (window.location.hostname === "qyl.at" && !window.location.pathname.startsWith("/lab/")) {

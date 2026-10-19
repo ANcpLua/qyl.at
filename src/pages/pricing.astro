@@ -8,7 +8,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       <div>
         <span class="eyebrow">One plan · every shipped feature</span>
         <h1 class="page-title">qyl is free.</h1>
-        <p class="lede">No feature matrix and no pretend enterprise tier. Run the Collector yourself, or connect your agent to the hosted endpoint.</p>
+        <p class="lede">No feature matrix and no pretend enterprise tier. Run the Collector yourself, or connect your agent to the hosted endpoint once your account has a Collector project there.</p>
       </div>
       <article class="pricing-card" aria-labelledby="free-plan">
         <div class="pricing-card__head">
@@ -17,11 +17,10 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         </div>
         <div class="pricing-card__body">
           <ul class="check-list">
-            <li>NativeAOT Collector: OTLP trace, log and metric ingestion and analysis</li>
-            <li>Hosted MCP endpoint: every read tool, annotations, saved queries and failure status</li>
-            <li>MCP Events for new error traces</li>
-            <li>The qyl plugin for Claude Code and Codex, and the ChatGPT connector</li>
+            <li>The Collector: OTLP trace, log and metric ingestion, storage and analysis</li>
             <li>The local stdio MCP server</li>
+            <li>Hosted MCP endpoint for accounts with a Collector project: every tool, plus MCP Events for new error traces</li>
+            <li>The qyl plugin for Claude Code and Codex</li>
           </ul>
           <a class="button button--light" href="/docs/getting-started/" id="free-plan">Install qyl</a>
         </div>
@@ -31,7 +30,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   <section class="editorial-section editorial-section--raised">
     <div class="site-shell section-intro">
       <div><span class="eyebrow">The plain answer</span><h2 class="section-title">No billing system is hidden behind this page.</h2></div>
-      <p class="lede">qyl is solo-developed. If pricing ever changes, the terms and limits will be published before anyone is charged. The local Collector remains useful without a hosted account.</p>
+      <p class="lede">One developer built all of it using Anthropic and OpenAI models to the fullest. If pricing ever changes, the terms and limits will be published before anyone is charged. The local Collector works without a hosted account.</p>
     </div>
   </section>
 </BaseLayout>

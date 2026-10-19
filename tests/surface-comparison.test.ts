@@ -24,12 +24,12 @@ test("the surface comparator catches a light background regression with the v8 m
   assert.ok(surfaceDifferenceRatio(before, after) > maxSurfaceDifferenceRatio);
 });
 
-for (const name of ["apple-minimal", "terminal-light"]) {
+for (const name of ["surface-apple-minimal", "surface-terminal-light"]) {
   test(`${name}: a visible overlay fails but identity and rounding noise pass`, () => {
-    // Existing browser-rendered previews exercise text, artwork and AA edges.
+    // Two browser-rendered page captures exercise text, artwork and AA edges.
     // These calibrate the comparator; the Playwright gate separately checks
     // actual JS-on/JS-off full-page captures of the reading routes.
-    const before = PNG.sync.read(readFileSync(new URL(`../public/lab-previews/${name}.png`, import.meta.url)));
+    const before = PNG.sync.read(readFileSync(new URL(`./fixtures/${name}.png`, import.meta.url)));
     const shaded = { width: before.width, height: before.height, data: Buffer.from(before.data) };
     const noise = { width: before.width, height: before.height, data: Buffer.from(before.data) };
     for (let p = 0; p < before.data.length; p += 4) {

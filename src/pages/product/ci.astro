@@ -7,11 +7,13 @@ import ProductPage from "../../components/ProductPage.astro";
   eyebrow="Product · CI"
   intro="A build is another distributed operation. Keep it in the same evidence system as the code it validates."
   heading="Ask why the build failed, or why it was slow."
-  description="A CI job that exports its phases as OTLP spans with the OpenTelemetry CI/CD attributes becomes a run the Collector can compare: phases in order, failures first, rerun attempts, provider links and error excerpts, against another run or the last success. No provider HTML is scraped and no second CI contract exists."
+  description="A CI job that exports its phases as OTLP spans under a service name starting with qyl-ci becomes a run the Collector can compare: one run per session.id, its phases in start order with their status, rerun attempts, provider links and error excerpts, against another run or the last success. No provider HTML is scraped and no second CI contract exists."
   tools={["ci_log"]}
   capabilities={[
+    { name: "service.name", description: "Starts with qyl-ci, or with the service_prefix passed to ci_log, so the Collector reads the spans as CI." },
+    { name: "session.id", description: "Groups the phases of one run; a run without it is its trace." },
     { name: "cicd.pipeline.task.name", description: "Marks a span as a CI phase; cicd.pipeline.task.type works too." },
-    { name: "cicd.pipeline.run.id", description: "Groups phases into one run; cicd.pipeline.run.url.full links the provider's page." },
+    { name: "cicd.pipeline.run.id", description: "The provider's run id: runs that share it count as rerun attempts. cicd.pipeline.run.url.full links the provider's page." },
     { name: "span status", description: "A failed phase carries its error as span status, so the failure is evidence rather than a badge." },
   ]}
   command={`# from an agent connected to qyl:

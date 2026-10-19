@@ -15,7 +15,7 @@ const uri = problemTypeUri(problem.name);
     <div class="site-shell">
       <span class="eyebrow">Problem type · HTTP {problem.status}</span>
       <h1 class="page-title">{problem.title}</h1>
-      <p class="lede">{problem.summary} A qyl server reports it as an RFC 9457 problem body, served as <code>application/problem+json</code>, with the type URI and code below.</p>
+      <p class="lede">{problem.summary} The Collector and the qyl runner report it as an RFC 9457 problem body, served as <code>application/problem+json</code>, with the type URI and code below.</p>
       <div class="fact-grid">
         <div class="fact"><span>Type</span><code>{uri}</code></div>
         <div class="fact"><span>Code</span><code>{problem.code}</code></div>
@@ -45,9 +45,9 @@ const uri = problemTypeUri(problem.name);
       </table>
 
       <h2>Example</h2>
-      <pre><code>{JSON.stringify(problem.example, null, 2)}</code></pre>
+      <pre tabindex="0"><code>{JSON.stringify(problem.example, null, 2)}</code></pre>
 
-      <p>Every type a qyl server reports is listed at <a href="/problems/">/problems/</a>.</p>
+      <p>Every type of the qyl API contract is listed at <a href="/problems/">/problems/</a>.</p>
     </article>
   </section>
 </BaseLayout>

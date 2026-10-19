@@ -7,7 +7,7 @@ import ProductPage from "../../components/ProductPage.astro";
   eyebrow="Product · logs"
   intro="The records around a failure, linked to the trace, span and session that produced them."
   heading="Runtime evidence, correlated before it reaches the agent."
-  description="Severity, service and text filters apply to stored records before pagination, so older pages include errors beyond the live tail. A record without an event time is found by its observation time; historical unknown times stay unknown. Logs retain their trace identity, typed body and named events, and message patterns come with counts and rare variants."
+  description="Severity, service and text filters apply to stored records before pagination, so older pages include errors beyond the live tail. A record without an event time is found by its observation time; historical unknown times stay unknown. Logs retain their trace identity, typed body and named events. Grouped by pattern, message templates come with their counts, highest severity, first and last occurrence and example trace ids."
   tools={["search_logs"]}
   capabilities={[
     { name: "GET /api/v1/logs", description: "The same stored records through the Collector API, for programs rather than agents." },

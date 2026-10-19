@@ -1,5 +1,5 @@
 ---
-import VariantLayout from "../../../layouts/VariantLayout.astro";
+import EffectsLayout from "../../../layouts/EffectsLayout.astro";
 import EffectStage from "../../../components/EffectStage.astro";
 import { effects } from "../../../data/effects";
 
@@ -11,7 +11,7 @@ const { effect, index } = Astro.props;
 const previous = effects[(index + effects.length - 1) % effects.length];
 const next = effects[(index + 1) % effects.length];
 ---
-<VariantLayout title={`${effect.name} — qyl effects lab`} description={effect.description}>
+<EffectsLayout title={`${effect.name} — qyl effects lab`} description={effect.description}>
   <div class="min-h-screen bg-[#f8f7f3] font-sans text-zinc-950">
     <a href="#main" class="sr-only z-50 rounded-md bg-zinc-950 px-5 py-3 text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4">Skip to content</a>
     <header class="border-b border-zinc-950/15">
@@ -47,6 +47,6 @@ const next = effects[(index + 1) % effects.length];
       </nav>
     </main>
 
-    <footer class="border-t border-zinc-950/15"><div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-5 py-7 text-xs text-zinc-600 sm:px-8"><p>qyl / React Bits Pro effects study</p><a href="/lab/" class="min-h-6 content-center hover:text-zinc-950 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4">Back to the design directions <span aria-hidden="true">↗</span></a></div></footer>
+    <footer class="border-t border-zinc-950/15"><div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-5 py-7 text-xs text-zinc-600 sm:px-8"><p>qyl / React Bits Pro effects study</p><a href="/" class="min-h-6 content-center hover:text-zinc-950 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4">qyl home <span aria-hidden="true">↗</span></a></div></footer>
   </div>
-</VariantLayout>
+</EffectsLayout>

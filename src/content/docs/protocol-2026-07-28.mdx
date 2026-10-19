@@ -6,11 +6,11 @@ order: 3
 
 ## SDK v2
 
-The server is built on the MCP TypeScript SDK v2 (`@modelcontextprotocol/server`) and serves protocol revision `2026-07-28`. Streamable HTTP at `https://mcp.qyl.at/mcp` and stdio from `qyl-mcp-server --stdio` create every server instance from the same factory, so both transports expose the same tools, skills and checks. The hosted HTTP server is stateless: Bun serves the SDK's web-standard handler directly.
+The server is built on the MCP TypeScript SDK v2 (`@modelcontextprotocol/server`) and serves protocol revision `2026-07-28`. Streamable HTTP at `https://mcp.qyl.at/mcp` and stdio from `qyl-mcp-server --stdio` create every server instance from the same factory, so both transports expose the same tools and skill; only the hosted endpoint adds OAuth and Events. The hosted HTTP server is stateless: Bun serves the SDK's web-standard handler directly.
 
 ## Modern requests
 
-`server/discover` returns the server's identity, instructions and capabilities: tools, the resources that carry the skill files, `extensions["io.modelcontextprotocol/skills"]`, and on the hosted endpoint `events`. Requests carry the revision and client capabilities in the reserved `_meta` envelope, and `clientInfo` is optional. Responses carry the server identity under `_meta["io.modelcontextprotocol/serverInfo"]`. `server/discover`, `tools/list` and `resources/list` carry public cache hints of five minutes.
+`server/discover` returns the server's identity, instructions and capabilities: tools, the resources that carry the skill files, `extensions["io.modelcontextprotocol/skills"]`, and on the hosted endpoint `events`. Requests carry the revision and client capabilities in the reserved `_meta` envelope, and `clientInfo` is optional. Responses carry the server identity under `_meta["io.modelcontextprotocol/serverInfo"]`. `server/discover`, `tools/list`, `resources/list` and `resources/templates/list` carry public cache hints of five minutes.
 
 ## 2025-era clients
 

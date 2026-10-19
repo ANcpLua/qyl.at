@@ -98,6 +98,10 @@ In production, the OTLP receiver requires an `x-otlp-api-key` credential with th
 
 ## MCP operation telemetry
 
-The qyl MCP server records its operation spans, duration histograms and operation logs using the generated qyl registry bindings for the MCP semantic vocabulary, and exports them to the caller's Collector project. Standard W3C trace context and baggage travel in MCP `params._meta`; inbound server spans use valid remote context as their parent.
+The qyl MCP server records its operation spans, duration histograms and operation logs using the generated qyl registry bindings for the MCP semantic vocabulary, and exports them to the caller's Collector project. A valid W3C `traceparent` in the request's `params._meta` becomes the parent of the server's `tools/call` span; `tracestate` and baggage are not read.
 
-The server does not record prompt variables, tool arguments, tool results or arbitrary HTTP headers as span attributes. The Collector persists only a small positive allowlist of known-safe HTTP header attributes and always rejects credentials, cookies and `Mcp-Param-*`. Collector failures reach the agent as errors; the server has no demonstration data to substitute.
+The server does not record prompt variables, tool arguments, tool results or arbitrary HTTP headers as span attributes. Collector failures reach the agent as errors; the server has no demonstration data to substitute.
+
+## Captured headers
+
+Capturing HTTP headers or RPC metadata is opt-in at the instrumentation that records them. The Collector keeps no second allowlist: after its explicit denials it retains every valid captured `http.request.header.*`, `http.response.header.*`, `rpc.request.metadata.*` and `rpc.response.metadata.*` field, including `authorization`, `cookie`, `x-api-key` and `mcp-param-*`. Choose what to capture at the source.

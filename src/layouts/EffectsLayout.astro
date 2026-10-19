@@ -1,0 +1,6 @@
+---
+import PageFrame from "./PageFrame.astro";
+import "../styles/effects-lab.css";
+interface Props { title: string; description?: string }
+---
+<PageFrame {...Astro.props}><slot /></PageFrame>

@@ -1,15 +1,15 @@
 ---
-import VariantLayout from "../../../layouts/VariantLayout.astro";
+import EffectsLayout from "../../../layouts/EffectsLayout.astro";
 import EffectStage from "../../../components/EffectStage.astro";
 import { effects } from "../../../data/effects";
 ---
-<VariantLayout title="Another dimension — qyl effects lab" description="Seven interactive studies in light, depth and motion. Explore the qyl effects lab with React Bits Pro.">
+<EffectsLayout title="Another dimension — qyl effects lab" description="Seven interactive studies in light, depth and motion. Explore the qyl effects lab with React Bits Pro.">
   <div class="min-h-screen bg-[#f8f7f3] font-sans text-zinc-950">
     <a href="#main" class="sr-only z-50 rounded-md bg-zinc-950 px-5 py-3 text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4">Skip to content</a>
     <header class="border-b border-zinc-950/15">
       <nav aria-label="Effects lab navigation" class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-5 py-5 sm:px-8">
         <a href="/" class="text-2xl font-semibold tracking-[-.08em] focus-visible:outline-2 focus-visible:outline-offset-4">qyl<span class="ml-3 font-mono text-[10px] font-normal tracking-[.12em] text-zinc-600 sm:text-xs">EFFECTS LAB</span></a>
-        <div class="flex items-center gap-5 text-xs sm:gap-8 sm:text-sm"><a href="/lab/" class="min-h-6 content-center text-zinc-600 hover:text-zinc-950 focus-visible:outline-2 focus-visible:outline-offset-4">Design directions</a><a href="#collection" class="min-h-6 content-center font-medium hover:underline focus-visible:outline-2 focus-visible:outline-offset-4">Explore effects <span aria-hidden="true">↘</span></a></div>
+        <div class="flex items-center gap-5 text-xs sm:gap-8 sm:text-sm"><a href="#collection" class="min-h-6 content-center font-medium hover:underline focus-visible:outline-2 focus-visible:outline-offset-4">Explore effects <span aria-hidden="true">↘</span></a></div>
       </nav>
     </header>
 
@@ -17,7 +17,7 @@ import { effects } from "../../../data/effects";
       <section aria-labelledby="page-title" class="pb-12 pt-14 sm:pb-20 sm:pt-20">
         <div class="grid gap-8 pb-10 md:grid-cols-[1.6fr_1fr] md:items-end sm:pb-14">
           <div>
-            <p class="mb-6 font-mono text-[11px] uppercase tracking-[.14em] text-zinc-600">React Bits Pro / Study 02</p>
+            <p class="mb-6 font-mono text-[11px] uppercase tracking-[.14em] text-zinc-600">React Bits Pro / Effects</p>
             <h1 id="page-title" class="max-w-3xl text-5xl font-medium leading-[.97] tracking-[-.065em] sm:text-7xl lg:text-[5.75rem]">Give the signal<br />another dimension.</h1>
           </div>
           <div class="max-w-sm md:ml-auto md:pb-1">
@@ -60,7 +60,7 @@ import { effects } from "../../../data/effects";
     </main>
 
     <footer class="border-t border-zinc-950/15">
-      <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-5 px-5 py-7 text-xs text-zinc-600 sm:px-8"><p>qyl / Experiments in light, depth & motion</p><div class="flex flex-wrap gap-6"><a href="/lab/" class="min-h-6 content-center hover:text-zinc-950 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4">All design directions</a><a href="https://pro.reactbits.dev/docs/components/eclipse" class="min-h-6 content-center hover:text-zinc-950 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4">Made with React Bits Pro <span aria-hidden="true">↗</span></a></div></div>
+      <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-5 px-5 py-7 text-xs text-zinc-600 sm:px-8"><p>qyl / Experiments in light, depth & motion</p><div class="flex flex-wrap gap-6"><a href="https://pro.reactbits.dev/docs/components/eclipse" class="min-h-6 content-center hover:text-zinc-950 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4">Made with React Bits Pro <span aria-hidden="true">↗</span></a></div></div>
     </footer>
   </div>
-</VariantLayout>
+</EffectsLayout>

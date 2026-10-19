@@ -1,55 +1,160 @@
 ---
 title: Connect an agent
-description: Connect Claude Code, Codex, ChatGPT or any MCP client to qyl through the hosted endpoint or local stdio, with its scopes, tools, skills and Events.
+description: Connect Claude, Claude Code, ChatGPT, Codex, the Claude and OpenAI APIs or a local stdio server to qyl, with its sign-in, scopes, tools, skills and Events.
 order: 2
 ---
 
 import ToolTable from "../../components/ToolTable.astro";
 import { mcpSkills } from "../../data/mcp-tools";
 
-## Endpoint
+export const examplePrompts = [
+  "What changed in my services in the last hour? Rank the new and worsening failures.",
+  "Why are checkout requests failing with database timeouts, and did the fix from the last release hold?",
+  "Compare p95 request latency of the payments service between the eu and us regions over the last day, then save that comparison as \"payments latency by region\".",
+];
 
-```text
-https://mcp.qyl.at/mcp
-```
+## Two ways in
 
-The hosted server answers for the Collector project your account is authorized for on `api.qyl.at`. Besides `/mcp` it serves `/healthz` and the OAuth discovery documents; `/` answers 404. There is no interface for people: every tool returns structured data validated against the qyl API contract, plus a short text rendering for the model.
+| Path | Address | Sign-in | Reads |
+| --- | --- | --- | --- |
+| Hosted | `https://mcp.qyl.at/mcp` (Streamable HTTP) | OAuth 2.1 | The Collector project on `api.qyl.at` your account is mapped to |
+| Local | `npx qyl-mcp-server --stdio` | None; the Collector key's roles apply | The Collector you run with `qyl up` |
 
-## Install
+Both serve the same tools and the same skill. Every tool returns structured data validated against the qyl API contract, plus a short text rendering for the model; there is no interface for people. Besides `/mcp` the hosted server answers `/healthz`, the OAuth discovery documents and OpenAI's domain-verification path `/.well-known/openai-apps-challenge`; `/` answers 404.
 
-One qyl plugin serves Claude Code and Codex. It connects the endpoint above and bundles the qyl skills.
+## Hosted access
 
-Claude Code, from the [ancplua-anthropic](https://github.com/ANcpLua/ancplua-anthropic) marketplace:
+The hosted endpoint serves accounts the operator has set up: each account is mapped to one Collector project, and a tool call from an account without one is refused. Sign-in runs through qyl's Auth0 tenant (issuer `https://qyl-eu.eu.auth0.com/`), which holds an OAuth client registered for each host: ChatGPT, Claude, Claude Code and Codex. To get access, write to [support](/support/) and name the host you use; support maps your account and gives you the client ID registered for that host. Every host below has a place for that client ID.
+
+## Claude: claude.ai, Claude Desktop and Cowork
+
+qyl is added to Claude as a custom connector. Claude connects to it from Anthropic's cloud, not from your device.
+
+1. In claude.ai or Claude Desktop, open **Customize > Connectors**, choose **+ Add**, then **Add custom connector**. On a Team or Enterprise plan an owner adds it instead, in **Organization settings > Connectors > Add > Custom > Web**, and each member then connects it under **Customize > Connectors**.
+2. Enter the name `qyl` and the URL `https://mcp.qyl.at/mcp`, then **Continue** past the detected authentication.
+3. Under **Authentication**, choose **Sign in now**. Under **OAuth client**, choose **Use your own OAuth client** and enter the client ID support gave you, with a secret only if support gave you one. Select **Add**.
+4. Sign in with your qyl account in the Auth0 window and approve `qyl:read`, plus `qyl:write` and `qyl:delete` if Claude should keep notes, saved queries and failure status.
+5. In a chat, turn qyl on under **+ > Connectors**. Cowork tasks use the connectors of your account.
+
+The connector belongs to your Claude account: the same connection serves claude.ai, Claude Desktop, Cowork, the Claude mobile apps, the Claude in Chrome side panel (which runs Cowork) and Claude Code signed in with that account. To change its settings, remove the connector and add it again.
+
+Try these prompts:
+
+<ol>
+  {examplePrompts.map((prompt) => <li><code>{prompt}</code></li>)}
+</ol>
+
+## Claude Code
+
+The qyl plugin declares the hosted endpoint and bundles the `qyl-investigate` skill with .NET development and MSTest skills. Install it from the [ancplua-anthropic](https://github.com/ANcpLua/ancplua-anthropic) marketplace:
 
 ```bash
 claude plugin marketplace add ANcpLua/ancplua-anthropic
 claude plugin install qyl@ancplua-anthropic
 ```
 
-Codex, from the [ancplua-openai](https://github.com/ANcpLua/ancplua-openai) marketplace:
+The plugin carries no OAuth client ID. To sign in with the client support gave you, add the endpoint as a remote server with it:
+
+```bash
+claude mcp add --transport http --client-id <client id> qyl https://mcp.qyl.at/mcp
+```
+
+Add `--callback-port <port>` when support names one. Start a new session and run `/mcp` to sign in. One call to `triage` without arguments proves the connection and the sign-in.
+
+## Claude API
+
+The Messages API's MCP connector calls `https://mcp.qyl.at/mcp` from Anthropic's servers. It does not run the OAuth flow: your application signs in with the client support gave you, passes the access token for the resource `https://mcp.qyl.at/mcp` as `authorization_token` and refreshes it.
+
+```json
+{
+  "mcp_servers": [
+    { "type": "url", "url": "https://mcp.qyl.at/mcp", "name": "qyl", "authorization_token": "<qyl access token>" }
+  ],
+  "tools": [{ "type": "mcp_toolset", "mcp_server_name": "qyl" }]
+}
+```
+
+Send it to `/v1/messages` with the beta header `anthropic-beta: mcp-client-2025-11-20`. The connector uses tools only, so the skill is not available through it.
+
+## ChatGPT
+
+qyl is added to ChatGPT as a custom MCP server, on the web.
+
+1. Open [chatgpt.com/plugins](https://chatgpt.com/plugins), choose **+**, then **Add custom MCP server**. On Business, Enterprise and Edu workspaces admins and owners can do this, and Enterprise and Edu admins can grant it to members; on Pro, ChatGPT limits custom MCP servers to read and fetch actions.
+2. Enter the name `qyl` and, as the connection, the server URL `https://mcp.qyl.at/mcp`.
+3. Choose OAuth as the authentication and enter the client ID support gave you.
+4. Confirm **I understand and want to continue**, choose **Create as a plugin**, review the tools and sign in with your qyl account.
+5. Mention `@qyl` in a conversation or a Work task.
+
+In Work chats, ChatGPT can subscribe to qyl's [Events](#events).
+
+Try the same prompts:
+
+<ol>
+  {examplePrompts.map((prompt) => <li><code>{prompt}</code></li>)}
+</ol>
+
+## Codex
+
+The qyl plugin serves Codex too, from the [ancplua-openai](https://github.com/ANcpLua/ancplua-openai) marketplace:
 
 ```bash
 codex plugin marketplace add ANcpLua/ancplua-openai
 codex plugin add qyl@ancplua-openai
 ```
 
-ChatGPT: add `https://mcp.qyl.at/mcp` as a custom MCP server (connector) with OAuth and request `qyl:read qyl:write qyl:delete`. ChatGPT discovers the authorization server and runs the sign-in.
+To sign in with the client support gave you, add the endpoint with it, then sign in:
 
-Any other MCP client: add the URL as a remote Streamable HTTP server with OAuth, for example `claude mcp add --transport http qyl https://mcp.qyl.at/mcp` and then `/mcp` to sign in.
+```bash
+codex mcp add qyl --url https://mcp.qyl.at/mcp --oauth-client-id <client id>
+codex mcp login qyl
+```
 
-Start a new session after installing. One call to `triage` without arguments proves the connection and the sign-in.
+`codex mcp add` writes the entry to `~/.codex/config.toml`, which the Codex CLI, the IDE extension and the ChatGPT desktop app share on one machine, with the client ID under `[mcp_servers.qyl.oauth]`:
+
+```toml
+[mcp_servers.qyl]
+url = "https://mcp.qyl.at/mcp"
+```
+
+The prompts above work in Codex as well.
+
+## OpenAI API
+
+The Responses API reaches qyl through its `mcp` tool. Like the Claude API, it does not run the OAuth flow: your application passes the access token for `https://mcp.qyl.at/mcp` as `authorization` on every request.
+
+```json
+{
+  "type": "mcp",
+  "server_label": "qyl",
+  "server_url": "https://mcp.qyl.at/mcp",
+  "authorization": "<qyl access token>",
+  "require_approval": "always"
+}
+```
 
 ## Local stdio
+
+Start a Collector with `qyl up` (see [getting started](/docs/getting-started/)), then run the MCP server next to it:
 
 ```bash
 npx qyl-mcp-server --stdio
 ```
 
-The executable needs Bun 1.4 or newer on `PATH`. It reads the Collector at `QYL_COLLECTOR_URL`, by default the local one `qyl up` starts, with the credential in `QYL_API_KEY`; `QYL_PROJECT` selects a project. Over stdio there is no OAuth: the Collector key's explicit `read`, `write` and `delete` roles decide what the server may change. stdio serves the same tools and skills and no Events, and opens no network listener.
+The executable needs Bun 1.4 or newer on `PATH`. It reads the Collector at `QYL_COLLECTOR_URL`, by default `http://127.0.0.1:5100`, the one `qyl up` starts, with the credential in `QYL_API_KEY`; `QYL_PROJECT` selects a project. Over stdio there is no OAuth: the Collector key's explicit `read`, `write` and `delete` roles decide what the server may change. stdio serves the same tools and skill, no Events, and opens no network listener.
+
+- Claude Code: `claude mcp add qyl -- npx qyl-mcp-server --stdio`
+- Codex: `codex mcp add qyl -- npx qyl-mcp-server --stdio`, or in `~/.codex/config.toml`:
+
+```toml
+[mcp_servers.qyl]
+command = "npx"
+args = ["qyl-mcp-server", "--stdio"]
+```
 
 ## Authorization
 
-qyl is an OAuth 2.1 Resource Server. Auth0 at `https://qyl-eu.eu.auth0.com/` issues the tokens; clients use Authorization Code with PKCE for the exact resource `https://mcp.qyl.at/mcp`. `/.well-known/oauth-protected-resource/mcp` names the issuer and the scopes. Clients register through a Client ID Metadata Document or an OAuth client registered for them. The server checks the issuer, resource audience, expiry, RFC 9068 token profile, signature and scopes on every request; there is no anonymous access.
+qyl is an OAuth 2.1 resource server. Clients use Authorization Code with PKCE for the exact resource `https://mcp.qyl.at/mcp`; `/.well-known/oauth-protected-resource/mcp` names the issuer and the scopes. The server checks the issuer, resource audience, expiry, RFC 9068 token profile, RS256 signature and scopes on every request; there is no anonymous access.
 
 | Scope | Grants |
 | --- | --- |
@@ -78,7 +183,7 @@ The read tools are annotated read-only and closed-world. The write tools change 
 
 ## Skills
 
-The server publishes its skills through the `io.modelcontextprotocol/skills` extension: `skills/list` and `skills/get` return the catalog, and every file of a skill is a `resources/read` under a `skill://` URI whose content matches the SHA-256 digest the catalog names. The plugin bundles the same files.
+The server publishes its skill through the `io.modelcontextprotocol/skills` extension: `skills/list` and `skills/get` return the catalog, and every file of a skill is a `resources/read` under a `skill://` URI whose content matches the SHA-256 digest the catalog names. The qyl plugin bundles the same skill.
 
 <ul>
   {mcpSkills.map((skill) => <li><code>{skill.name}</code>: {skill.description}</li>)}
@@ -86,19 +191,19 @@ The server publishes its skills through the `io.modelcontextprotocol/skills` ext
 
 ## Events
 
-`https://mcp.qyl.at/mcp` serves MCP Events to authenticated callers through `events/list`, `events/subscribe` and `events/unsubscribe`. The one event, `trace.error`, fires when a trace with at least one error span reaches the caller's Collector project; the optional `service_name` argument narrows it to one service. Clients that implement MCP Events, such as ChatGPT, subscribe with a webhook.
+`https://mcp.qyl.at/mcp` serves MCP Events to authenticated callers through `events/list`, `events/subscribe` and `events/unsubscribe`. The one event, `trace.error`, fires when a trace with at least one error span reaches the caller's Collector project; the optional `service_name` argument narrows it to one service. A client that implements MCP Events, such as ChatGPT in Work chats, subscribes with a webhook.
 
 - **Delivery.** Each delivery carries `trace_id`, `root_span`, `services`, `span_count`, `duration_ms` and `start_time`, signed per Standard Webhooks with the subscriber's `whsec_` secret. The callback must be a public HTTPS address and pass a verification request first; redirects are not followed.
-- **Lifetime.** A subscription lasts 60 minutes unless the client asks for between 5 minutes and 24 hours, and ends there unless refreshed. One caller holds at most 20.
-- **No replay.** The server polls the Collector every 30 seconds while a subscription is live. The first poll sets the baseline; traces that arrive while the server is down are not delivered.
+- **Lifetime.** A subscription lasts 60 minutes unless the client asks for between 5 minutes and 24 hours, and ends there unless refreshed, or when the callback answers `410`. One caller, an account in one client, holds at most 20.
+- **No replay.** The server polls the Collector every 30 seconds while a subscription is live and reads the 100 newest traces each time. The first poll sets the baseline; traces that arrive while the server is down are not delivered. A delivery is tried up to five times.
 - **Access.** The subscriber's Auth0 account, grant and `qyl:read` permission are checked again before each delivery. Revoked access removes the subscription; an authorization outage suspends delivery.
 
 Local stdio and unauthenticated local HTTP serve no Events.
 
 ## Troubleshooting
 
-- **Sign-in fails:** confirm the client uses the exact `/mcp` resource, then reconnect and complete the authorization flow.
+- **Sign-in fails:** confirm the host uses the exact `/mcp` resource and the OAuth client ID support gave you for that host, then reconnect. A Claude connector's settings cannot be edited: remove it and add it again.
 - **A permission is missing:** reconnect and approve the scope the challenge names. Contact [support](/support/) if sign-in cannot grant it.
-- **No project is available:** your account has no Collector project yet; write to [support](/support/) with the client name and the approximate time, never credentials.
+- **No project is available:** your account has no Collector project yet; write to [support](/support/) with the host's name and the approximate time, never credentials.
 - **Results are empty:** check the window, service and filters, and confirm the application sends OTLP to the Collector project you read. See [getting started](/docs/getting-started/).
 - **A write conflicts:** read the object again for its current `etag` before repeating the change.

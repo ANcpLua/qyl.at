@@ -28,7 +28,7 @@ app.MapTodos();
 app.Run();
 ```
 
-`AddQylApi` extends `IHostApplicationBuilder`, not `IServiceCollection`: it registers services *and* wires the host, so it is called on `builder`. In a fixed order it registers the consumer's JSON serializer contexts, the problem-details JSON context, validation, the problem-details service, the `v1` OpenAPI document, and last `AddQyl()` — auto-instrumentation, ASP.NET Core spans and OTLP export. Reflection is off under Native AOT, so a serializer context is a parameter rather than a setting — an API without one does not run.
+`AddQylApi` extends `IHostApplicationBuilder`, not `IServiceCollection`: it registers services *and* wires the host, so it is called on `builder`. In a fixed order it registers the consumer's JSON serializer contexts, the problem-details JSON context, validation, the problem-details service, the `v1` OpenAPI document, and last `AddQyl()` — auto-instrumentation, ASP.NET Core spans and OTLP export. Reflection is off under Native AOT, so the serializer contexts are a parameter rather than a setting: a type no context covers throws `NotSupportedException` when it is serialized.
 
 Overrides go through the framework's own options, not through an SDK type: `Configure<ValidationOptions>` and `Configure<OpenApiOptions>("v1", …)` after the call.
 
@@ -49,10 +49,9 @@ missing or stale.
 **A `baggage` request header carries the session.** `baggage: session.id=<id>` becomes `session.id`
 on the server span, and the session processor copies it to every descendant span in that process. An
 agent that sends the header finds everything it triggered under one session in the collector. The
-startup filter that stamps it is registered after `AddQyl` on purpose: startup filters wrap the
-pipeline outermost-first, and the span being stamped is created by the filter `AddQyl` registers, so
-a filter ahead of it would tag the wrong activity or none. The tag is a span tag and does not cross a
-process boundary — a downstream service reads the header, not the tag.
+startup filter `AddQyl` registers stamps the tag onto ASP.NET Core's server activity, so the same
+works in any ASP.NET Core application that calls `AddQyl()`. The tag is a span tag and does not
+cross a process boundary — a downstream service reads the header, not the tag.
 
 ## Compiled into the consumer, deliberately
 

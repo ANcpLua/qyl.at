@@ -15,7 +15,7 @@ export default defineConfig({
   // the noise of a neighbouring workload as a site regression, so it runs on a
   // schedule and on demand (the performance run), never on a PR.
   projects: [
-    { name: "surface", testMatch: /(?:surface|lab|effects)\.spec\.ts$/ },
+    { name: "surface", testMatch: /(?:surface|effects)\.spec\.ts$/ },
     { name: "performance", testMatch: /performance\.spec\.ts$/ },
   ],
   fullyParallel: false,
