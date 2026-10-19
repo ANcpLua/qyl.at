@@ -98,7 +98,7 @@ In production, the OTLP receiver requires an `x-otlp-api-key` credential with th
 
 ## MCP operation telemetry
 
-The qyl MCP server records its operation spans, duration histograms and operation logs using the generated qyl registry bindings for the MCP semantic vocabulary, and exports them to the caller's Collector project. A valid W3C `traceparent` in the request's `params._meta` becomes the parent of the server's `tools/call` span; `tracestate` and baggage are not read.
+The qyl MCP server records its operation spans, duration histograms and operation logs using the generated qyl registry bindings for the MCP semantic vocabulary, and exports them to the caller's Collector project. A valid W3C `traceparent` in the request's `params._meta` becomes the parent of the server's `tools/call` span; `tracestate` and baggage are not read. The span is recorded for every call, also when that `traceparent` is unsampled, so `get_mcp_stats` counts every caller. It names the negotiated `mcp.protocol.version`, the `jsonrpc.request.id` and the caller: `user_agent.name` and `user_agent.version` from the client's `clientInfo`, `user_agent.original` from the HTTP `User-Agent`.
 
 The server does not record prompt variables, tool arguments, tool results or arbitrary HTTP headers as span attributes. Collector failures reach the agent as errors; the server has no demonstration data to substitute.
 

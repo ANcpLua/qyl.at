@@ -7,11 +7,11 @@ import ProductPage from "../../components/ProductPage.astro";
   eyebrow="Product · analysis"
   intro="Ask what changed, why it failed and whether the fix held. The Collector computes the answer from recorded telemetry; the agent receives evidence, coverage and the identifiers to follow next."
   heading="The Collector does the analysis, not the model."
-  description="Failures are grouped by stable, project-scoped fingerprints. Comparisons align two executions, or two traffic groups, and report root-cause evidence separately from statistical association. A fix is verified from traffic after the change and stays pending until there is enough of it. Every result names the window it covers and how much it examined. The MCP server validates each call against the shared contract and forwards it; the Collector computes every answer."
-  tools={["triage", "list_failures", "get_failure_context", "verify_fix", "compare_groups", "aggregate_telemetry", "discover_attributes", "list_releases", "check_telemetry_health"]}
+  description="Failures are grouped by stable, project-scoped fingerprints. Triage names each failure's release and the failure it propagated from, and lists failures by their recorded status, open by default. Comparisons align two executions, or two traffic groups, and report root-cause evidence separately from statistical association. A fix is verified from traffic after the change and stays pending until there is enough of it. Every result names the window it covers and how much it examined. The MCP server validates each call against the shared contract and forwards it; the Collector computes every answer."
+  tools={["triage", "get_failure_context", "verify_fix", "compare_groups", "aggregate_telemetry", "discover_attributes", "list_releases", "check_telemetry_health"]}
   capabilities={[]}
   command={`# an agent connected to qyl
-triage { }
+triage { "lookback_minutes": 1440 }
 get_failure_context { "failure_id": "<from triage>" }
 verify_fix { "failure_id": "<the same>", "since": "<when the fix shipped>" }`}
 />

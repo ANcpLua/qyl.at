@@ -7,8 +7,8 @@ import ProductPage from "../../components/ProductPage.astro";
   eyebrow="Product · metrics"
   intro="Original OTLP measurements, or explicit aggregation over a bounded time range."
   heading="Original points and explicit aggregation."
-  description="Metric identity includes the resource, instrumentation scope and descriptor. Original points preserve exact integers, explicit and exponential histograms, summaries and exemplars. Aggregate queries disclose their numeric representation; incompatible descriptors and contradictory observations remain visible, and an unsupported aggregation returns a diagnostic instead of a number."
-  tools={["list_metrics", "get_metric_series", "query_metric"]}
+  description="Metric identity includes the resource, instrumentation scope and descriptor. list_metrics names each instrument with its attribute keys, their cardinality and the keys to group by; query_metric aggregates it, or with raw returns one series' original points, which preserve exact integers, explicit and exponential histograms, summaries and exemplars. Aggregate queries disclose their numeric representation; incompatible descriptors and contradictory observations remain visible, and an unsupported aggregation returns a diagnostic instead of a number."
+  tools={["list_metrics", "query_metric"]}
   capabilities={[
     { name: "OTLP /v1/metrics", description: "Ingest binary protobuf or OTLP JSON over HTTP, plus the official OTLP gRPC service." },
   ]}

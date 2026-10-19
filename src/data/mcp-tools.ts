@@ -12,6 +12,17 @@ export const mcpTools = [
     "destructive": false
   },
   {
+    "name": "annotate",
+    "title": "Annotate",
+    "description": "Create a labeled note on a trace, span, session or failure when recording a finding, or change a note with its id and current etag; get_trace, list_sessions or get_failure_context returns it.",
+    "scopes": [
+      "qyl:read",
+      "qyl:write"
+    ],
+    "readOnly": false,
+    "destructive": true
+  },
+  {
     "name": "check_telemetry_health",
     "title": "Check Telemetry Health",
     "description": "Report silent services, orphan spans and missing convention attributes when checking telemetry coverage.",
@@ -52,28 +63,6 @@ export const mcpTools = [
     "destructive": false
   },
   {
-    "name": "create_annotation",
-    "title": "Create Annotation",
-    "description": "Create a labeled note on a trace, span, session or failure when recording a finding; get_trace, list_sessions or list_failures returns it.",
-    "scopes": [
-      "qyl:read",
-      "qyl:write"
-    ],
-    "readOnly": false,
-    "destructive": false
-  },
-  {
-    "name": "create_saved_query",
-    "title": "Create Saved Query",
-    "description": "Store a named telemetry filter when saving a reusable question; list_saved_queries returns it.",
-    "scopes": [
-      "qyl:read",
-      "qyl:write"
-    ],
-    "readOnly": false,
-    "destructive": false
-  },
-  {
     "name": "delete_record",
     "title": "Delete Annotation or Saved Query",
     "description": "Delete an annotation or saved query with its current etag when removing a stored note or question, never traces, logs or metrics.",
@@ -107,7 +96,7 @@ export const mcpTools = [
   {
     "name": "get_failure_context",
     "title": "Get Failure Context",
-    "description": "Return the recorded failure path, correlated logs and comparison evidence when investigating a failed execution.",
+    "description": "Return the recorded failure path, correlated logs and comparison evidence when investigating a failed execution. Pass exactly one of trace_id, session_id, failure_id or ci_run_id.",
     "scopes": [
       "qyl:read"
     ],
@@ -118,16 +107,6 @@ export const mcpTools = [
     "name": "get_mcp_stats",
     "title": "Get MCP Stats",
     "description": "Return MCP request totals, failure classes, latency, per-tool statistics, time buckets and server, transport and method breakdowns when investigating MCP tool health.",
-    "scopes": [
-      "qyl:read"
-    ],
-    "readOnly": true,
-    "destructive": false
-  },
-  {
-    "name": "get_metric_series",
-    "title": "Get Metric Series",
-    "description": "Discover metric streams and attribute cardinality when choosing filters, or select series_id to page complete original points with points_cursor. Oversized individual points remain available through the HTTP points API.",
     "scopes": [
       "qyl:read"
     ],
@@ -155,19 +134,9 @@ export const mcpTools = [
     "destructive": false
   },
   {
-    "name": "list_failures",
-    "title": "List Failures",
-    "description": "List failures grouped by stable fingerprints when investigating recurring errors or their recorded status.",
-    "scopes": [
-      "qyl:read"
-    ],
-    "readOnly": true,
-    "destructive": false
-  },
-  {
     "name": "list_metrics",
     "title": "List Metrics",
-    "description": "List instruments and their units, kinds and aggregation support when choosing a metric.",
+    "description": "List instruments with their units, kinds, aggregation support and attribute keys when choosing a metric and how to split it.",
     "scopes": [
       "qyl:read"
     ],
@@ -178,16 +147,6 @@ export const mcpTools = [
     "name": "list_releases",
     "title": "List Releases",
     "description": "List observed service versions and their before-and-after impact when investigating a release.",
-    "scopes": [
-      "qyl:read"
-    ],
-    "readOnly": true,
-    "destructive": false
-  },
-  {
-    "name": "list_saved_queries",
-    "title": "List Saved Queries",
-    "description": "List saved filters with their current etags when choosing a question to run or edit.",
     "scopes": [
       "qyl:read"
     ],
@@ -217,7 +176,7 @@ export const mcpTools = [
   {
     "name": "query_metric",
     "title": "Query Metric",
-    "description": "Query float64 metric projections, counter changes or ratios when measuring trends across a time window. Use get_metric_series with series_id for original numeric values, buckets and exemplars.",
+    "description": "Query float64 metric projections, counter changes or ratios when measuring trends across a time window, or with raw one series' original values, buckets and exemplars.",
     "scopes": [
       "qyl:read"
     ],
@@ -227,12 +186,23 @@ export const mcpTools = [
   {
     "name": "run_saved_query",
     "title": "Run Saved Query",
-    "description": "Evaluate a saved filter against current telemetry when answering a previously saved question.",
+    "description": "Evaluate a saved filter against current telemetry when answering a previously saved question, or without an id list the saved queries with their ids and etags.",
     "scopes": [
       "qyl:read"
     ],
     "readOnly": true,
     "destructive": false
+  },
+  {
+    "name": "save_query",
+    "title": "Save Query",
+    "description": "Store a named telemetry filter when saving a reusable question, or change a saved query with its id and current etag; run_saved_query answers it.",
+    "scopes": [
+      "qyl:read",
+      "qyl:write"
+    ],
+    "readOnly": false,
+    "destructive": true
   },
   {
     "name": "search_logs",
@@ -247,7 +217,7 @@ export const mcpTools = [
   {
     "name": "triage",
     "title": "Triage",
-    "description": "Rank new or worsening failures, performance regressions, releases and silent services when investigating what changed.",
+    "description": "Rank new or worsening failures, performance regressions, releases and silent services when investigating what changed, or list failures by their recorded status.",
     "scopes": [
       "qyl:read"
     ],
@@ -255,31 +225,9 @@ export const mcpTools = [
     "destructive": false
   },
   {
-    "name": "update_annotation",
-    "title": "Update Annotation",
-    "description": "Update annotation text, labels or class with its current etag when revising a finding; get_trace, list_sessions or list_failures returns it.",
-    "scopes": [
-      "qyl:read",
-      "qyl:write"
-    ],
-    "readOnly": false,
-    "destructive": true
-  },
-  {
     "name": "update_failure_status",
     "title": "Update Failure Status",
-    "description": "Set a failure's status or assignee when recording triage decisions, returning the stored failure available through list_failures.",
-    "scopes": [
-      "qyl:read",
-      "qyl:write"
-    ],
-    "readOnly": false,
-    "destructive": true
-  },
-  {
-    "name": "update_saved_query",
-    "title": "Update Saved Query",
-    "description": "Update a saved filter with its current etag when revising a question; list_saved_queries returns it.",
+    "description": "Set a failure's status or assignee when recording triage decisions, returning the stored failure that triage then lists by status.",
     "scopes": [
       "qyl:read",
       "qyl:write"

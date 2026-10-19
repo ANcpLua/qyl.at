@@ -18,5 +18,5 @@ import ProductPage from "../../components/ProductPage.astro";
   ]}
   command={`# from an agent connected to qyl:
 ci_log { }
-ci_log { "run_id": "<from the list>" }`}
+ci_log { "ci_run_id": "<from the list>", "baseline": "last_success" }`}
 />
