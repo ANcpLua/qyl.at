@@ -937,10 +937,11 @@ details[open] .faq-toggle::before {
   background: var(--panel);
 }
 
-/* The release table is the widest content on the site: three columns, one of
-   them a 40-character package id. It scrolls inside itself rather than pushing
-   the page into a horizontal scrollbar. */
-.release-table {
+/* The version and tool tables are the widest content on the site: three
+   columns, one of them a long package id or tool name. They scroll inside
+   themselves rather than pushing the page into a horizontal scrollbar. */
+.release-table,
+.tool-table {
   display: block;
   overflow-x: auto;
 }
@@ -1195,9 +1196,9 @@ details[open] .faq-toggle::before {
   color: var(--text);
 }
 
-/* The wave the whole site describes, stated on every page. It sits below the
-   footer navigation rather than in it, because it is a fact about the release
-   the page documents, not a place to go. */
+/* The published versions the site describes, stated on every page. They sit
+   below the footer navigation rather than in it, because they are facts about
+   what the page documents, not places to go. */
 .release-bar {
   display: flex;
   flex-wrap: wrap;

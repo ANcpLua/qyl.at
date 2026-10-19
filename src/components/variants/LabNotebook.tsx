@@ -2,7 +2,7 @@
 
 import { ArrowRight, ArrowUpRight, Copy } from "lucide-react";
 import type { ReactNode } from "react";
-import { externalLinks, primaryNavigation, productNavigation, releaseWave, versionOf } from "../../data/site";
+import { externalLinks, primaryNavigation, productNavigation, versionOf } from "../../data/site";
 
 // Lab Notebook direction: a research-paper page with numbered sections, figures, a listing and footnotes.
 // Static SSR; the host progressively enhances the command's copy button.
@@ -27,7 +27,7 @@ function Section({ id, n, title, children }: { id: string; n: string; title: str
 }
 
 const endpoints = [
-  ["Dashboard", "HTTP", "127.0.0.1:5100"],
+  ["Collector API", "HTTP", "127.0.0.1:5100"],
   ["OTLP receiver", "HTTP / protobuf", "127.0.0.1:4318"],
   ["OTLP receiver", "gRPC", "127.0.0.1:4317"],
 ] as const;
@@ -48,7 +48,7 @@ export default function LabNotebook() {
 
       <main id="main">
         <div className={`${shell} pt-12 pb-10 text-center sm:pt-18`}>
-          <p className="font-sans text-xs tracking-[0.18em] text-[#4b4b45] uppercase">Release wave {releaseWave} · Local observability</p>
+          <p className="font-sans text-xs tracking-[0.18em] text-[#4b4b45] uppercase">qyl {versionOf("qyl")} · Analysis for agents</p>
           <h1 id="nb-title" className="mx-auto mt-6 max-w-3xl text-[clamp(2.6rem,6.4vw,4.75rem)] leading-[1.04] font-normal tracking-[-0.03em]">Observed, recorded, reproduced.</h1>
           <p className="mt-6 text-lg italic text-[#4b4b45]">The qyl project</p>
           <p className="mt-1 font-sans text-sm text-[#4b4b45]">OpenTelemetry, DuckDB and MCP on your own machine</p>
@@ -65,10 +65,10 @@ export default function LabNotebook() {
         <div className={`${shell} grid gap-14 pb-16 lg:grid-cols-2 lg:gap-16`}>
           <div className="min-w-0 space-y-12">
             <Section id="nb-intro" n="1" title="Introduction">
-              <p>Debugging with an agent usually ends at the edge of the repository. The traces, logs and metrics that explain a failure live in a dashboard the agent cannot open. qyl moves that evidence next to the code and keeps it there.</p>
+              <p>Debugging with an agent usually ends at the edge of the repository. The traces, logs and metrics that explain a failure live somewhere the agent cannot reach. qyl moves that evidence next to the code, analyses it and keeps it there.</p>
             </Section>
             <Section id="nb-methods" n="2" title="Methods">
-              <p>Install the dotnet tool and start the collector. The dashboard and both OTLP receivers come up on loopback, as listed in Table 1.</p>
+              <p>Install the dotnet tool and start the collector. Its API and both OTLP receivers come up on loopback, as listed in Table 1.</p>
               <figure data-command-panel="" className="border border-[#1c1c1a] bg-white font-sans">
                 <div className="flex min-h-12 items-center justify-between gap-3 border-b border-[#1c1c1a] px-4"><span className="text-xs font-semibold tracking-[0.12em] uppercase">Listing 1</span><button type="button" data-copy-command={command} aria-label="Copy qyl install commands" className={`inline-flex min-h-11 items-center gap-2 px-2 text-xs font-medium hover:text-[#1e40af] ${focus}`}><Copy aria-hidden="true" className="size-3.5" /><span data-copy-label="">Copy</span></button></div>
                 <pre className="overflow-x-auto p-4 font-mono text-[13px] leading-7 sm:text-sm"><code><span className="text-[#4b4b45] select-none">1  </span>dotnet tool install --global qyl{"\n"}<span className="text-[#4b4b45] select-none">2  </span>qyl up</code></pre>
@@ -96,7 +96,7 @@ export default function LabNotebook() {
               </table>
             </figure>
             <Section id="nb-results" n="3" title="Observations">
-              <p>Through MCP the agent lists traces, reads a complete span tree and opens a closer view: <code className="font-mono text-[15px]">list_traces</code>, <code className="font-mono text-[15px]">get_trace</code> and <code className="font-mono text-[15px]">display_traces</code>. Errors stay errors, and demo data is always marked as demo data.</p>
+              <p>Through MCP the agent asks what changed, reads the failure in context and checks whether a fix held: <code className="font-mono text-[15px]">triage</code>, <code className="font-mono text-[15px]">get_failure_context</code> and <code className="font-mono text-[15px]">verify_fix</code>. Errors stay errors, and no demo data stands in for evidence.</p>
             </Section>
           </div>
         </div>
@@ -107,7 +107,7 @@ export default function LabNotebook() {
               <ol className="border-t border-[#1c1c1a]/30 font-sans">{productNavigation.map(({ href, label }, index) => <li key={href}><a href={href} className={`group flex min-h-14 items-center justify-between gap-4 border-b border-[#1c1c1a]/30 py-2 hover:text-[#1e40af] ${focus}`}><span className="flex items-baseline gap-4"><span className="font-mono text-xs text-[#4b4b45]">S{index + 1}</span><span className="text-lg">{label}</span></span><ArrowRight aria-hidden="true" className="size-4 transition-transform group-hover:translate-x-1 motion-reduce:transition-none" /></a></li>)}</ol>
             </Section>
             <Section id="nb-availability" n="5" title="Availability">
-              <p>qyl is free to use. One plan covers every shipped feature: the native collector, the embedded dashboard and the MCP workbench.</p>
+              <p>qyl is free to use. One plan covers every shipped feature: the NativeAOT Collector, the hosted endpoint and the qyl plugin.</p>
               <div className="flex flex-wrap items-center gap-x-6 gap-y-3 pt-2 font-sans">
                 <a href="/docs/getting-started/" className={`inline-flex min-h-12 items-center gap-2 bg-[#1c1c1a] px-5 text-sm font-medium text-white hover:bg-[#1e40af] ${focus}`}>Reproduce locally <ArrowRight aria-hidden="true" className="size-4" /></a>
                 <a href="/pricing/" className={`${link} inline-flex min-h-11 items-center text-sm`}>Pricing details</a>

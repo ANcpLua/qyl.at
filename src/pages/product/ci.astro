@@ -3,17 +3,18 @@ import ProductPage from "../../components/ProductPage.astro";
 ---
 
 <ProductPage
-  title="CI telemetry"
+  title="CI runs"
   eyebrow="Product · CI"
-  intro="A build run is another distributed operation. Keep it in the same evidence system as the code it validates."
-  heading="Ask why the build was slow."
-  description="qyl’s own release and verification paths export CI phases as OpenTelemetry spans. The MCP server reads that stored evidence through a dedicated tool instead of scraping provider HTML or inventing a second CI contract."
+  intro="A build is another distributed operation. Keep it in the same evidence system as the code it validates."
+  heading="Ask why the build failed, or why it was slow."
+  description="A CI job that exports its phases as OTLP spans with the OpenTelemetry CI/CD attributes becomes a run the Collector can compare: phases in order, failures first, rerun attempts, provider links and error excerpts, against another run or the last success. No provider HTML is scraped and no second CI contract exists."
+  tools={["ci_log"]}
   capabilities={[
-    { name: "ci_log", description: "Read recent qyl CI runs, their phases, outcomes, duration, and failure evidence." },
-    { name: "QYL_CI_*", description: "Configure the first-party smoke emitter with an OTLP endpoint, run id, leg, and optional collector key." },
-    { name: "span status", description: "Failed phases carry their error as telemetry status rather than a presentation-only badge." },
-    { name: "dogfood path", description: "qyl’s own package and release gates exercise the same collector and MCP read surfaces." },
+    { name: "cicd.pipeline.task.name", description: "Marks a span as a CI phase; cicd.pipeline.task.type works too." },
+    { name: "cicd.pipeline.run.id", description: "Groups phases into one run; cicd.pipeline.run.url.full links the provider's page." },
+    { name: "span status", description: "A failed phase carries its error as span status, so the failure is evidence rather than a badge." },
   ]}
-  command={`# from an MCP client:
-ci_log { }`}
+  command={`# from an agent connected to qyl:
+ci_log { }
+ci_log { "run_id": "<from the list>" }`}
 />

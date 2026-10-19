@@ -16,8 +16,8 @@ const parts = [
   { item: "01", part: "Receiver", spec: "OTLP / HTTP", value: "127.0.0.1:4318" },
   { item: "02", part: "Receiver", spec: "OTLP / gRPC", value: "127.0.0.1:4317" },
   { item: "03", part: "Store", spec: "DuckDB, explicit retention", value: "local disk" },
-  { item: "04", part: "Dashboard", spec: "Embedded, ships with the tool", value: "127.0.0.1:5100" },
-  { item: "05", part: "MCP tools", spec: "list_traces · get_trace · display_traces", value: "your agent" },
+  { item: "04", part: "Collector API", spec: "Reads, analysis, annotations", value: "127.0.0.1:5100" },
+  { item: "05", part: "MCP tools", spec: "triage · get_failure_context · verify_fix", value: "your agent" },
 ] as const;
 
 function Dimension({ text }: { text: string }) {
@@ -66,7 +66,7 @@ export default function Blueprint() {
                   <div aria-live="polite" data-copy-status="" className="mt-3 min-h-4 font-mono text-xs text-[#155e75]" />
                 </div>
                 <dl className="grid grid-cols-2 border-t border-dashed border-[#0e7490]/60 font-mono text-xs">
-                  <div className="border-r border-dashed border-[#0e7490]/60 px-5 py-4"><dt className="text-[#27485a]">Dashboard</dt><dd className="mt-1 break-all font-semibold">127.0.0.1:5100</dd></div>
+                  <div className="border-r border-dashed border-[#0e7490]/60 px-5 py-4"><dt className="text-[#27485a]">Agent</dt><dd className="mt-1 break-all font-semibold">MCP, hosted or stdio</dd></div>
                   <div className="px-5 py-4"><dt className="text-[#27485a]">Tolerance</dt><dd className="mt-1 font-semibold">No hosted account</dd></div>
                 </dl>
               </div>
@@ -78,7 +78,7 @@ export default function Blueprint() {
           <div className={shell}>
             <div className="grid gap-6 md:grid-cols-12"><div className="md:col-span-7"><p className={label}>Section B–B / Signal path</p><h2 id="blueprint-flow" className="mt-4 max-w-2xl text-4xl leading-[1.05] font-semibold tracking-[-0.045em] sm:text-5xl">One path. Every joint labelled.</h2></div><p className="max-w-md self-end text-base leading-relaxed text-[#27485a] md:col-span-5">Follow a request from the SDK that emitted it to the agent that explains it. Nothing leaves the machine unless you send it.</p></div>
             <ol className="mt-12 grid gap-8 md:grid-cols-3 md:gap-0">
-              {[["A", "Receive", "Any compliant OpenTelemetry SDK exports over OTLP to ports 4318 or 4317."], ["B", "Store", "Traces, logs and metrics land in one local DuckDB store with explicit retention."], ["C", "Investigate", "Your agent calls list_traces, get_trace and display_traces over MCP."]].map(([mark, title, text], index) => (
+              {[["A", "Receive", "Any compliant OpenTelemetry SDK exports over OTLP to ports 4318 or 4317."], ["B", "Store", "Traces, logs and metrics land in one local DuckDB store with explicit retention."], ["C", "Investigate", "Your agent calls triage, get_failure_context and verify_fix over MCP."]].map(([mark, title, text], index) => (
                 <li key={mark} className={`relative border border-[#0e7490]/60 bg-[#f4f9fc] p-6 md:border-r-0 ${index === 2 ? "md:border-r" : ""}`}>
                   <span className="flex size-10 items-center justify-center rounded-full border border-[#0e7490] font-mono text-sm font-semibold text-[#155e75]">{mark}</span>
                   <h3 className="mt-6 text-2xl font-semibold tracking-[-0.03em]">{title}</h3>
@@ -92,7 +92,7 @@ export default function Blueprint() {
 
         <section aria-labelledby="blueprint-parts" className={`${shell} py-16 lg:py-22`}>
           <div className="grid gap-10 lg:grid-cols-12">
-            <div className="lg:col-span-4"><p className={label}>Bill of materials</p><h2 id="blueprint-parts" className="mt-4 text-4xl leading-[1.05] font-semibold tracking-[-0.045em]">Parts, as shipped.</h2><p className="mt-5 max-w-sm text-sm leading-6 text-[#27485a]">One dotnet tool carries the native collector and the embedded dashboard. The MCP server connects your agent.</p><a href="/docs/telemetry/" className={`${link} mt-4 text-sm font-medium`}>Ingestion details <ArrowRight aria-hidden="true" className="size-4" /></a></div>
+            <div className="lg:col-span-4"><p className={label}>Bill of materials</p><h2 id="blueprint-parts" className="mt-4 text-4xl leading-[1.05] font-semibold tracking-[-0.045em]">Parts, as shipped.</h2><p className="mt-5 max-w-sm text-sm leading-6 text-[#27485a]">One dotnet tool carries the NativeAOT Collector. The MCP server connects your agent.</p><a href="/docs/telemetry/" className={`${link} mt-4 text-sm font-medium`}>Ingestion details <ArrowRight aria-hidden="true" className="size-4" /></a></div>
             <div className="min-w-0 overflow-x-auto lg:col-span-8">
               <table className="w-full min-w-[34rem] border-collapse border border-[#0e7490]/60 bg-white/80 text-left text-sm">
                 <caption className="sr-only">qyl components and their local endpoints</caption>
@@ -105,14 +105,14 @@ export default function Blueprint() {
 
         <section aria-labelledby="blueprint-sheets" className="border-y border-dashed border-[#0e7490]/50 bg-white/70 py-16 lg:py-22">
           <div className={`${shell} grid gap-10 lg:grid-cols-12`}>
-            <div className="lg:col-span-5"><p className={label}>Sheet index</p><h2 id="blueprint-sheets" className="mt-4 max-w-md text-4xl leading-[1.05] font-semibold tracking-[-0.045em]">Each signal has its own sheet.</h2><p className="mt-5 max-w-sm text-sm leading-6 text-[#27485a]">Errors stay errors. Demo data is always marked as demo data.</p></div>
+            <div className="lg:col-span-5"><p className={label}>Sheet index</p><h2 id="blueprint-sheets" className="mt-4 max-w-md text-4xl leading-[1.05] font-semibold tracking-[-0.045em]">Each signal has its own sheet.</h2><p className="mt-5 max-w-sm text-sm leading-6 text-[#27485a]">Errors stay errors. No demo data stands in for evidence.</p></div>
             <nav aria-label="Product sheets" className="lg:col-span-7">{productNavigation.map(({ href, label: text }, index) => <a key={href} href={href} className={`group flex min-h-16 items-center justify-between gap-5 border-b border-dashed border-[#0e7490]/50 py-4 first:border-t hover:bg-cyan-50/70 ${focus}`}><span className="flex items-center gap-5"><span className="font-mono text-xs text-[#155e75]">SHEET 0{index + 2}</span><span className="text-xl font-medium sm:text-2xl">{text}</span></span><ArrowRight aria-hidden="true" className="size-5 text-[#0e7490] transition-transform group-hover:translate-x-1 motion-reduce:transition-none" /></a>)}</nav>
           </div>
         </section>
 
         <section aria-labelledby="blueprint-start" className={`${shell} py-16 lg:py-22`}>
           <div className="grid gap-8 border-2 border-[#0c2d3f] bg-white p-6 sm:p-10 lg:grid-cols-12">
-            <div className="lg:col-span-8"><p className={label}>Approved for local use</p><h2 id="blueprint-start" className="mt-4 text-5xl leading-none font-semibold tracking-[-0.05em] sm:text-6xl">Local. Useful. Free.</h2><p className="mt-5 max-w-xl text-base leading-relaxed text-[#27485a]">The native collector, embedded dashboard and MCP workbench are included. One plan, every shipped feature.</p></div>
+            <div className="lg:col-span-8"><p className={label}>Approved for local use</p><h2 id="blueprint-start" className="mt-4 text-5xl leading-none font-semibold tracking-[-0.05em] sm:text-6xl">Local. Useful. Free.</h2><p className="mt-5 max-w-xl text-base leading-relaxed text-[#27485a]">The NativeAOT Collector, the hosted endpoint and the qyl plugin are included. One plan, every shipped feature.</p></div>
             <div className="flex flex-col items-start justify-end gap-3 lg:col-span-4 lg:items-end"><a href="/docs/getting-started/" className={`inline-flex min-h-12 items-center gap-2 border border-[#0c2d3f] bg-[#0c2d3f] px-5 text-sm font-medium text-white hover:bg-[#155e75] ${focus}`}>Start locally <ArrowRight aria-hidden="true" className="size-4" /></a><a href="/pricing/" className={`${link} text-sm`}>Read the pricing details</a></div>
           </div>
         </section>

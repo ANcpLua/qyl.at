@@ -20,7 +20,7 @@ function InstallCommand() {
         </button>
       </div>
       <p data-copy-status aria-live="polite" className="mt-3 min-h-8 text-center text-xs text-[#515154]">
-        Installs the collector and opens your local dashboard. Requires .NET.
+        Installs the Collector and starts it on loopback. Requires .NET.
       </p>
     </div>
   );
@@ -67,7 +67,7 @@ export default function AppleMinimal() {
       <main id="main">
         <section aria-labelledby="hero-title" className="px-6 pb-24 pt-20 sm:pb-32 sm:pt-28">
           <div className="mx-auto max-w-[1120px] text-center">
-            <p className="mb-6 text-sm font-medium">qyl. Local-first observability.</p>
+            <p className="mb-6 text-sm font-medium">qyl. An analytical engine for agents.</p>
             <h1 id="hero-title" className="text-[clamp(3rem,8.3vw,7.5rem)] font-semibold leading-[0.96] tracking-[-0.055em]">Less guessing.<br />More evidence.</h1>
             <p className="mx-auto mt-7 max-w-[37ch] text-[19px] leading-[1.5] tracking-[-0.015em] text-[#6e6e73] sm:text-[21px]">Your traces, logs and metrics. Collected locally.<br className="hidden sm:block" /> Ready for your coding agent to read.</p>
             <div className="mt-8 flex flex-wrap items-center justify-center gap-x-7 gap-y-3"><a className={action} href="/docs/getting-started/">Start locally</a><a className={`${link} text-[17px]`} href="/docs/mcp/">Connect your agent <span aria-hidden="true">›</span></a></div>
@@ -80,13 +80,13 @@ export default function AppleMinimal() {
             <div>
               <p className="mb-5 text-sm font-medium">Keep your context close.</p>
               <h2 id="local-title" className="text-[clamp(2.75rem,5.8vw,5rem)] font-semibold leading-[1.02] tracking-[-0.045em]">Your machine.<br />Your signals.</h2>
-              <p className="mt-7 max-w-[36ch] text-[19px] leading-[1.5] text-[#6e6e73] sm:text-[21px]">Point your OpenTelemetry SDK at qyl. Traces, logs and metrics go into local DuckDB, with a dashboard to investigate what happened.</p>
+              <p className="mt-7 max-w-[36ch] text-[19px] leading-[1.5] text-[#6e6e73] sm:text-[21px]">Point your OpenTelemetry SDK at qyl. Traces, logs and metrics go into local DuckDB, where your agent investigates what happened.</p>
               <a href="/docs/telemetry/" className={`${link} mt-5 text-[17px]`}>Explore the telemetry path <span aria-hidden="true">›</span></a>
             </div>
             <div aria-label="Local telemetry architecture" className="w-full">
               <div className="border-b border-[#d2d2d7] py-8"><p className="text-xs text-[#515154]">Collect</p><p className="mt-2 text-[32px] font-medium tracking-[-0.025em]">OpenTelemetry</p><p className="mt-2 text-sm text-[#515154]">Your SDK. Standard OTLP over HTTP or gRPC.</p></div>
               <div className="border-b border-[#d2d2d7] py-8"><p className="text-xs text-[#515154]">Store</p><p className="mt-2 text-[32px] font-medium tracking-[-0.025em]">Local DuckDB</p><p className="mt-2 text-sm text-[#515154]">One analytical store, with explicit retention.</p></div>
-              <div className="py-8"><p className="text-xs text-[#515154]">Investigate</p><p className="mt-2 text-[32px] font-medium tracking-[-0.025em]">You + your agent</p><p className="mt-2 text-sm text-[#515154]">A human dashboard. An MCP connection.</p></div>
+              <div className="py-8"><p className="text-xs text-[#515154]">Investigate</p><p className="mt-2 text-[32px] font-medium tracking-[-0.025em]">Your agent</p><p className="mt-2 text-sm text-[#515154]">One MCP connection, hosted or over stdio.</p></div>
             </div>
           </div>
         </section>
@@ -104,7 +104,7 @@ export default function AppleMinimal() {
                 ["Tracing", "Follow a request from the first span to the last.", "/product/tracing/"],
                 ["Logs", "Read the records correlated with that request.", "/product/logs/"],
                 ["Metrics", "Query a time window and inspect the buckets.", "/product/metrics/"],
-                ["MCP evidence", "Inspect calls, protocol frames, approvals and tests.", "/product/mcp-evidence/"],
+                ["Agent runs", "Inspect sessions, steps, token usage and MCP failures.", "/product/mcp-evidence/"],
               ].map(([title, copy, href]) => <a key={title} href={href} className={`group flex min-h-32 items-start justify-between gap-4 border-t border-[#d2d2d7] py-7 ${focus}`}><div><h3 className="text-xl font-medium tracking-[-0.02em] group-hover:underline">{title}</h3><p className="mt-2 max-w-[35ch] text-[15px] leading-6 text-[#515154]">{copy}</p></div><span aria-hidden="true" className="text-2xl text-[#515154]">↗</span></a>)}
             </div>
           </div>
@@ -114,7 +114,7 @@ export default function AppleMinimal() {
           <div className="mx-auto max-w-[900px]">
             <p className="mb-5 text-sm font-medium">qyl {versionOf("qyl")}</p>
             <h2 id="start-title" className="text-[clamp(2.75rem,5.8vw,5rem)] font-semibold leading-[1.02] tracking-[-0.045em]">Start with one command.<br />See where it leads.</h2>
-            <p className="mx-auto mt-7 max-w-[35ch] text-[19px] leading-[1.5] text-[#6e6e73] sm:text-[21px]">The local collector, dashboard and MCP workbench are free. No hosted account needed to get started.</p>
+            <p className="mx-auto mt-7 max-w-[35ch] text-[19px] leading-[1.5] text-[#6e6e73] sm:text-[21px]">The Collector, the hosted endpoint and the qyl plugin are free. No hosted account needed to get started.</p>
             <div className="mt-8 flex flex-wrap items-center justify-center gap-x-7 gap-y-3"><a href="/docs/getting-started/" className={action}>Get qyl</a><a href="/pricing/" className={`${link} text-[17px]`}>See what’s included <span aria-hidden="true">›</span></a></div>
           </div>
         </section>

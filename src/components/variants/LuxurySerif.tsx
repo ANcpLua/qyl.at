@@ -24,7 +24,7 @@ export default function LuxurySerif() {
       <main id="main">
         <section aria-labelledby="luxury-title" className="mx-auto max-w-[1440px] px-6 pb-16 pt-10 md:px-12 md:pb-24 md:pt-24 xl:px-20">
           <div className="mb-7 flex items-center justify-between gap-4 md:mb-12">
-            <p className={eyebrow}>Local observability, considered.</p>
+            <p className={eyebrow}>Analysis for agents, considered.</p>
             <span className="hidden text-[11px] uppercase tracking-[0.12em] text-[#6E665A] sm:block">qyl {versionOf("qyl")}</span>
           </div>
           <h1 id="luxury-title" className={`${serif} max-w-[1100px] text-[clamp(3.9rem,9.6vw,8.6rem)] leading-[0.99]`}>
@@ -57,8 +57,8 @@ export default function LuxurySerif() {
             <div className="lg:pt-10">
               {[
                 { number: "I", title: "Collect", sub: "OpenTelemetry", text: "Point any compliant OTLP SDK at qyl. Traces, logs and metrics arrive through the same local receiver.", href: "/docs/telemetry/" },
-                { number: "II", title: "Keep", sub: "Local DuckDB", text: "One local analytical store with explicit retention. The collector and dashboard run on your machine.", href: "/docs/getting-started/" },
-                { number: "III", title: "Ask", sub: "Model Context Protocol", text: "Let your agent inspect traces, search correlated logs and work with execution evidence over MCP.", href: "/docs/mcp/" },
+                { number: "II", title: "Keep", sub: "Local DuckDB", text: "One local analytical store with explicit retention. The Collector runs on your machine and does the analysis.", href: "/docs/getting-started/" },
+                { number: "III", title: "Ask", sub: "Model Context Protocol", text: "Let your agent triage what changed, read the failure in context and verify the fix over MCP.", href: "/docs/mcp/" },
               ].map((item) => (
                 <article key={item.number} className="grid grid-cols-[30px_1fr] gap-5 border-t border-[#D8D1C4] py-8 first:pt-0 first:border-t-0 sm:grid-cols-[45px_1fr]">
                   <span aria-hidden="true" className="pt-3 font-[Georgia,serif] text-[20px] text-[#5A5348]">{item.number}</span>
@@ -89,7 +89,7 @@ export default function LuxurySerif() {
               { n: "01", title: "Traces", text: "Follow a request through its spans.", href: "/product/tracing/" },
               { n: "02", title: "Logs", text: "Find the records behind the result.", href: "/product/logs/" },
               { n: "03", title: "Metrics", text: "Read the pattern across a time window.", href: "/product/metrics/" },
-              { n: "04", title: "MCP evidence", text: "Inspect calls, approvals and protocol frames.", href: "/product/mcp-evidence/" },
+              { n: "04", title: "Agent runs", text: "Steps, token usage and failing MCP calls.", href: "/product/mcp-evidence/" },
               { n: "05", title: "CI telemetry", text: "Bring build runs into the investigation.", href: "/product/ci/" },
             ].map((item) => (
               <a key={item.n} href={item.href} className="group grid min-h-28 grid-cols-[25px_1fr_22px] items-center gap-x-4 gap-y-2 border-b border-[#D8D1C4] py-6 outline-offset-4 focus-visible:outline focus-visible:outline-1 md:grid-cols-[60px_1fr_1fr_30px] md:gap-x-8">
@@ -122,10 +122,10 @@ export default function LuxurySerif() {
               </div>
               <div className="border-t border-[#D8D1C4] py-6">
                 <p className="mb-4 text-[11px] uppercase tracking-[0.16em] text-[#5A5348]">03 — Connect your coding agent</p>
-                <pre tabIndex={0} className="overflow-x-auto font-mono text-[13px] leading-7 focus-visible:outline focus-visible:outline-offset-2"><code><span className="font-semibold">bunx</span> qyl-mcp-server --stdio</code></pre>
+                <pre tabIndex={0} className="overflow-x-auto font-mono text-[13px] leading-7 focus-visible:outline focus-visible:outline-offset-2"><code><span className="font-semibold">npx</span> qyl-mcp-server --stdio</code></pre>
                 <a href="/docs/mcp/" className={`${link} mt-3`}>MCP configuration <span aria-hidden="true" className="ml-3 text-base">↗</span></a>
               </div>
-              <p className="border-t border-[#D8D1C4] pt-5 text-[12px] leading-relaxed text-[#5A5348]">Dashboard at <code className="font-mono">127.0.0.1:5100</code> after startup.<br />qyl is free. <a href="/pricing/" className="underline decoration-[#1A1712]/40 underline-offset-4 focus-visible:outline">Read what’s included.</a></p>
+              <p className="border-t border-[#D8D1C4] pt-5 text-[12px] leading-relaxed text-[#5A5348]">OTLP receiver at <code className="font-mono">127.0.0.1:4318</code> after startup.<br />qyl is free. <a href="/pricing/" className="underline decoration-[#1A1712]/40 underline-offset-4 focus-visible:outline">Read what’s included.</a></p>
             </div>
           </div>
         </section>
@@ -141,7 +141,7 @@ export default function LuxurySerif() {
             <a href="/docs/" className={link}>Documentation</a>
             <a href="/pricing/" className={link}>Pricing</a>
             <a href={externalLinks.github} className={link}>Source code</a>
-            <a href="/docs/workbench/" className={link}>Workbench</a>
+            <a href="/docs/mcp/" className={link}>Connect an agent</a>
             <a href="/faq/" className={link}>Questions</a>
             <a href="/privacy/" className={link}>Privacy</a>
           </nav>

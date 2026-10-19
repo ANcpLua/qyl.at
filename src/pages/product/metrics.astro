@@ -5,13 +5,11 @@ import ProductPage from "../../components/ProductPage.astro";
 <ProductPage
   title="Metrics"
   eyebrow="Product · metrics"
-  intro="Read original OTLP measurements or aggregate a bounded time range through the collector API and MCP."
+  intro="Original OTLP measurements, or explicit aggregation over a bounded time range."
   heading="Original points and explicit aggregation."
-  description="Metric identity includes the resource, instrumentation scope and descriptor. Original points preserve exact integers, explicit and exponential histograms, summaries and exemplars. get_metric_series can page those points for a selected series. Aggregate queries disclose their numeric representation; incompatible descriptors and observations remain visible, and unsupported aggregation returns a diagnostic. A summary is retained even when its quantiles cannot be merged."
+  description="Metric identity includes the resource, instrumentation scope and descriptor. Original points preserve exact integers, explicit and exponential histograms, summaries and exemplars. Aggregate queries disclose their numeric representation; incompatible descriptors and contradictory observations remain visible, and an unsupported aggregation returns a diagnostic instead of a number."
+  tools={["list_metrics", "get_metric_series", "query_metric"]}
   capabilities={[
-    { name: "list_metrics", description: "List independently scoped descriptors, units and explicit conflicts." },
-    { name: "get_metric_series", description: "Select a series and page its complete original points, including exemplars and continuation metadata." },
-    { name: "query_metric", description: "Aggregate one metric over a time range into buckets of step_ms, with attribute matchers." },
     { name: "OTLP /v1/metrics", description: "Ingest binary protobuf or OTLP JSON over HTTP, plus the official OTLP gRPC service." },
   ]}
   command={`qyl up

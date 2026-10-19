@@ -8,7 +8,7 @@ import { externalLinks, primaryNavigation, productNavigation, versionOf } from "
 // The two-tone split hero follows the installed Hero6 source; real commands replace its slideshow.
 const startCommand = "dotnet tool install --global qyl\nqyl up";
 const exporterCommand = "export OTEL_EXPORTER_OTLP_ENDPOINT=http://127.0.0.1:4318\nexport OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf";
-const mcpCommand = "bunx qyl-mcp-server --stdio";
+const mcpCommand = "npx qyl-mcp-server --stdio";
 const focus = "focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-700";
 const shell = "mx-auto max-w-6xl px-5 sm:px-8";
 
@@ -31,7 +31,7 @@ const evidence = [
   { id: "01", name: "Traces", detail: "Follow a request across services and inspect every span.", route: "/product/tracing/", technical: "trace_id → spans" },
   { id: "02", name: "Logs", detail: "Find the log records that belong to the run you are investigating.", route: "/product/logs/", technical: "trace_id → records" },
   { id: "03", name: "Metrics", detail: "Query a time window and receive aggregated buckets.", route: "/product/metrics/", technical: "time window → buckets" },
-  { id: "04", name: "MCP evidence", detail: "Keep requests, results, protocol frames, approvals, and tests.", route: "/product/mcp-evidence/", technical: "tool call → evidence" },
+  { id: "04", name: "Agent runs", detail: "Read a run's steps, token usage and failing MCP calls.", route: "/product/mcp-evidence/", technical: "session_id → steps" },
 ] as const;
 
 export default function TerminalLight() {
@@ -57,7 +57,7 @@ export default function TerminalLight() {
             <div>
               <p className="mb-5 flex items-center gap-2 text-xs font-medium text-blue-700"><span aria-hidden="true" className="size-1.5 rounded-full bg-blue-700" />OpenTelemetry, on your machine.</p>
               <h1 id="terminal-light-heading" className="max-w-xl text-[40px] leading-[1.08] font-medium tracking-[-0.045em] sm:text-[52px] lg:text-[58px]">The evidence is local. <span className="text-slate-600">Your agent can read it.</span></h1>
-              <p className="mt-6 max-w-lg text-base leading-7 text-slate-600">Collect traces, logs, and metrics in DuckDB. Give your coding agent access over MCP. Keep the same evidence close enough to inspect yourself.</p>
+              <p className="mt-6 max-w-lg text-base leading-7 text-slate-600">Collect traces, logs, and metrics in DuckDB. Give your coding agent access over MCP. The Collector computes the analysis it reads.</p>
               <div className="mt-7 flex flex-wrap items-center gap-x-7 gap-y-3">
                 <a href="/docs/getting-started/" className={`inline-flex min-h-11 items-center gap-2 rounded-lg bg-slate-900 px-5 text-sm font-medium text-slate-50 hover:bg-slate-700 ${focus}`}>Run your first collector <ArrowRight aria-hidden="true" className="size-4" /></a>
                 <a href="#evidence" className={`inline-flex min-h-11 items-center gap-2 text-sm font-medium text-slate-700 hover:text-blue-700 ${focus}`}>Follow the evidence <ArrowDown aria-hidden="true" className="size-3.5" /></a>
@@ -69,12 +69,12 @@ export default function TerminalLight() {
                 <div className="mx-5 border-t border-dashed border-slate-200 py-5">
                   <p className="mb-3 font-mono text-xs text-slate-600"># Local endpoints after starting qyl</p>
                   <dl className="space-y-2.5 font-mono text-xs sm:text-[13px]">
-                    <div className="flex flex-wrap justify-between gap-x-5 gap-y-1"><dt className="text-slate-600">dashboard</dt><dd className="text-blue-700">127.0.0.1:5100</dd></div>
+                    <div className="flex flex-wrap justify-between gap-x-5 gap-y-1"><dt className="text-slate-600">Collector API</dt><dd className="text-blue-700">127.0.0.1:5100</dd></div>
                     <div className="flex flex-wrap justify-between gap-x-5 gap-y-1"><dt className="text-slate-600">OTLP / HTTP</dt><dd>127.0.0.1:4318</dd></div>
                     <div className="flex flex-wrap justify-between gap-x-5 gap-y-1"><dt className="text-slate-600">OTLP / gRPC</dt><dd>127.0.0.1:4317</dd></div>
                   </dl>
                 </div>
-                <div className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-200 bg-slate-100/70 px-5 py-3 font-mono text-[11px] text-slate-600"><span>native collector + embedded dashboard</span><span>.NET tool</span></div>
+                <div className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-200 bg-slate-100/70 px-5 py-3 font-mono text-[11px] text-slate-600"><span>NativeAOT Collector</span><span>.NET tool</span></div>
               </CommandFrame>
               <a href="/docs/getting-started/" className={`mt-3 inline-flex min-h-11 items-center gap-2 text-xs text-slate-600 underline decoration-slate-300 underline-offset-4 hover:text-blue-700 ${focus}`}>Read prerequisites and the full quickstart <ArrowUpRight aria-hidden="true" className="size-3" /></a>
             </div>
@@ -119,7 +119,7 @@ export default function TerminalLight() {
 
         <section aria-labelledby="context-heading" className={`${shell} py-14 sm:py-16`}>
           <div className="grid gap-8 lg:grid-cols-[0.7fr_1.3fr] lg:gap-16">
-            <div><p className="mb-3 font-mono text-[11px] text-blue-700">02 / THE SAME WORKING CONTEXT</p><h2 id="context-heading" className="text-3xl leading-[1.15] font-medium tracking-[-0.035em] sm:text-4xl">Less switching.<br /><span className="text-slate-600">More evidence.</span></h2><p className="mt-5 max-w-sm text-sm leading-6 text-slate-600">Let the agent query what happened. Keep the human investigation surface for the decisions that need you.</p><a href="/docs/workbench/" className={`mt-5 inline-flex min-h-11 items-center gap-2 text-sm font-medium text-blue-700 hover:underline ${focus}`}>Inside the MCP workbench <ArrowRight aria-hidden="true" className="size-3.5" /></a></div>
+            <div><p className="mb-3 font-mono text-[11px] text-blue-700">02 / THE SAME WORKING CONTEXT</p><h2 id="context-heading" className="text-3xl leading-[1.15] font-medium tracking-[-0.035em] sm:text-4xl">Less switching.<br /><span className="text-slate-600">More evidence.</span></h2><p className="mt-5 max-w-sm text-sm leading-6 text-slate-600">Let the agent query what happened. The Collector does the analysis and says how much it examined.</p><a href="/docs/mcp/" className={`mt-5 inline-flex min-h-11 items-center gap-2 text-sm font-medium text-blue-700 hover:underline ${focus}`}>See every tool <ArrowRight aria-hidden="true" className="size-3.5" /></a></div>
             <dl className="border-t border-slate-200">{evidence.map((item) => <div key={item.id} className="grid gap-2 border-b border-slate-200 py-5 sm:grid-cols-[9rem_1fr] sm:gap-5"><dt><a href={item.route} className={`inline-flex min-h-11 items-center gap-3 text-sm font-medium hover:text-blue-700 ${focus}`}><span className="font-mono text-[11px] font-normal text-slate-600">{item.id}</span>{item.name}</a></dt><dd><p className="text-sm leading-6 text-slate-600">{item.detail}</p><p className="mt-2 font-mono text-[11px] text-blue-700">{item.technical}</p></dd></div>)}</dl>
           </div>
         </section>

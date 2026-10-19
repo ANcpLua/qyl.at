@@ -1,8 +1,9 @@
 # qyl.at
 
-The public marketing and documentation site for [qyl](https://github.com/ANcpLua/qyl),
-live at [qyl.at](https://qyl.at/). This is production: qyl is released, and the
-URL structure is a standing redirect obligation rather than a draft.
+The public documentation site for [qyl](https://github.com/ANcpLua/qyl), an analytical
+engine for agents, live at [qyl.at](https://qyl.at/). It describes the NativeAOT Collector,
+the MCP server and how an agent connects to them. This is production: a moved page keeps
+its old URL as a redirect in `public/_redirects`; the page of a removed feature is deleted.
 
 The site is Astro 7 with static output, MDX documentation, build-time Shiki syntax
 highlighting, Tailwind CSS 4, and on-demand Pagefind search. Cloudflare Workers Static
@@ -54,9 +55,9 @@ bun run test
 bunx wrangler deploy --dry-run
 ```
 
-`bun run test` checks TypeScript and Astro, dependency policy, static artifacts and payload
-budgets, all routes with and without JavaScript, same-origin requests, deployed header
-behavior, accessibility, and documentation search.
+`bun run test` checks TypeScript and Astro, dependency policy, the version gate, static
+artifacts and payload budgets, the served schemas, all routes with and without JavaScript,
+same-origin requests, deployed header behavior, accessibility, and documentation search.
 
 The fixed 4G/4× CPU performance harness is not part of that gate. It measures wall-clock
 LCP, INP and long tasks against hard thresholds, which a busy machine can fail without the site having changed, so it stays out of
@@ -72,8 +73,9 @@ remain out-of-band deployed release evidence.
 ## Deploy
 
 Nothing deploys on push: `./release.sh` is the release entry and, on a clean `main` equal to
-`origin/main`, builds, runs the artifact gate and unit tests, runs `wrangler deploy` to the
-`qyl-at` Worker and checks that https://qyl.at/ answers 200; `bun run deploy` runs the same
+`origin/main`, builds, runs the artifact gate and unit tests, commits and pushes a schema the
+build had to write (see below), runs `wrangler deploy` to the `qyl-at` Worker and checks that
+https://qyl.at/ answers 200; `bun run deploy` runs the same
 `wrangler deploy` after the full `bun run test` (Playwright included), without the branch and
 HTTP checks. `./release.sh` refuses without Cloudflare
 credentials (`bunx wrangler login` once, or a token registered in Vitals) rather than
@@ -102,16 +104,32 @@ forward viewport dimensions and device memory.
 
 ## The versions the site states
 
-`src/data/site.ts` holds the release wave and every published version the site
-shows: the footer release bar renders the headline list on every page, and the
-getting-started table renders the full one with a registry link per row. A
-release wave edits that file; no page carries a version of its own, so no page
-can fall behind the feeds while another is current. `scripts/check-versions.mjs`
-(in `bun run check`) anchors each literal that cannot be an expression to that
-file, fails on any other hand-written published version in `src/`, `scripts/` or
-this README, and requires `public/schemas/<version>` for the SemanticConventions
-version it names. `bun run test` fails on an internal link that does not resolve
-and on a `public/sitemap.xml` that disagrees with the built routes.
+`src/data/site.ts` is the only place a version is written. The footer of every page lists
+the published versions, the getting-started table links each one to its registry, and
+prose calls `versionOf`; copyable lines such as the `Qyl.Api.Sdk` project line are rendered
+by components that call it too. `scripts/check-versions.mjs` (in `bun run check`) fails on a
+published version written anywhere else in `src/`, `scripts/` or the root documents, and on
+a `<package> <version>` pair whose version `site.ts` does not list. `bun run test` fails on
+an internal link that does not resolve and on a `public/sitemap.xml` that disagrees with
+the built routes.
+
+## MCP tools and skills
+
+`src/data/mcp-tools.ts` is generated from qyl's MCP tool snapshot, the file the MCP server's
+tests hold its registered tools to: `bun run sync:tools [path]`, by default
+`../qyl/services/qyl.mcp/tool-manifest.snapshot.json`. The connection guide's tool tables,
+the product pages' tool entries and the skill list render from it.
+
+## Served schemas
+
+`https://qyl.at/schemas/<version>` is the OpenTelemetry schema URL that
+`@ancplua/qyl-semantic-conventions` and its NuGet siblings carry. The site follows its own
+dependency on that package: `scripts/schema.mjs` runs before `astro build` and writes
+`public/schemas/<version>` from the newest committed schema when the installed version has
+none (the package names the URL but ships no schema document, and the registry has no
+transformations), and runs again after the build to fail unless `dist` serves that version
+and every committed schema unchanged. `release.sh` commits a newly written schema before it
+deploys, so a URL that was served once stays in the repository.
 
 ## Dependency pins
 

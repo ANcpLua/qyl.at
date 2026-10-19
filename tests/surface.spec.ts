@@ -194,6 +194,7 @@ test("internal build evidence and local metadata are not published", async ({ re
 });
 
 for (const [route, expected] of [
+  ["/product/investigation/", "Product"],
   ["/product/tracing/", "Product"],
   ["/product/logs/", "Product"],
   ["/product/metrics/", "Product"],
@@ -204,9 +205,9 @@ for (const [route, expected] of [
   ["/faq/", "FAQ"],
 ] as const) {
   test(`${route} marks its section current in the primary navigation`, async ({ page }) => {
-    // The "Product" entry links to /product/tracing/ but owns all of /product/,
-    // so prefix-matching its own href left three of the four product pages with
-    // no aria-current and no active underline at all.
+    // The "Product" entry links to /product/investigation/ but owns all of
+    // /product/, so prefix-matching its own href would leave the other product
+    // pages with no aria-current and no active underline at all.
     await page.goto(route);
     for (const nav of [".desktop-nav", ".mobile-nav nav"]) {
       const current = page.locator(`${nav} a[aria-current="page"]`);

@@ -11,10 +11,10 @@ const link = `underline decoration-[#111111]/30 underline-offset-4 hover:text-[#
 const caption = "text-xs leading-4 tracking-[0.01em]";
 const heading = "text-[clamp(1.25rem,2vw,1.75rem)] font-medium leading-8 tracking-[-0.01em]";
 const capabilities = [
-  { id: "01", title: "Traces", text: "Follow a request across spans. Inspect the waterfall and open the same evidence from an MCP conversation.", href: "/product/tracing/" },
+  { id: "01", title: "Traces", text: "Follow a request across spans, or compare it with one that passed, from an MCP conversation.", href: "/product/tracing/" },
   { id: "02", title: "Logs", text: "Find the records around a failure. Keep the log, the trace, and the request connected.", href: "/product/logs/" },
   { id: "03", title: "Metrics", text: "Query a time window. Read aggregated buckets, with the context you need to explain a change.", href: "/product/metrics/" },
-  { id: "04", title: "MCP evidence", text: "Inspect tool calls, protocol frames, approvals, and evaluations in the local workbench.", href: "/product/mcp-evidence/" },
+  { id: "04", title: "Agent runs", text: "Read an agent run's steps, token usage and repeated tool calls, and the MCP calls that failed.", href: "/product/mcp-evidence/" },
 ];
 
 function Header() {
@@ -72,7 +72,7 @@ export default function SwissGrid() {
       <main id="main">
         <section aria-labelledby="hero-title" className="pb-16 pt-16 lg:pb-24 lg:pt-24">
           <div className={grid}>
-            <p className={`${caption} col-span-full mb-8`}>LOCAL-FIRST OBSERVABILITY <span className="mx-2 text-[#666666]">/</span> qyl {versionOf("qyl")}</p>
+            <p className={`${caption} col-span-full mb-8`}>ANALYSIS FOR AGENTS <span className="mx-2 text-[#666666]">/</span> qyl {versionOf("qyl")}</p>
             <h1 id="hero-title" className="col-span-full text-[clamp(2.5rem,6vw,5.5rem)] font-medium leading-none tracking-[-0.02em] lg:col-span-9">Follow the run.<br />Find the reason.</h1>
             <p className={`${caption} col-span-full mt-8 text-[#666666] lg:col-span-3 lg:mt-2`}>01 — COLLECT<br />02 — CORRELATE<br />03 — UNDERSTAND</p>
             <div className="col-span-full mt-8 sm:col-span-4 md:col-span-5 lg:col-span-5 lg:mt-12">
@@ -85,14 +85,14 @@ export default function SwissGrid() {
             <div className="col-span-full min-w-0 mt-12 border-t border-[#111111] pt-4 lg:col-span-6 lg:col-start-7">
               <div className="flex items-start justify-between gap-4"><p className={`${caption} text-[#666666]`}>START WITH TWO COMMANDS</p><button data-copy-setup type="button" className={`${caption} inline-flex min-h-8 items-start gap-2 underline underline-offset-4 hover:text-[#E2231A] ${focus}`} aria-label="Copy qyl installation commands"><Copy size={16} aria-hidden="true" /><span data-copy-label>Copy</span></button></div>
               <pre className="mt-4 overflow-x-auto pb-2 font-[family-name:inherit] text-base leading-8"><code data-install-code className="font-[family-name:inherit]"><span className="font-medium text-[#E2231A]">dotnet</span> tool install --global qyl{"\n"}<span className="font-medium text-[#E2231A]">qyl</span> up</code></pre>
-              <p className={`${caption} mt-4 text-[#666666]`}>Then open <span className="text-[#111111]">127.0.0.1:5100</span>. Collector and dashboard, on your machine.</p><span data-copy-status aria-live="polite" className="sr-only" />
+              <p className={`${caption} mt-4 text-[#666666]`}>Then send OTLP to <span className="text-[#111111]">127.0.0.1:4318</span>. The Collector, on your machine.</p><span data-copy-status aria-live="polite" className="sr-only" />
             </div>
           </div>
         </section>
         <section aria-labelledby="architecture-title" className={`${grid} gap-y-12 border-t border-[#111111] py-16 lg:py-24`}>
           <div className="col-span-full lg:col-span-4">
             <p className={`${caption} mb-8 text-[#666666]`}>01 / FROM SIGNAL TO CONTEXT</p><h2 id="architecture-title" className={heading}>Same evidence.<br />A shorter path to it.</h2>
-            <p className="mt-6 max-w-[66ch] text-[#666666]">Your application emits telemetry. qyl stores it in local DuckDB. Your agent queries it through MCP. You keep a human surface for inspection.</p>
+            <p className="mt-6 max-w-[66ch] text-[#666666]">Your application emits telemetry. qyl stores it in local DuckDB. Your agent queries it through MCP. The Collector computes the analysis.</p>
             <ol className="mt-8 flex flex-col gap-4" aria-label="qyl data flow"><li className="flex items-center gap-4"><span className={`${caption} w-8 text-[#666666]`}>IN</span> OpenTelemetry / OTLP</li><li className="flex items-center gap-4"><span className={`${caption} w-8 text-[#666666]`}>AT</span> Local DuckDB</li><li className="flex items-center gap-4"><span className={`${caption} w-8 text-[#666666]`}>OUT</span> Your coding agent / MCP</li></ol>
             <a className={`${link} mt-8 inline-flex items-center gap-2`} href="/docs/telemetry/">Read the architecture <ArrowUpRight size={16} aria-hidden="true" /></a>
           </div>
@@ -108,14 +108,14 @@ export default function SwissGrid() {
           <div className="col-span-full lg:col-span-5"><p className={`${caption} mb-8 text-[#666666]`}>03 / MAKE THE CONNECTION</p><h2 id="start-title" className={heading}>Your machine.<br />Your runtime evidence.</h2><p className="mt-6 max-w-[66ch] text-[#666666]">Keep the collector running, point your application at it, then connect your MCP client. Any compliant OpenTelemetry SDK can send data.</p><a className={`${link} mt-8 inline-flex items-center gap-2`} href="/docs/getting-started/">Follow the complete quickstart <ArrowUpRight size={16} aria-hidden="true" /></a></div>
           <div className="col-span-full min-w-0 lg:col-span-6 lg:col-start-7">
             <div className="mb-8"><p className={`${caption} mb-4 text-[#666666]`}>A / SEND YOUR APPLICATION’S TELEMETRY</p><pre className="overflow-x-auto pb-4 font-[family-name:inherit] text-xs leading-6"><code className="font-[family-name:inherit]"><span className="text-[#E2231A]">export</span> OTEL_EXPORTER_OTLP_ENDPOINT=http://127.0.0.1:4318{"\n"}<span className="text-[#E2231A]">export</span> OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf</code></pre></div>
-            <div><p className={`${caption} mb-4 text-[#666666]`}>B / START THE MCP SERVER</p><pre className="overflow-x-auto pb-2 font-[family-name:inherit] text-base leading-8"><code className="font-[family-name:inherit]"><span className="text-[#E2231A]">bunx</span> qyl-mcp-server --stdio</code></pre><p className={`${caption} mt-4 max-w-[66ch] text-[#666666]`}>Supports modern and 2025-era MCP clients over stdio. Check the <a className={link} href="/docs/mcp/">connection guide</a> for client setup.</p></div>
+            <div><p className={`${caption} mb-4 text-[#666666]`}>B / START THE MCP SERVER</p><pre className="overflow-x-auto pb-2 font-[family-name:inherit] text-base leading-8"><code className="font-[family-name:inherit]"><span className="text-[#E2231A]">npx</span> qyl-mcp-server --stdio</code></pre><p className={`${caption} mt-4 max-w-[66ch] text-[#666666]`}>Supports modern and 2025-era MCP clients over stdio. Check the <a className={link} href="/docs/mcp/">connection guide</a> for client setup.</p></div>
           </div>
         </section>
         <section aria-labelledby="closing-title" className={`${grid} gap-y-8 border-t border-[#111111] py-16 lg:py-24`}>
           <h2 id="closing-title" className="col-span-full text-[clamp(2.5rem,6vw,5.5rem)] font-medium leading-none tracking-[-0.02em] lg:col-span-8">The next run<br />has a story.</h2><div className="col-span-full lg:col-span-3 lg:col-start-10"><ArrowDown className="mb-8 text-[#E2231A]" size={32} strokeWidth={1.5} aria-hidden="true" /><a className={`${link} inline-flex items-center gap-2`} href="/docs/getting-started/">Start reading it <ArrowUpRight size={16} aria-hidden="true" /></a><p className={`${caption} mt-8 text-[#666666]`}>Local collector. OpenTelemetry in.<br />Evidence for you and your agent.</p></div>
         </section>
       </main>
-      <footer className={`${grid} gap-y-8 border-t border-[#111111] py-8`}><a className={`${heading} col-span-1 ${focus}`} href="/" aria-label="qyl home">qyl.</a><p className={`${caption} col-span-1 text-[#666666] sm:col-span-3 md:col-span-5 lg:col-span-3`}>qyl {versionOf("qyl")}<br />Local-first observability.</p><nav aria-label="Footer navigation" className="col-span-full flex flex-wrap gap-x-8 gap-y-4 lg:col-span-8 lg:justify-end"><a className={link} href="/docs/">Documentation</a><a className={link} href="/pricing/">Pricing</a><a className={link} href="https://github.com/ANcpLua/qyl">GitHub</a><a className={link} href="/privacy/">Privacy</a></nav></footer>
+      <footer className={`${grid} gap-y-8 border-t border-[#111111] py-8`}><a className={`${heading} col-span-1 ${focus}`} href="/" aria-label="qyl home">qyl.</a><p className={`${caption} col-span-1 text-[#666666] sm:col-span-3 md:col-span-5 lg:col-span-3`}>qyl {versionOf("qyl")}<br />Analysis for agents.</p><nav aria-label="Footer navigation" className="col-span-full flex flex-wrap gap-x-8 gap-y-4 lg:col-span-8 lg:justify-end"><a className={link} href="/docs/">Documentation</a><a className={link} href="/pricing/">Pricing</a><a className={link} href="https://github.com/ANcpLua/qyl">GitHub</a><a className={link} href="/privacy/">Privacy</a></nav></footer>
     </div>
   </div>;
 }

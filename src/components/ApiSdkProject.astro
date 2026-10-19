@@ -1,0 +1,11 @@
+---
+// The `<Project Sdk="Qyl.Api.Sdk/…">` line a reader copies. A fenced code block cannot
+// interpolate, so this renders it with the build-time highlighter and the version from
+// src/data/site.ts.
+import { Code } from "astro:components";
+import { versionOf } from "../data/site";
+
+const line = `<Project Sdk="Qyl.Api.Sdk/${versionOf("Qyl.Api.Sdk")}">`;
+---
+
+<Code code={line} lang="xml" theme="github-dark-default" wrap />

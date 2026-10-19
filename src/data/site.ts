@@ -1,66 +1,100 @@
 // `section` is the URL prefix the entry represents, which is not always its own
-// href: "Product" links into /product/tracing/ but owns all of /product/. Marking
-// the current item by prefix-matching the href left /product/logs/, /metrics/ and
-// /ci/ with no aria-current and no active underline anywhere in the header.
+// href: "Product" links into /product/investigation/ but owns all of /product/, so
+// every product page marks it current.
 export const primaryNavigation = [
-  { href: "/product/tracing/", label: "Product", section: "/product/" },
+  { href: "/product/investigation/", label: "Product", section: "/product/" },
   { href: "/docs/", label: "Docs", section: "/docs/" },
   { href: "/pricing/", label: "Pricing", section: "/pricing/" },
   { href: "/faq/", label: "FAQ", section: "/faq/" },
 ] as const;
 
 export const docsNavigation = [
-  { href: "/docs/getting-started/", label: "Getting started" },
-  { href: "/docs/workbench/", label: "MCP workbench" },
-  { href: "/docs/mcp/", label: "Hosted MCP" },
-  { href: "/docs/protocol-2026-07-28/", label: "Protocol 2026-07-28" },
-  { href: "/docs/telemetry/", label: "Telemetry" },
-  { href: "/docs/testing/", label: "Telemetry testing" },
-  { href: "/docs/api-sdk/", label: "API SDK" },
+  {
+    href: "/docs/getting-started/",
+    label: "Getting started",
+    description: "Run the Collector, send it OpenTelemetry from any SDK and connect an agent.",
+  },
+  {
+    href: "/docs/mcp/",
+    label: "Connect an agent",
+    description: "The qyl plugin for Claude Code and Codex, the ChatGPT connector and local stdio; scopes, tools, skills and Events.",
+  },
+  {
+    href: "/docs/protocol-2026-07-28/",
+    label: "Protocol 2026-07-28",
+    description: "How the MCP server uses TypeScript SDK v2: discovery, extensions and the protocol revisions it answers.",
+  },
+  {
+    href: "/docs/telemetry/",
+    label: "Telemetry",
+    description: "What the Collector ingests, how it normalizes attributes, and what it never retains.",
+  },
+  {
+    href: "/docs/testing/",
+    label: "Telemetry testing",
+    description: "Test exported traces, logs and metrics against a real OTLP receiver.",
+  },
+  {
+    href: "/docs/api-sdk/",
+    label: "API SDK",
+    description: "Build a Native AOT ASP.NET Core API that reports to qyl behind one AddQylApi call.",
+  },
 ] as const;
 
 export const productNavigation = [
-  { href: "/product/tracing/", label: "Tracing" },
+  { href: "/product/investigation/", label: "Investigation" },
+  { href: "/product/tracing/", label: "Traces" },
   { href: "/product/logs/", label: "Logs" },
   { href: "/product/metrics/", label: "Metrics" },
-  { href: "/product/mcp-evidence/", label: "MCP evidence" },
-  { href: "/product/ci/", label: "CI telemetry" },
+  { href: "/product/mcp-evidence/", label: "Agent runs and MCP" },
+  { href: "/product/ci/", label: "CI runs" },
 ] as const;
 
 export const externalLinks = {
   github: "https://github.com/ANcpLua/qyl",
-  mcpGithub: "https://github.com/ANcpLua/qyl.mcp",
   npm: "https://www.npmjs.com/package/qyl-mcp-server",
   nuget: "https://www.nuget.org/packages/qyl",
 } as const;
 
-// One release wave, one place. Every version the site states comes from here:
-// the footer release bar renders `headline`, which is derived from `release`,
-// the getting-started table renders `release`, and prose asks `versionOf` below.
-// A wave that bumps a package edits this array and nothing else, so a page
-// cannot fall behind the feeds while another page is current. The literals no
-// expression can replace are held to this array by `scripts/check-versions.mjs`,
-// which runs in `bun run check`.
-export const releaseWave = "2026-10-19" as const;
+// Every version the site states is written here and nowhere else: pages, tables and
+// the footer call `versionOf`, and scripts/check-versions.mjs fails on a version
+// written anywhere else. Each entry states what its registry serves.
+//
+// The qyl repository releases the tool, Qyl.Api.Sdk and Qyl.Orchestration at one
+// version. qyl-mcp-server joins that version with its first release from the qyl
+// repository; set its entry to `qylVersion` then.
+const qylVersion = "16.0.1";
 
-export const release = [
+export const packages = [
   {
     name: "qyl",
-    version: "16.0.1",
+    version: qylVersion,
     registry: "https://www.nuget.org/packages/qyl",
-    summary: "The .NET tool: collector, embedded dashboard and query API.",
+    summary: "The .NET tool: the NativeAOT Collector (OTLP ingest, storage, analysis) and the qyl CLI.",
+  },
+  {
+    name: "qyl-mcp-server",
+    version: "11.1.4",
+    registry: "https://www.npmjs.com/package/qyl-mcp-server",
+    summary: "The MCP server for local stdio. mcp.qyl.at runs the same server.",
   },
   {
     name: "Qyl.Api.Sdk",
-    version: "16.0.1",
+    version: qylVersion,
     registry: "https://www.nuget.org/packages/Qyl.Api.Sdk",
     summary: "MSBuild SDK for a Native AOT ASP.NET Core API behind one AddQylApi call.",
   },
   {
     name: "Qyl.Orchestration",
-    version: "16.0.1",
+    version: qylVersion,
     registry: "https://www.nuget.org/packages/Qyl.Orchestration",
-    summary: "Reusable process host with service references, readiness checks and application cleanup.",
+    summary: "Process host with service references, readiness checks and application cleanup.",
+  },
+  {
+    name: "Qyl.Telemetry.Hosting",
+    version: "28.2.3",
+    registry: "https://www.nuget.org/packages/Qyl.Telemetry.Hosting",
+    summary: "The AddQyl() activation line for a .NET application.",
   },
   {
     name: "Qyl.Telemetry.AutoInstrumentation",
@@ -69,87 +103,29 @@ export const release = [
     summary: "Compile-time .NET instrumentation; writes generated constants only.",
   },
   {
-    name: "Qyl.Telemetry.Hosting",
-    version: "28.2.3",
-    registry: "https://www.nuget.org/packages/Qyl.Telemetry.Hosting",
-    summary: "The AddQyl() activation line and the attribute-stamping processor.",
-  },
-  {
     name: "Qyl.Telemetry.SemanticConventions",
     version: "15.0.2",
     registry: "https://www.nuget.org/packages/Qyl.Telemetry.SemanticConventions",
-    summary: "Weaver-generated C# attribute, enum, event and metric constants.",
-  },
-  {
-    name: "Qyl.Telemetry.SemanticConventions.Incubating",
-    version: "15.0.2",
-    registry: "https://www.nuget.org/packages/Qyl.Telemetry.SemanticConventions.Incubating",
-    summary: "The same generation for conventions upstream has not stabilised.",
-  },
-  {
-    name: "Qyl.Telemetry.SemanticConventions.Analyzers",
-    version: "15.0.2",
-    registry: "https://www.nuget.org/packages/Qyl.Telemetry.SemanticConventions.Analyzers",
-    summary: "Compile-time diagnostics against the generated vocabulary.",
+    summary: "Generated C# attribute, event and metric constants; .Incubating and .Analyzers share its version.",
   },
   {
     name: "@ancplua/qyl-semantic-conventions",
     version: "15.0.2",
     registry: "https://www.npmjs.com/package/@ancplua/qyl-semantic-conventions",
-    summary: "TypeScript attribute, enum, event and metric constants from the same resolved registry as C#.",
-  },
-  {
-    name: "Qyl.Api.Contracts",
-    version: "14.0.1",
-    registry: "https://www.nuget.org/packages/Qyl.Api.Contracts",
-    summary: "The generated .NET contract for every Qyl request and response.",
-  },
-  {
-    name: "@ancplua/qyl-api-schema",
-    version: "14.0.1",
-    registry: "https://www.npmjs.com/package/@ancplua/qyl-api-schema",
-    summary: "The same contract for TypeScript consumers, with its Zod export.",
+    summary: "The same constants for TypeScript, from the same resolved registry.",
   },
   {
     name: "Qyl.Telemetry.Testing",
     version: "3.0.3",
     registry: "https://www.nuget.org/packages/Qyl.Telemetry.Testing",
-    summary: "Released receiver package for existing consumers. Active test development continues in Qyl.Telemetry.Tests.",
-  },
-  {
-    name: "qyl-mcp-server",
-    version: "11.1.4",
-    registry: "https://www.npmjs.com/package/qyl-mcp-server",
-    summary: "The MCP server: stdio locally, Streamable HTTP hosted.",
+    summary: "OTLP receiver package for existing test consumers; development continues in Qyl.Telemetry.Tests.",
   },
 ] as const;
 
-// The footer states the wave on every page, so a reader never has to find the
-// documentation table to know which release the page describes. Seven entries
-// cover thirteen packages: four semantic-conventions packages share a version, and Hosting
-// ships in lockstep with AutoInstrumentation -- `scripts/check-versions.mjs`
-// asserts both. The versions come from `release`, never from a second literal.
-const headlineNames = [
-  "qyl",
-  "Qyl.Api.Sdk",
-  "Qyl.Telemetry.AutoInstrumentation",
-  "Qyl.Telemetry.SemanticConventions",
-  "Qyl.Api.Contracts",
-  "qyl-mcp-server",
-  "Qyl.Telemetry.Testing",
-] as const satisfies readonly (typeof release)[number]["name"][];
+export type PackageName = (typeof packages)[number]["name"];
 
-export const headline: readonly string[] = headlineNames.map((name) => `${name} ${versionOf(name)}`);
-
-// Prose states a version by asking for it here instead of repeating it. Before
-// this, `release` was imported by exactly two components and every other version
-// on the site was a hand-kept literal, so a wave moved the table and the footer
-// and left the sentences behind. The places that still hold a literal -- an MDX
-// frontmatter `description` and the `<Project Sdk="…">` code examples, none of
-// which can hold an expression -- are each anchored to this array by
-// `scripts/check-versions.mjs` instead.
-export function versionOf(name: (typeof release)[number]["name"]): string {
-  const entry = release.find((candidate) => candidate.name === name);
-  if (entry === undefined) throw new Error(`site.ts: no release entry named ${name}`);
+export function versionOf(name: PackageName): string {
+  const entry = packages.find((candidate) => candidate.name === name);
+  if (entry === undefined) throw new Error(`site.ts: no package named ${name}`);
   return entry.version;
 }

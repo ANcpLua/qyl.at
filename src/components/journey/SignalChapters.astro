@@ -16,7 +16,7 @@ const textLink = `inline-flex min-h-11 items-center gap-4 text-[14px] text-[#174
         <h2 id="journey-logs-title" class={`${heading} mt-8 max-w-[14ch] font-serif font-normal tracking-[-0.045em]`}>The moment.<br />And everything<br class="hidden sm:block" /> around it.</h2>
       </div>
       <div class="flex flex-col justify-end lg:col-span-4 lg:pb-1">
-        <p class={body}>A log line means more when you know where it belongs. Search by text, severity, trace or time, and read the records around the failure.</p>
+        <p class={body}>A log line means more when you know where it belongs. qyl searches by text, severity, trace or time and returns the records around the failure.</p>
         <a href="/product/logs/" class={`${textLink} mt-5`}>Put your logs in context <span aria-hidden="true">↗</span></a>
       </div>
     </div>
@@ -76,7 +76,7 @@ const textLink = `inline-flex min-h-11 items-center gap-4 text-[14px] text-[#174
     <div>
       <p class={label}>05 / Keep the evidence together</p>
       <h2 id="journey-store-title" class={`${heading} mt-8 font-medium`}>Many signals.<br />One local store.</h2>
-      <p class={`${body} mt-8 max-w-[32ch]`}>Traces, logs and metrics enter through OpenTelemetry. The collector retains all three in DuckDB, ready for the dashboard and your coding agent.</p>
+      <p class={`${body} mt-8 max-w-[32ch]`}>Traces, logs and metrics enter through OpenTelemetry. The Collector retains all three in DuckDB and answers your agent from them.</p>
       <a href="/docs/telemetry/" class={`${textLink} mt-6`}>Follow the data path <span aria-hidden="true">↗</span></a>
       <div class="mt-12 max-w-md border-t border-[#20211e]/20 pt-5"><p class="text-[14px] font-medium">A clear boundary for every part.</p><p class="mt-2 text-[14px] leading-6 text-[#555650]">OpenTelemetry defines the incoming signals. qyl provides a consistent contract. MCP brings that evidence into the conversation.</p></div>
     </div>
@@ -96,7 +96,7 @@ const textLink = `inline-flex min-h-11 items-center gap-4 text-[14px] text-[#174
         <div aria-hidden="true" class="mx-auto h-6 w-px bg-[#20211e]/25" />
         <div class="border border-[#20211e]/20 py-3 text-center text-[11px] text-[#555650]">Generated qyl contract</div>
         <div aria-hidden="true" class="mx-auto h-6 w-px bg-[#20211e]/25" />
-        <div class="grid grid-cols-2 divide-x divide-[#20211e]/20 border border-[#20211e]/20"><div class="px-2 py-4 text-center text-[12px] font-medium">Your dashboard</div><div class="px-2 py-4 text-center text-[12px] font-medium">Your agent <span class="font-normal text-[#555650]">/ MCP</span></div></div>
+        <div class="grid grid-cols-2 divide-x divide-[#20211e]/20 border border-[#20211e]/20"><div class="px-2 py-4 text-center text-[12px] font-medium">Your agent <span class="font-normal text-[#555650]">/ MCP</span></div><div class="px-2 py-4 text-center text-[12px] font-medium">Your code <span class="font-normal text-[#555650]">/ HTTP API</span></div></div>
       </div>
       <figcaption class="mt-5 text-[11px] leading-5 text-[#555650]">Illustrative architecture. Signals are stored locally; your connected client reads the evidence through qyl.</figcaption>
     </figure>
@@ -131,9 +131,9 @@ const textLink = `inline-flex min-h-11 items-center gap-4 text-[14px] text-[#174
     <div class="mt-8 grid items-start gap-12 lg:grid-cols-[1.05fr_.95fr] lg:gap-20">
       <div>
         <h2 id="journey-proof-title" class={`${heading} font-extrabold tracking-[-.06em]`}>Evidence.<br />Then conclusions.</h2>
-        <p class={`${body} mt-8 max-w-[31ch]`}>A useful explanation starts with what actually happened. Give your agent the recorded trace and related logs, then investigate the cause together.</p>
+        <p class={`${body} mt-8 max-w-[31ch]`}>A useful explanation starts with what actually happened. qyl gives your agent the recorded trace and related logs before it names a cause.</p>
         <a href="/product/mcp-evidence/" class={`${textLink} mt-7 font-medium`}>See what the evidence contains <span aria-hidden="true">↗</span></a>
-        <p class="mt-12 max-w-[38ch] border-l-[3px] border-[#1746dd] pl-5 text-[14px] leading-6 text-[#555650]">Collector failures remain errors. Demonstration data is explicitly marked as demonstration data.</p>
+        <p class="mt-12 max-w-[38ch] border-l-[3px] border-[#1746dd] pl-5 text-[14px] leading-6 text-[#555650]">Collector failures remain errors. qyl never substitutes demonstration data for evidence.</p>
       </div>
 
       <figure class="min-w-0 lg:mt-10">

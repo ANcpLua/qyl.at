@@ -3,17 +3,17 @@ import ProductPage from "../../components/ProductPage.astro";
 ---
 
 <ProductPage
-  title="MCP evidence"
-  eyebrow="Product · executions"
-  intro="Keep the protocol timeline, approval, result, test, and evaluation attached to the tool call that produced them."
-  heading="More than an aggregate counter."
-  description="The local workbench retains complete execution evidence, including typed errors and redacted JSON-RPC frames. Explicit token usage and cost are preserved only when the tool reports them; qyl does not infer them from prose, latency, or payload size."
+  title="Agent runs and MCP"
+  eyebrow="Product · agents"
+  intro="An agent run and the MCP calls it makes are telemetry too. Ask how a run went and which calls failed."
+  heading="The agent's own evidence."
+  description="A session groups the traces one run produced. get_agent_run reconstructs its steps, models, token usage, failures and repeated tool calls without returning prompt or output content. get_mcp_stats aggregates MCP requests by server, tool, method, transport or failure class and compares them with a baseline window. The qyl MCP server exports its own operation spans, duration metrics and logs to the caller's Collector project, without arguments or results."
+  tools={["list_sessions", "get_agent_run", "get_mcp_stats"]}
   capabilities={[
-    { name: "display_mcp_dashboard", description: "Open the shipped MCP traffic dashboard for latency, failures, and call evidence." },
-    { name: "execution record", description: "Retain request, result, lifecycle, duration, attempts, cancellation, and the redacted protocol timeline." },
-    { name: "tests + suites", description: "Run exact, partial, JSON Schema, pattern, and latency assertions against real tool invocations." },
-    { name: "evaluations", description: "Compare completed runs and export contract-validated JSON or Markdown evidence." },
+    { name: "baggage: session.id", description: "An API built with Qyl.Api.Sdk copies it onto the server span and every descendant span, so one request header names a whole run." },
   ]}
-  command={`bun run start:workbench
-# open http://127.0.0.1:18888`}
+  command={`# a request to an API built with Qyl.Api.Sdk
+curl -H 'baggage: session.id=my-agent-run' http://localhost:5062/todos/
+# then, from an agent connected to qyl:
+get_agent_run { "session_id": "my-agent-run" }`}
 />

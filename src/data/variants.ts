@@ -6,7 +6,7 @@ export const variants = [
   { slug: "luxury-serif", name: "Luxury Serif", line: "Fewer things. More presence.", summary: "Cream, ink and carefully spaced editorial typography.", accent: "bg-stone-800", tag: "Minimal" },
   { slug: "neobrutalism", name: "Neobrutalism", line: "Debug with receipts.", summary: "Bold borders, acid yellow and an uncompromising layout.", accent: "bg-yellow-400", tag: "Expressive" },
   { slug: "playful-motion", name: "Playful Motion", line: "A little more personality.", summary: "Warm ivory, coral, friendly diagrams and quiet hover motion.", accent: "bg-orange-600", tag: "Expressive" },
-  { slug: "terminal-light", name: "Terminal Light", line: "Close to the code.", summary: "A light developer workbench with syntax-coloured evidence.", accent: "bg-sky-600", tag: "Structured" },
+  { slug: "terminal-light", name: "Terminal Light", line: "Close to the code.", summary: "A light developer console with syntax-coloured evidence.", accent: "bg-sky-600", tag: "Structured" },
   { slug: "blueprint", name: "Blueprint", line: "Drawn to spec.", summary: "Pale drafting paper, cyan construction lines and annotated dimensions.", accent: "bg-cyan-600", tag: "Structured" },
   { slug: "bauhaus", name: "Bauhaus", line: "Form follows signal.", summary: "Primary red, yellow and blue geometry on a strict modular grid.", accent: "bg-yellow-500", tag: "Expressive" },
   { slug: "zen-ink", name: "Zen Ink", line: "Only what matters.", summary: "Rice paper, sumi ink and a single vermilion seal.", accent: "bg-rose-700", tag: "Minimal" },

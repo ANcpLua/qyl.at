@@ -42,10 +42,10 @@ import { commonMembers, problems, problemTypeUri } from "../../data/problems";
           ))}
         </tbody>
       </table>
-      <p>A type may add members of its own; each type's page lists them. Headers are a property of the response, not of the body: the collector's 500 carries <code>X-Trace-Id</code> when a trace of the failure was recorded, and the hosted workbench's 401 carries <code>WWW-Authenticate</code>.</p>
+      <p>A type may add members of its own; each type's page lists them. Headers are a property of the response, not of the body: the Collector's 500 carries <code>X-Trace-Id</code> when a trace of the failure was recorded.</p>
 
       <h2>Where problems come from</h2>
-      <p>The collector's product API at <code>api.qyl.at</code>, the local runner API of the qyl CLI and the hosted MCP workbench report problems from this list and no other. The list is fixed by the qyl API contract, which the <a href="/docs/api-sdk/">API SDK</a> and the <a href="/docs/mcp/">hosted MCP server</a> share.</p>
+      <p>The Collector's API at <code>api.qyl.at</code> and the local runner API of the qyl CLI report problems from this list and no other. The list is fixed by the qyl API contract, which the <a href="/docs/api-sdk/">API SDK</a> and the <a href="/docs/mcp/">MCP server</a> share. A tool call the Collector refused returns its problem type as <code>problem_type</code> in the call's <code>structuredContent.error</code>.</p>
     </article>
   </section>
 </BaseLayout>

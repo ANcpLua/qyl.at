@@ -17,7 +17,7 @@ const shapes = ["rounded-full bg-[#c8102e]", "bg-[#1d3f94]", `bg-[#f2c80f] ${tri
 const stages = [
   { mark: "rounded-full bg-[#c8102e]", tone: "bg-[#c8102e] text-white", step: "01 / in", title: "OpenTelemetry", text: "Point a compliant SDK at qyl. OTLP over HTTP on 4318, gRPC on 4317." },
   { mark: "bg-[#111111]", tone: "bg-[#f2c80f] text-[#111111]", step: "02 / at", title: "Local DuckDB", text: "Traces, logs and metrics land in one local store with explicit retention." },
-  { mark: `bg-[#f2c80f] ${triangle}`, tone: "bg-[#1d3f94] text-white", step: "03 / out", title: "MCP to your agent", text: "Your coding agent queries the same evidence you inspect in the dashboard." },
+  { mark: `bg-[#f2c80f] ${triangle}`, tone: "bg-[#1d3f94] text-white", step: "03 / out", title: "MCP to your agent", text: "Your coding agent asks; the Collector answers with the evidence behind it." },
 ];
 
 export default function Bauhaus() {
@@ -39,7 +39,7 @@ export default function Bauhaus() {
       <main id="main">
         <section aria-labelledby="bauhaus-title" className="mx-auto grid max-w-[1280px] gap-10 px-5 pt-12 pb-16 sm:px-8 sm:pt-16 lg:grid-cols-12 lg:gap-8 lg:pb-24">
           <div className="lg:col-span-7">
-            <p className={`${label} mb-8 flex flex-wrap items-center gap-3`}><span className="size-3 rounded-full bg-[#c8102e]" aria-hidden="true" />Local observability <span aria-hidden="true">/</span> qyl {versionOf("qyl")}</p>
+            <p className={`${label} mb-8 flex flex-wrap items-center gap-3`}><span className="size-3 rounded-full bg-[#c8102e]" aria-hidden="true" />Analysis for agents <span aria-hidden="true">/</span> qyl {versionOf("qyl")}</p>
             <h1 id="bauhaus-title" className="text-[clamp(3.4rem,8.5vw,7.5rem)] leading-[0.9] font-bold tracking-[-0.055em] lowercase">Form<br />follows<br /><span className="text-[#c8102e]">signal.</span></h1>
             <p className="mt-8 max-w-xl text-lg leading-relaxed">Traces, logs and metrics, collected on your machine. qyl stores them in DuckDB and hands the evidence to your coding agent through MCP.</p>
             <div className="mt-8 flex flex-wrap gap-4">
@@ -65,9 +65,9 @@ export default function Bauhaus() {
             <div aria-live="polite" data-copy-status="" className="min-h-4 px-5 pb-4 font-mono text-xs text-[#f2c80f]" />
           </div>
           <div className="flex flex-col justify-center border-4 border-[#111111] bg-white p-5 lg:col-span-5">
-            <p className={label}>Then open the dashboard</p>
-            <code className="mt-3 font-mono text-lg font-bold break-all">http://127.0.0.1:5100</code>
-            <p className="mt-3 text-sm text-[#4a4a4a]">Collector and dashboard included. No hosted account needed.</p>
+            <p className={label}>Then connect your agent</p>
+            <code className="mt-3 font-mono text-lg font-bold break-all">npx qyl-mcp-server --stdio</code>
+            <p className="mt-3 text-sm text-[#4a4a4a]">The Collector runs on loopback. No hosted account needed.</p>
           </div>
         </section>
         <section aria-labelledby="bauhaus-method" className="border-y-4 border-[#111111]">
@@ -97,14 +97,14 @@ export default function Bauhaus() {
             <article className="border-4 border-[#111111] bg-white p-6 sm:mt-12">
               <span className={`block size-12 bg-[#f2c80f] ${triangle}`} aria-hidden="true" />
               <h3 className="mt-8 text-2xl font-bold tracking-[-0.03em] lowercase">ask precisely</h3>
-              <p className="mt-3 text-sm leading-relaxed text-[#4a4a4a]">List traces, read a complete span tree, open an MCP App when you want to look closer.</p>
-              <p className="mt-5 border-t-4 border-[#111111] pt-4 font-mono text-xs leading-6 font-bold">list_traces<br />get_trace<br />display_traces</p>
+              <p className="mt-3 text-sm leading-relaxed text-[#4a4a4a]">Triage what changed, read the failure's context, verify the fix.</p>
+              <p className="mt-5 border-t-4 border-[#111111] pt-4 font-mono text-xs leading-6 font-bold">triage<br />get_failure_context<br />verify_fix</p>
             </article>
           </div>
         </section>
         <section aria-labelledby="bauhaus-signals" className="border-t-4 border-[#111111] bg-white">
           <div className="mx-auto grid max-w-[1280px] gap-8 px-5 py-14 sm:px-8 lg:grid-cols-12 lg:py-20">
-            <div className="lg:col-span-4"><p className={`${label} mb-5`}>Index of signals</p><h2 id="bauhaus-signals" className="text-4xl leading-none font-bold tracking-[-0.05em] lowercase">every path,<br />one grid.</h2><p className="mt-5 max-w-sm text-base leading-relaxed text-[#4a4a4a]">Errors stay errors. Demo data is always explicit.</p></div>
+            <div className="lg:col-span-4"><p className={`${label} mb-5`}>Index of signals</p><h2 id="bauhaus-signals" className="text-4xl leading-none font-bold tracking-[-0.05em] lowercase">every path,<br />one grid.</h2><p className="mt-5 max-w-sm text-base leading-relaxed text-[#4a4a4a]">Errors stay errors. No demo data stands in for evidence.</p></div>
             <ol className="lg:col-span-8">
               {productNavigation.map(({ href, label: text }, index) => <li key={href}><a href={href} className={`group flex min-h-18 items-center justify-between gap-5 border-b-4 border-[#111111] py-4 hover:bg-[#f2c80f] ${index === 0 ? "border-t-4" : ""} ${focus}`}>
                 <span className="flex items-center gap-5"><span className={`size-6 shrink-0 ${shapes[index % shapes.length]}`} aria-hidden="true" /><span className="font-mono text-xs font-bold">0{index + 1}</span><span className="text-xl font-bold lowercase sm:text-2xl">{text}</span></span>
@@ -118,7 +118,7 @@ export default function Bauhaus() {
             <div className="lg:col-span-8">
               <p className={`${label} mb-5 text-[#f2c80f]`}>One plan. Every shipped feature.</p>
               <h2 id="bauhaus-start" className="text-[clamp(2.6rem,6vw,5rem)] leading-[0.92] font-bold tracking-[-0.055em] lowercase">local. complete.<br />free to run.</h2>
-              <p className="mt-6 max-w-xl text-base leading-relaxed">The native collector, embedded dashboard and MCP workbench are included. Your local setup works without a hosted account.</p>
+              <p className="mt-6 max-w-xl text-base leading-relaxed">The NativeAOT Collector, the hosted endpoint and the qyl plugin are included. Your local setup works without a hosted account.</p>
             </div>
             <div className="flex flex-col items-start gap-5 lg:col-span-4 lg:items-end">
               <div className="flex gap-3" aria-hidden="true"><span className="size-14 rounded-full bg-[#c8102e]" /><span className="size-14 bg-white" /><span className={`size-14 bg-[#f2c80f] ${triangle}`} /></div>

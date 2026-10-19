@@ -54,13 +54,13 @@ function SectionHead({ wall, id, title, text }: { wall: string; id: string; titl
 const services = [
   { name: "OTLP/HTTP :4318", tone: "ok", state: "listening" },
   { name: "OTLP/gRPC :4317", tone: "ok", state: "listening" },
-  { name: "Dashboard :5100", tone: "ok", state: "serving" },
+  { name: "Collector API :5100", tone: "ok", state: "serving" },
   { name: "DuckDB", tone: "info", state: "local" },
   { name: "MCP", tone: "standby", state: "on request" },
 ] as const;
 
 const endpoints = [
-  { channel: "Dashboard", address: "http://127.0.0.1:5100" },
+  { channel: "Collector API", address: "127.0.0.1:5100" },
   { channel: "OTLP / HTTP", address: "127.0.0.1:4318" },
   { channel: "OTLP / gRPC", address: "127.0.0.1:4317" },
 ] as const;
@@ -69,13 +69,13 @@ const feeds = [
   { code: "B1", name: "Traces", detail: "Follow a request across services and inspect every span.", route: "/product/tracing/", readout: "trace_id → spans", io: "OTLP in" },
   { code: "B2", name: "Logs", detail: "Find the log records that belong to the run you are investigating.", route: "/product/logs/", readout: "trace_id → records", io: "OTLP in" },
   { code: "B3", name: "Metrics", detail: "Query a time window and receive aggregated buckets.", route: "/product/metrics/", readout: "time window → buckets", io: "OTLP in" },
-  { code: "B4", name: "MCP evidence", detail: "Keep requests, results, protocol frames, approvals, and tests.", route: "/product/mcp-evidence/", readout: "tool call → evidence", io: "MCP out" },
+  { code: "B4", name: "Agent runs", detail: "Read sessions, steps, token usage and failing MCP calls.", route: "/product/mcp-evidence/", readout: "session_id → steps", io: "MCP out" },
 ] as const;
 
 const tools = [
-  { name: "list_traces", result: "Traces to choose from" },
-  { name: "get_trace", result: "One complete span tree" },
-  { name: "display_traces", result: "Traces opened in an MCP App" },
+  { name: "triage", result: "What changed, ranked" },
+  { name: "get_failure_context", result: "The failure path and its logs" },
+  { name: "verify_fix", result: "Whether the fix held" },
 ] as const;
 
 export default function ControlRoom() {
@@ -139,14 +139,14 @@ export default function ControlRoom() {
                   {endpoints.map((endpoint) => <tr key={endpoint.channel}><th scope="row" className="px-4 py-3.5 font-medium"><span className="flex items-center gap-2"><span aria-hidden="true" className="size-2 shrink-0 rounded-full bg-emerald-500" />{endpoint.channel}</span></th><td className={`px-4 py-3.5 text-right break-all ${mono}`}>{endpoint.address}</td></tr>)}
                 </tbody>
               </table>
-              <p className={`mt-auto border-t border-[#dde4e2] px-4 py-3 text-[11px] ${mono} ${muted}`}>native collector + embedded dashboard · .NET tool</p>
+              <p className={`mt-auto border-t border-[#dde4e2] px-4 py-3 text-[11px] ${mono} ${muted}`}>NativeAOT Collector · .NET tool</p>
             </Panel>
           </div>
         </section>
 
         <section id="signals" aria-labelledby="cr-feeds" className="border-y border-[#c9d3d0] bg-[#f7f9f8]">
           <div className={`${shell} py-12 sm:py-16`}>
-            <SectionHead wall="Wall 02 / Feeds" id="cr-feeds" title="Four feeds. One investigation." text="A trace gets more useful when the related logs are one query away. qyl keeps those connections for you and your agent." />
+            <SectionHead wall="Wall 02 / Feeds" id="cr-feeds" title="Four feeds. One investigation." text="A trace gets more useful when the related logs are one query away. qyl keeps those connections for your agent." />
             <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
               {feeds.map((feed) => (
                 <li key={feed.code} className="flex">
@@ -163,7 +163,7 @@ export default function ControlRoom() {
         </section>
 
         <section aria-labelledby="cr-agent" className={`${shell} py-12 sm:py-16`}>
-          <SectionHead wall="Wall 03 / Agent console" id="cr-agent" title="Ask the agent. Keep the proof." text="List traces, inspect a complete span tree, and open an MCP App when you need a closer look. Errors stay errors. Demo data is always explicit." />
+          <SectionHead wall="Wall 03 / Agent console" id="cr-agent" title="Ask the agent. Keep the proof." text="Triage what changed, read the failure in context, and verify the fix with traffic. Errors stay errors. No demo data stands in for evidence." />
           <div className="mt-8 grid gap-3 lg:grid-cols-12">
             <Panel code="C1" title="MCP tools" light={{ tone: "ok", text: "available" }} className="lg:col-span-8" flush>
               <div className="overflow-x-auto">
@@ -178,7 +178,7 @@ export default function ControlRoom() {
             </Panel>
             <Panel code="C2" title="Connect" light={{ tone: "standby", text: "stdio" }} className="lg:col-span-4">
               <p className={`text-sm leading-6 ${muted}`}>Add the server command to your MCP client. SDK v2 supports modern and 2025-era stdio connections.</p>
-              <pre className={`mt-4 overflow-x-auto rounded-md border border-[#dde4e2] bg-[#f3f6f5] p-3 text-[13px] ${mono}`}><code>bunx qyl-mcp-server --stdio</code></pre>
+              <pre className={`mt-4 overflow-x-auto rounded-md border border-[#dde4e2] bg-[#f3f6f5] p-3 text-[13px] ${mono}`}><code>npx qyl-mcp-server --stdio</code></pre>
               <div className="mt-auto pt-3"><a href="/docs/mcp/" className={textLink}>Connection guide <ArrowRight aria-hidden="true" className="size-3.5" /></a></div>
             </Panel>
           </div>
@@ -197,7 +197,7 @@ export default function ControlRoom() {
 
         <section aria-labelledby="cr-start" className={`${shell} py-12 sm:py-16`}>
           <div className="grid gap-6 rounded-lg border border-l-4 border-[#c9d3d0] border-l-emerald-600 bg-white p-6 sm:p-8 lg:grid-cols-12 lg:items-center">
-            <div className="lg:col-span-8"><p className={label}>Wall 05 / Access</p><h2 id="cr-start" className="mt-3 text-3xl leading-[1.05] font-semibold tracking-[-0.04em] sm:text-4xl">One plan. Every shipped feature.</h2><p className={`mt-3 max-w-xl text-sm leading-6 ${muted}`}>The native collector, embedded dashboard, and MCP workbench are included. Your local setup works without a hosted account.</p></div>
+            <div className="lg:col-span-8"><p className={label}>Wall 05 / Access</p><h2 id="cr-start" className="mt-3 text-3xl leading-[1.05] font-semibold tracking-[-0.04em] sm:text-4xl">One plan. Every shipped feature.</h2><p className={`mt-3 max-w-xl text-sm leading-6 ${muted}`}>The NativeAOT Collector, the hosted endpoint, and the qyl plugin are included. Your local setup works without a hosted account.</p></div>
             <div className="flex flex-wrap gap-3 lg:col-span-4 lg:justify-end"><a href="/docs/getting-started/" className={primary}>Start locally <ArrowRight aria-hidden="true" className="size-4" /></a><a href="/pricing/" className={secondary}>Read pricing</a></div>
           </div>
         </section>

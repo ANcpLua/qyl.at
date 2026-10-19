@@ -4,10 +4,10 @@ import { externalLinks, versionOf } from "../../data/site";
 
 const installCommand = "dotnet tool install --global qyl\nqyl up";
 const evidence = [
-  { number: "01", title: "Traces", text: "Follow a request through every span. Read the waterfall, then give the same context to your agent.", href: "/product/tracing/" },
+  { number: "01", title: "Traces", text: "Follow a request through every span, or set it against one that passed. Your agent gets the whole path.", href: "/product/tracing/" },
   { number: "02", title: "Logs", text: "Find the records that belong to the run you are investigating. Keep the conversation connected to its evidence.", href: "/product/logs/" },
   { number: "03", title: "Metrics", text: "Query a time window and work with meaningful buckets. See what changed around the incident.", href: "/product/metrics/" },
-  { number: "04", title: "MCP evidence", text: "Inspect tool calls, protocol frames, approvals, tests, and explicit usage evidence in one workbench.", href: "/product/mcp-evidence/" },
+  { number: "04", title: "Agent runs", text: "Read an agent run's steps, token usage and repeated tool calls, and the MCP calls that failed.", href: "/product/mcp-evidence/" },
   { number: "05", title: "CI telemetry", text: "Read the build as telemetry. Bring the evidence from your development loop into the same investigation.", href: "/product/ci/" },
 ];
 const focus = "focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#a6301f]";
@@ -26,7 +26,7 @@ export default function Editorial() {
           </div>
           <div className="flex min-h-24 items-center justify-between gap-8">
             <a className={`font-[Georgia] text-5xl italic tracking-[-0.07em] ${focus}`} href="/" aria-label="qyl home">qyl.</a>
-            <p className="hidden max-w-[22ch] text-xs leading-relaxed text-[#6b655c] lg:block">Local observability.<br />A clearer picture of your code.</p>
+            <p className="hidden max-w-[22ch] text-xs leading-relaxed text-[#6b655c] lg:block">Analysis for agents.<br />A clearer picture of your code.</p>
             <nav className="hidden items-center gap-7 text-[13px] sm:flex" aria-label="Primary navigation">
               <a className={textLink} href="/product/tracing/">Product</a>
               <a className={textLink} href="/docs/">Documentation</a>
@@ -101,10 +101,10 @@ export default function Editorial() {
           </section>
 
           <section className="grid grid-cols-12 gap-x-6 py-16 md:gap-x-8 md:py-24" aria-labelledby="local-title">
-            <p className="col-span-12 mb-6 text-xs tracking-[0.12em] text-[#6b655c] md:col-span-2">01 / A LOCAL VIEW</p>
+            <p className="col-span-12 mb-6 text-xs tracking-[0.12em] text-[#6b655c] md:col-span-2">01 / FOR THE AGENT</p>
             <div className="col-span-12 md:col-span-7">
-              <h2 id="local-title" className="max-w-[22ch] font-[Georgia] text-[clamp(2.2rem,4vw,3.5rem)] leading-[1.08] tracking-[-0.045em]">Your agent should not need a screenshot of a dashboard.</h2>
-              <p className="mt-8 max-w-[66ch] text-base leading-8 text-[#514b43] first-letter:float-left first-letter:mr-2 first-letter:font-[Georgia] first-letter:text-[4.8rem] first-letter:leading-[0.85] first-letter:text-[#a6301f]">Put the same traces, logs, and execution evidence in front of the agent that is already debugging your code. qyl receives standard OpenTelemetry data, keeps it in local DuckDB, and makes it available through MCP. Keep a human surface for judgment.</p>
+              <h2 id="local-title" className="max-w-[22ch] font-[Georgia] text-[clamp(2.2rem,4vw,3.5rem)] leading-[1.08] tracking-[-0.045em]">Your agent should not need a screenshot of anything.</h2>
+              <p className="mt-8 max-w-[66ch] text-base leading-8 text-[#514b43] first-letter:float-left first-letter:mr-2 first-letter:font-[Georgia] first-letter:text-[4.8rem] first-letter:leading-[0.85] first-letter:text-[#a6301f]">Put the same traces, logs, and execution evidence in front of the agent that is already debugging your code. qyl receives standard OpenTelemetry data, keeps it in local DuckDB, and answers through MCP with the evidence and how much of it was examined.</p>
               <p className="mt-5 max-w-[66ch] text-base leading-8 text-[#514b43]">The useful unit is the investigation. Follow a slow request into its spans, find correlated logs, and carry that context into the next question.</p>
             </div>
             <aside className="col-span-12 mt-8 border-t border-[#dad3c7] pt-5 md:col-span-2 md:col-start-11 md:mt-2 md:border-t-0 md:pt-0">
@@ -147,9 +147,9 @@ export default function Editorial() {
               </div>
             </div>
             <div className="col-span-12 mt-9 md:col-span-2 md:col-start-11 md:mt-1">
-              <p className="text-xs tracking-[0.1em] text-[#6b655c]">OPEN IN YOUR BROWSER</p>
-              <p className="mt-3 font-mono text-[13px]">127.0.0.1:5100</p>
-              <p className="mt-3 text-xs leading-6 text-[#6b655c]">The local dashboard after running <code className="text-[#1a1815]">qyl up</code>.</p>
+              <p className="text-xs tracking-[0.1em] text-[#6b655c]">SEND TELEMETRY TO</p>
+              <p className="mt-3 font-mono text-[13px]">127.0.0.1:4318</p>
+              <p className="mt-3 text-xs leading-6 text-[#6b655c]">The OTLP receiver after running <code className="text-[#1a1815]">qyl up</code>.</p>
             </div>
           </section>
         </main>

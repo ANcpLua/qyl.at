@@ -40,7 +40,7 @@ export default function ZenInk() {
         <section aria-labelledby="zen-title" className="mx-auto max-w-[1200px] px-6 pb-24 pt-16 md:px-12 md:pb-40 md:pt-32">
           <div className="grid items-center gap-16 lg:grid-cols-12">
             <div className="lg:col-span-7">
-              <p className="mb-10 text-xs tracking-[0.3em] text-[#5c574e] uppercase">Local observability · qyl {versionOf("qyl")}</p>
+              <p className="mb-10 text-xs tracking-[0.3em] text-[#5c574e] uppercase">Analysis for agents · qyl {versionOf("qyl")}</p>
               <h1 id="zen-title" className={`${mincho} text-[clamp(3.25rem,8vw,6.75rem)] leading-[1.08] tracking-[0.01em]`}>Only what<br />matters.</h1>
               <p className="mt-10 max-w-[34ch] text-lg leading-[1.9] text-[#5c574e]">Traces, logs and metrics, kept on your machine. Read them yourself, or hand them to your coding agent. Nothing more.</p>
               <div className="mt-12 flex flex-wrap items-center gap-x-10 gap-y-5">
@@ -58,7 +58,7 @@ export default function ZenInk() {
             </div>
             <pre className="overflow-x-auto py-6 font-mono text-[13px] leading-9 sm:text-[15px]"><code><span className="text-[#c23b22]">$ </span>dotnet tool install --global qyl{"\n"}<span className="text-[#c23b22]">$ </span>qyl up</code></pre>
             <div className="flex flex-col gap-2 border-b border-[#1b1a17]/20 pb-5 text-sm text-[#5c574e] sm:flex-row sm:items-center sm:justify-between">
-              <span>Then open <code className="break-all font-mono text-[#1b1a17]">http://127.0.0.1:5100</code></span>
+              <span>Then connect <code className="break-all font-mono text-[#1b1a17]">npx qyl-mcp-server --stdio</code></span>
               <span aria-live="polite" data-copy-status="" className="min-h-5 text-[#c23b22]" />
             </div>
           </div>
@@ -72,7 +72,7 @@ export default function ZenInk() {
               {[
                 ["一", "Collect", "Point any OpenTelemetry SDK at qyl. Nothing leaves your machine.", ["OTLP / HTTP  127.0.0.1:4318", "OTLP / gRPC  127.0.0.1:4317"], "/docs/telemetry/", "Telemetry path"],
                 ["二", "Keep", "Every signal lands in one local DuckDB store, with retention you set.", ["traces · logs · metrics", "local DuckDB"], "/product/logs/", "Read the logs"],
-                ["三", "Understand", "Your agent asks through MCP and receives the evidence, not a summary of it.", ["list_traces", "get_trace", "display_traces"], "/product/mcp-evidence/", "MCP evidence"],
+                ["三", "Understand", "Your agent asks through MCP and receives the evidence, not a summary of it.", ["triage", "get_failure_context", "verify_fix"], "/product/investigation/", "The investigation"],
               ].map(([mark, title, copy, lines, href, cta]) => (
                 <article key={title as string} className="border-t border-[#1b1a17] pt-8">
                   <div className="flex items-baseline justify-between gap-4"><h3 className={`${mincho} text-3xl`}>{title}</h3><span aria-hidden="true" className={`${mincho} text-2xl text-[#c23b22]`}>{mark}</span></div>
@@ -123,7 +123,7 @@ export default function ZenInk() {
           <div className="mx-auto flex max-w-[1200px] flex-col items-center px-6 py-28 text-center md:px-12 md:py-44">
             <Seal size="size-14 text-sm" />
             <h2 id="zen-start" className={`${mincho} mt-10 text-[clamp(2.5rem,5.4vw,4.5rem)] leading-[1.15]`}>Local. Free.<br />Quiet.</h2>
-            <p className="mt-8 max-w-[38ch] leading-[1.9] text-[#5c574e]">The collector, the dashboard and the MCP workbench are included. No hosted account is needed to begin.</p>
+            <p className="mt-8 max-w-[38ch] leading-[1.9] text-[#5c574e]">The Collector, the hosted endpoint and the qyl plugin are included. No hosted account is needed to begin.</p>
             <div className="mt-12 flex flex-wrap items-center justify-center gap-x-10 gap-y-5"><a href="/docs/getting-started/" className={action}>Start locally <ArrowRight size={16} strokeWidth={1.5} aria-hidden="true" /></a><a href="/pricing/" className={link}>What is included</a></div>
           </div>
         </section>

@@ -1,54 +1,55 @@
 ---
 title: Getting started
-description: Start the local qyl collector, point any OpenTelemetry SDK at it, and ask your agent about the traces, logs and metrics it captured.
+description: Run the qyl Collector, send it OpenTelemetry from any SDK, and connect an agent that investigates what it recorded.
 order: 1
 ---
 
+import ApiSdkProject from "../../components/ApiSdkProject.astro";
 import ReleaseTable from "../../components/ReleaseTable.astro";
 
-## What starts locally
+## Run the Collector
 
-qyl ships as a .NET tool. The package contains the native collector and embedded dashboard for your current runtime identifier; it does not clone a repository or require Node.js. The optional local MCP server needs Bun 1.4 or newer.
+qyl ships as a .NET tool. The package contains the NativeAOT Collector for your runtime identifier; it needs no repository clone and no Node.js.
 
 ```bash
 dotnet tool install --global qyl
 qyl up
 ```
 
-Open `http://127.0.0.1:5100`. The fixed local surface is:
+`qyl up` binds these loopback ports and fails up front if one is already taken:
 
 | Port | Purpose |
 | --- | --- |
-| `5100` | Product API and embedded dashboard |
 | `4317` | OTLP/gRPC receiver |
 | `4318` | OTLP/HTTP receiver |
+| `5100` | Collector API: reads, analysis, annotations and saved queries |
 | `5200` | Isolated diagnostics collector |
-| `18889` | qyl host resource API |
+| `18889` | qyl runner API |
 
-The separate MCP workbench owns loopback port `18888`.
+Telemetry is stored under `~/.qyl/`, never in the working directory. There is no web interface: agents read the Collector through MCP, and programs through its API.
 
-## Hello world from any OpenTelemetry SDK
+## Send telemetry from any OpenTelemetry SDK
 
-Nothing about the collector is language specific. Any compliant OTLP exporter — Python, Go, Java, Node.js, Rust, .NET — reaches it through the two standard environment variables:
+Nothing about the Collector is language specific. Any compliant OTLP exporter (Python, Go, Java, Node.js, Rust, .NET) reaches it through the standard environment variables:
 
 ```bash
 export OTEL_EXPORTER_OTLP_ENDPOINT=http://127.0.0.1:4318
 export OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
 ```
 
-Run the application, then connect an MCP client and ask your agent about the run rather than reading a dashboard yourself:
+## Connect an agent
+
+Run the MCP server over stdio next to the local Collector. It needs Bun 1.4 or newer on `PATH`:
 
 ```bash
-bunx qyl-mcp-server --stdio
+npx qyl-mcp-server --stdio
 ```
 
-The server uses MCP TypeScript SDK v2 to serve `2026-07-28` and supported 2025-era clients, including clients that open with `initialize`. See [protocol support](/docs/protocol-2026-07-28/) for how the two paths are selected.
-
-Three steps: `qyl up`, point `OTEL_EXPORTER_OTLP_ENDPOINT` at it, ask your agent.
+Add that command to the agent's MCP configuration, for example `claude mcp add qyl -- npx qyl-mcp-server --stdio` in Claude Code. Then ask the agent about the run. The `qyl-investigate` skill, served with the tools, starts an investigation with `triage`. The hosted endpoint, the plugin for Claude Code and Codex, and the ChatGPT connector are described in [Connect an agent](/docs/mcp/).
 
 ## The .NET fast path
 
-For a .NET host there is a shorter route that needs no environment variables. Add the instrumentation package:
+A .NET host needs no environment variables. Add the instrumentation package:
 
 ```bash
 dotnet add package Qyl.Telemetry.Hosting
@@ -60,26 +61,24 @@ The package changes nothing on its own. `AddQyl()` is the activation line, and i
 builder.AddQyl();
 ```
 
-That call discovers a local `qyl up` collector, applies the supported compile-time instrumentation, copies `session.id` from a span to every descendant span in the same process, and exports through the OpenTelemetry SDK. Standard `OTEL_*` settings still take precedence, so the fast path and the generic path never disagree.
+That call discovers a local `qyl up` Collector, applies the supported compile-time instrumentation, copies `session.id` from a span to every descendant span in the same process, and exports through the OpenTelemetry SDK. Standard `OTEL_*` settings still take precedence, so the fast path and the generic path never disagree.
 
-## The published versions
+## Published versions
 
 <ReleaseTable />
 
-The three SemanticConventions NuGet packages and `@ancplua/qyl-semantic-conventions` move together, and `Qyl.Telemetry.Hosting` ships in lockstep with `Qyl.Telemetry.AutoInstrumentation`. Pin the versions above rather than a floating range: the collector's attribute mapping is generated from the same registry release as the constants the instrumentation writes.
+Pin these versions rather than a floating range: the Collector's attribute mapping is generated from the same registry release as the constants the instrumentation writes.
 
 ## Build an API on the same stack
 
 `Qyl.Api.Sdk` is an MSBuild SDK for a Native AOT ASP.NET Core API. One line registers validation, problem details, the OpenAPI document and the telemetry above; see [API SDK](/docs/api-sdk/).
 
-```xml
-<Project Sdk="Qyl.Api.Sdk/16.0.1">
-```
+<ApiSdkProject />
 
 ## What is retained
 
-qyl stores traces, logs and metrics. Profiles are not supported.
+The Collector stores traces, logs and metrics in DuckDB, plus the annotations, saved queries and failure status agents create. Telemetry is kept for 30 days by default (`QYL_RETENTION_DAYS`). Profiles are not supported.
 
 ## Stop cleanly
 
-Press `Ctrl-C` in the terminal running `qyl up`. The host owns its child processes and shuts down the product collector, dashboard, and diagnostics collector together.
+Press `Ctrl-C` in the terminal running `qyl up`. The host owns its child processes and shuts down the Collector and the diagnostics collector together.

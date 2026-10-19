@@ -1,7 +1,7 @@
 ---
 interface Props { title: string; preview?: boolean; description?: string }
 const isLab = Astro.url.pathname.startsWith("/lab/");
-const { title, preview = false, description = "Local OpenTelemetry traces, logs and metrics for you and your coding agent. qyl connects your runtime evidence over MCP." } = Astro.props;
+const { title, preview = false, description = "qyl is an analytical engine for agents: its Collector ingests OpenTelemetry traces, logs and metrics and answers your coding agent over MCP." } = Astro.props;
 ---
 <!doctype html>
 <html lang="en" class="bg-white text-zinc-950">

@@ -1,6 +1,6 @@
 ---
 import Wordmark from "./Wordmark.astro";
-import { docsNavigation, externalLinks, headline, productNavigation, releaseWave } from "../data/site";
+import { docsNavigation, externalLinks, packages, productNavigation } from "../data/site";
 ---
 
 <footer class="site-footer">
@@ -11,7 +11,7 @@ import { docsNavigation, externalLinks, headline, productNavigation, releaseWave
   <div class="site-shell footer-grid">
     <div class="footer-brand">
       <a href="/" aria-label="qyl home"><Wordmark /></a>
-      <p>OTLP-native observability for humans and the agents working beside them.</p>
+      <p>An analytical engine for agents, fed by OpenTelemetry.</p>
       <small>© 2026 qyl</small>
     </div>
     <nav aria-label="Product links">
@@ -25,7 +25,6 @@ import { docsNavigation, externalLinks, headline, productNavigation, releaseWave
     <nav aria-label="Project links">
       <strong>Project</strong>
       <a href={externalLinks.github}>qyl on GitHub</a>
-      <a href={externalLinks.mcpGithub}>qyl.mcp on GitHub</a>
       <a href={externalLinks.nuget}>NuGet</a>
       <a href={externalLinks.npm}>npm</a>
       <a href="/problems/">Problem types</a>
@@ -35,7 +34,7 @@ import { docsNavigation, externalLinks, headline, productNavigation, releaseWave
     </nav>
   </div>
   <div class="site-shell release-bar">
-    <strong>Release wave {releaseWave}</strong>
-    <ul>{headline.map((entry) => <li>{entry}</li>)}</ul>
+    <strong>Published</strong>
+    <ul>{packages.map((entry) => <li>{entry.name} {entry.version}</li>)}</ul>
   </div>
 </footer>

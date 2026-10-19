@@ -1,6 +1,6 @@
 ---
 title: Telemetry
-description: Understand qyl’s OTLP ingest boundary, generated contract, MCP telemetry, redaction, and explicit demo behavior.
+description: Understand what the qyl Collector ingests, the contract it answers through, how it normalizes and redacts attributes, and what the MCP server records about itself.
 order: 5
 ---
 
@@ -16,7 +16,7 @@ These responsibilities have separate sources:
 | --- | --- |
 | Telemetry attributes and metrics used by qyl | The qyl Weaver registry, resolved from upstream language-independent semantic conventions, verified vendor definitions and qyl extensions |
 | C# and TypeScript telemetry bindings | Generated from that registry in the SemanticConventions repository |
-| Product API requests, responses, stream events and errors | The independent `qyl-api-schema` contract, generated for .NET and TypeScript |
+| Product API requests, responses, stream events and errors | The qyl API contract, written in TypeSpec in the qyl repository and generated for the Collector (C#) and the MCP server (TypeScript) |
 | OTLP messages | Official OpenTelemetry protobuf definitions |
 | MCP JSON-RPC and result envelopes | The official MCP SDK |
 
@@ -98,20 +98,6 @@ In production, the OTLP receiver requires an `x-otlp-api-key` credential with th
 
 ## MCP operation telemetry
 
-qyl.mcp records client and server operation spans and duration histograms using the generated qyl registry bindings for the MCP semantic vocabulary. Standard W3C trace context and baggage travel in MCP `params._meta`; inbound server spans use valid remote context as their parent.
+The qyl MCP server records its operation spans, duration histograms and operation logs using the generated qyl registry bindings for the MCP semantic vocabulary, and exports them to the caller's Collector project. Standard W3C trace context and baggage travel in MCP `params._meta`; inbound server spans use valid remote context as their parent.
 
-The workbench does not record prompt variables, tool arguments, tool results, or
-arbitrary HTTP headers as span attributes. Operation logs and the live protocol
-journal are metadata-only unless content capture is enabled explicitly. The
-collector persists only a small positive allowlist of known-safe HTTP header
-attributes and always rejects credentials, cookies, and `Mcp-Param-*`.
-
-## Explicit demo mode
-
-Live collector errors remain errors. To run the fixture-backed demonstration deliberately:
-
-```bash
-QYL_DEMO=1 bun run start:workbench
-```
-
-Every generated tool result carries `mode: "demo"`, so the presentation can label it rather than presenting a fixture as collector evidence.
+The server does not record prompt variables, tool arguments, tool results or arbitrary HTTP headers as span attributes. The Collector persists only a small positive allowlist of known-safe HTTP header attributes and always rejects credentials, cookies and `Mcp-Param-*`. Collector failures reach the agent as errors; the server has no demonstration data to substitute.

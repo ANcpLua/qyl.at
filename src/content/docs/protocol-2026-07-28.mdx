@@ -1,31 +1,27 @@
 ---
 title: Protocol 2026-07-28
-description: How qyl.mcp uses MCP TypeScript SDK v2 to serve modern and 2025-era clients and record the negotiated revision.
-order: 4
+description: How qyl's MCP server uses TypeScript SDK v2 to serve protocol 2026-07-28 with modern discovery, the skills extension and Events, and which revisions it answers.
+order: 3
 ---
 
-## SDK v2, both protocol eras
+## SDK v2
 
-qyl.mcp uses the TypeScript SDK v2 packages. Its serving entry points support `2026-07-28` and the SDK's supported 2025 revisions. Hosted requests use the same authorization checks and tool handlers through either path.
-
-## HTTP and stdio
-
-The hosted HTTP server uses `createMcpHandler(factory)` with its default stateless compatibility behavior. Bun serves the Web Standard handler directly. Both eras share one endpoint and server factory.
-
-The stdio entry uses `serveStdio(factory)`. The opening exchange selects the protocol era for that connection. A 2025 `initialize` opening is supported.
-
-## Client negotiation
-
-The workbench explicitly configures `versionNegotiation: { mode: "auto" }`: try modern discovery, then use the SDK's 2025 fallback when appropriate. It records the revision actually negotiated. An SDK Client without this option still defaults to the 2025 handshake. Exact protocol pins remain in conformance tests for a particular era.
+The server is built on the MCP TypeScript SDK v2 (`@modelcontextprotocol/server`) and serves protocol revision `2026-07-28`. Streamable HTTP at `https://mcp.qyl.at/mcp` and stdio from `qyl-mcp-server --stdio` create every server instance from the same factory, so both transports expose the same tools, skills and checks. The hosted HTTP server is stateless: Bun serves the SDK's web-standard handler directly.
 
 ## Modern requests
 
-Modern discovery uses `server/discover`. Requests carry revision and capabilities in the reserved `_meta` envelope; `clientInfo` is optional. The SDK supplies server identity through `_meta["io.modelcontextprotocol/serverInfo"]` on responses.
+`server/discover` returns the server's identity, instructions and capabilities: tools, the resources that carry the skill files, `extensions["io.modelcontextprotocol/skills"]`, and on the hosted endpoint `events`. Requests carry the revision and client capabilities in the reserved `_meta` envelope, and `clientInfo` is optional. Responses carry the server identity under `_meta["io.modelcontextprotocol/serverInfo"]`. `server/discover`, `tools/list` and `resources/list` carry public cache hints of five minutes.
 
-The shared ChatGPT and Claude deployment exposes the same 32-tool catalog through both protocol eras. Events are disabled; viewers use MCP Apps and fetch their data through the app-only `fetch_telemetry` tool.
+## 2025-era clients
+
+The hosted handler keeps the SDK's stateless fallback for clients that open with `initialize`: each such request is answered by a fresh server instance with the same tools, authorization and scope checks, and the 2025 session operations `GET` and `DELETE` answer `405`. Over stdio, the opening exchange selects the revision for that connection.
+
+## What the server does not use
+
+The server registers no prompts, no resource templates and no UI resources, and it sends no sampling or elicitation requests. Its resources are the skill files.
 
 ## Reproducible dependencies
 
-The [server](https://github.com/ANcpLua/qyl.mcp/blob/main/server/package.json) and [workbench](https://github.com/ANcpLua/qyl.mcp/blob/main/workbench/package.json) manifests pin exact package versions, with one lockfile. Dependency pins and protocol negotiation are separate settings.
+The server's package manifest in the [qyl repository](https://github.com/ANcpLua/qyl) pins exact SDK and dependency versions, with one lockfile. Dependency pins and protocol negotiation are separate settings.
 
 See the upstream [2026-07-28 support guide](https://ts.sdk.modelcontextprotocol.io/v2/migration/support-2026-07-28) for the SDK's entry points and migration behavior.

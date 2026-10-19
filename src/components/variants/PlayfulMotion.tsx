@@ -4,7 +4,7 @@ import { ArrowDown, ArrowRight, ArrowUpRight, Check, ChevronDown, Code2, Copy, D
 import { externalLinks, versionOf } from "../../data/site";
 
 const installCommand = "dotnet tool install --global qyl\nqyl up";
-const mcpCommand = "bunx qyl-mcp-server --stdio";
+const mcpCommand = "npx qyl-mcp-server --stdio";
 const focus = "focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#ab371d]";
 const feedback = "motion-safe:transition-transform motion-safe:duration-200 motion-safe:hover:-translate-y-0.5 motion-safe:active:scale-[0.97] motion-reduce:transform-none";
 
@@ -44,7 +44,7 @@ export default function PlayfulMotion() {
           <div>
             <a href="/docs/getting-started/" className={`mb-7 inline-flex min-h-8 items-center gap-2 rounded-full border border-[#dfd9ce] px-3.5 py-1 text-xs font-semibold ${focus}`}>
               <span className="size-1.5 rounded-full bg-[#ab371d]" aria-hidden="true" />
-              qyl {versionOf("qyl")} · Your local observability companion
+              qyl {versionOf("qyl")} · Analysis for your agent
               <ArrowUpRight className="size-3.5" aria-hidden="true" />
             </a>
             <h1 id="hero-title" className="max-w-[10ch] text-[48px] leading-[1.02] font-bold tracking-[-0.055em] sm:text-[68px] lg:text-[76px]">
@@ -69,7 +69,7 @@ export default function PlayfulMotion() {
                 </button>
               </div>
               <pre className="overflow-x-auto pb-1 font-mono text-xs leading-7 sm:text-sm"><code><span className="text-[#ab371d]">dotnet</span> tool install --global qyl{"\n"}<span className="text-[#ab371d]">qyl</span> up</code></pre>
-              <p className="mt-3 border-t border-[#e8e0d5] pt-3 text-xs text-[#6a6157]">Then open the dashboard at <code className="text-[#27231f]">127.0.0.1:5100</code></p>
+              <p className="mt-3 border-t border-[#e8e0d5] pt-3 text-xs text-[#6a6157]">Then send OTLP to <code className="text-[#27231f]">127.0.0.1:4318</code></p>
             </div>
             <p className="mt-3 flex items-center gap-1.5 text-xs text-[#6a6157]"><Check className="size-3.5" aria-hidden="true" /> Free to run. No hosted account needed.</p>
           </div>
@@ -127,21 +127,21 @@ export default function PlayfulMotion() {
             <div>
               <p className="mb-5 text-xs font-semibold tracking-[0.12em] text-[#ab371d]">BRING YOUR AGENT ALONG</p>
               <h2 id="agent-title" className="text-4xl leading-[1.08] font-bold tracking-[-0.04em] sm:text-5xl">Less copying.<br />More context.</h2>
-              <p className="mt-5 max-w-[40ch] text-[17px] leading-7 text-[#655d53]">Connect over MCP to query the evidence directly. Keep the dashboard for the moments when you want to look for yourself.</p>
+              <p className="mt-5 max-w-[40ch] text-[17px] leading-7 text-[#655d53]">Connect over MCP and let the agent ask: what changed, why it failed, whether the fix held.</p>
               <a href="/docs/mcp/" className={`mt-6 inline-flex min-h-11 items-center gap-2 rounded-sm text-sm font-semibold underline decoration-[#cbc1b4] underline-offset-4 hover:decoration-[#27231f] ${focus}`}>Read the MCP guide <ArrowRight className="size-4" aria-hidden="true" /></a>
             </div>
             <div className="self-center">
               <div className="rounded-[20px] bg-[#fffdf8] p-5 sm:p-6">
                 <div className="mb-5 flex items-center justify-between gap-3"><span className="flex items-center gap-2 text-xs font-medium"><Terminal className="size-4" aria-hidden="true" /> Local MCP · stdio</span><button type="button" data-copy-command={mcpCommand} aria-label="Copy local MCP command" className={`inline-flex min-h-11 items-center gap-1.5 rounded-full px-3 text-xs font-semibold hover:bg-[#f3eee5] ${focus}`}><Copy className="size-3.5" aria-hidden="true" /><span data-copy-label aria-live="polite">Copy</span></button></div>
-                <pre className="overflow-x-auto pb-2 font-mono text-xs leading-7 sm:text-sm"><code><span className="text-[#ab371d]">bunx</span> qyl-mcp-server --stdio</code></pre>
+                <pre className="overflow-x-auto pb-2 font-mono text-xs leading-7 sm:text-sm"><code><span className="text-[#ab371d]">npx</span> qyl-mcp-server --stdio</code></pre>
               </div>
               <details className="group mt-4 rounded-[20px] border border-[#d8cfc2]">
                 <summary className={`flex min-h-14 cursor-pointer list-none items-center justify-between gap-5 rounded-[20px] px-5 py-4 text-sm font-semibold [&::-webkit-details-marker]:hidden ${focus}`}>
                   What happens after connecting?<ChevronDown className="size-4 shrink-0 group-open:rotate-180 motion-safe:transition-transform motion-reduce:transition-none" aria-hidden="true" />
                 </summary>
                 <div className="border-t border-[#d8cfc2] px-5 py-5 text-sm leading-6 text-[#655d53]">
-                  <p>Your agent can list traces, read a complete trace and search logs. The workbench keeps requests, results and protocol timelines available for inspection.</p>
-                  <a href="/docs/workbench/" className={`mt-3 inline-flex min-h-11 items-center gap-2 rounded-sm font-semibold text-[#27231f] underline underline-offset-4 ${focus}`}>Explore the workbench <ArrowUpRight className="size-3.5" aria-hidden="true" /></a>
+                  <p>Your agent can triage failures, read a complete trace and search logs. The Collector computes each answer and says how much it examined.</p>
+                  <a href="/docs/mcp/" className={`mt-3 inline-flex min-h-11 items-center gap-2 rounded-sm font-semibold text-[#27231f] underline underline-offset-4 ${focus}`}>See the tools <ArrowUpRight className="size-3.5" aria-hidden="true" /></a>
                 </div>
               </details>
             </div>
@@ -151,7 +151,7 @@ export default function PlayfulMotion() {
         <section aria-labelledby="start-title" className="mx-auto max-w-[1200px] px-5 pb-18 text-center sm:px-8 lg:pb-24">
           <p className="mb-5 text-xs font-semibold tracking-[0.12em] text-[#ab371d]">YOUR NEXT DEBUGGING SESSION</p>
           <h2 id="start-title" className="text-4xl leading-[1.08] font-bold tracking-[-0.04em] sm:text-5xl">Start with a little more context.</h2>
-          <p className="mx-auto mt-5 max-w-[50ch] text-[17px] leading-7 text-[#655d53]">The local collector, dashboard and MCP workbench are free. Bring an app. Follow a signal. See where it takes you.</p>
+          <p className="mx-auto mt-5 max-w-[50ch] text-[17px] leading-7 text-[#655d53]">The Collector, the hosted endpoint and the qyl plugin are free. Bring an app. Follow a signal. See where it takes you.</p>
           <a href="/docs/getting-started/" className={`mt-7 inline-flex min-h-13 items-center justify-center gap-3 rounded-full bg-[#f1603e] px-7 font-semibold hover:bg-[#e95533] ${feedback} ${focus}`}>Start locally <ArrowRight className="size-4" aria-hidden="true" /></a>
           <p className="mt-4 text-sm text-[#655d53]">No hosted account needed. <a href="/pricing/" className={`rounded-sm underline underline-offset-4 ${focus}`}>See what’s included</a></p>
         </section>

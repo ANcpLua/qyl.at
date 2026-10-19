@@ -1,24 +1,15 @@
 ---
 import DocsLayout from "../../layouts/DocsLayout.astro";
 import { docsNavigation } from "../../data/site";
-
-const descriptions = [
-  "Install the self-contained local product and send the first OTLP signals.",
-  "Connect real MCP servers, inspect negotiated capabilities, and retain execution evidence.",
-  "Authenticate to the hosted qyl Resource Server through a standard client.",
-  "Understand SDK v2 serving, protocol negotiation, and support for both MCP eras.",
-  "Trace the boundaries between OTLP ingestion, Qyl reads, and MCP execution evidence.",
-  "Build a Native AOT ASP.NET Core API on the same stack, behind one AddQylApi call.",
-];
 ---
 
-<DocsLayout title="Documentation" description="Run qyl locally, connect the MCP workbench, and understand the protocol and telemetry boundaries.">
+<DocsLayout title="Documentation" description="Run the qyl Collector, connect an agent, and understand the protocol and telemetry boundaries.">
   <div class="docs-index-grid">
     {docsNavigation.map((item, index) => (
       <a class="docs-index-card" href={item.href}>
         <span>{String(index + 1).padStart(2, "0")} · GUIDE</span>
         <h2>{item.label}</h2>
-        <p>{descriptions[index]}</p>
+        <p>{item.description}</p>
       </a>
     ))}
   </div>

@@ -1,6 +1,9 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { productNavigation } from "../data/site";
+import { mcpTools } from "../data/mcp-tools";
+
+type ToolName = (typeof mcpTools)[number]["name"];
 
 interface Capability {
   name: string;
@@ -13,12 +16,23 @@ interface Props {
   eyebrow: string;
   intro: string;
   heading: string;
+  /** MCP tools, described by their own registered descriptions. */
+  tools: ToolName[];
+  /** Everything that is not an MCP tool: wire endpoints, attributes, headers. */
   capabilities: Capability[];
   command: string;
 }
 
-const { title, description, eyebrow, intro, heading, capabilities, command } = Astro.props;
+const { title, description, eyebrow, intro, heading, tools, capabilities, command } = Astro.props;
 const pathname = Astro.url.pathname;
+const listed = [
+  ...tools.map((name) => {
+    const tool = mcpTools.find((candidate) => candidate.name === name);
+    if (tool === undefined) throw new Error(`${pathname}: no MCP tool named ${name}`);
+    return { name: tool.name, description: tool.description };
+  }),
+  ...capabilities,
+];
 ---
 
 <BaseLayout title={title} description={description}>
@@ -41,7 +55,7 @@ const pathname = Astro.url.pathname;
         <h2>{heading}</h2>
         <p>{description}</p>
         <div class="capability-list">
-          {capabilities.map((capability) => (
+          {listed.map((capability) => (
             <div class="capability"><code>{capability.name}</code><p>{capability.description}</p></div>
           ))}
         </div>

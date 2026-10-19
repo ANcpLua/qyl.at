@@ -17,7 +17,7 @@ const halftonePink = "[background-image:radial-gradient(#ff48b0_1.4px,transparen
 const tilt = "motion-safe:transition-transform motion-safe:duration-200 motion-reduce:transform-none";
 const pages = [
   { no: "p. 02", title: "Collect", text: "Point any compliant OpenTelemetry SDK at qyl. Traces, logs and metrics land in local DuckDB with explicit retention.", detail: ["OTLP / HTTP → 127.0.0.1:4318", "OTLP / gRPC → 127.0.0.1:4317"], href: "/docs/telemetry/", cta: "Ingestion details", ink: "bg-[#ff48b0]", turn: "-rotate-1" },
-  { no: "p. 03", title: "Investigate", text: "Your agent lists traces, reads the complete span tree and searches related logs. Open an MCP App for a closer look.", detail: ["list_traces", "get_trace", "display_traces"], href: "/product/tracing/", cta: "Explore tracing", ink: "bg-[#0078bf]", turn: "rotate-1" },
+  { no: "p. 03", title: "Investigate", text: "Your agent triages what changed, reads the failure with its logs and checks whether the fix held.", detail: ["triage", "get_failure_context", "verify_fix"], href: "/product/investigation/", cta: "Explore the investigation", ink: "bg-[#0078bf]", turn: "rotate-1" },
 ];
 
 function Grain({ id }: { id: string }) {
@@ -45,7 +45,7 @@ export default function Risograph() {
           <Grain id="riso-grain-hero" />
           <div className="relative mx-auto grid max-w-[1240px] gap-12 px-5 pt-12 pb-16 sm:px-8 sm:pt-16 lg:grid-cols-12 lg:gap-8 lg:pb-24">
             <div className="lg:col-span-7">
-              <p className={`${mono} mb-7 inline-flex -rotate-2 items-center gap-3 bg-white px-3 py-2 text-[#b0165e] shadow-[3px_3px_0_0_#ff48b0]`}>Issue: qyl {versionOf("qyl")} · Local observability</p>
+              <p className={`${mono} mb-7 inline-flex -rotate-2 items-center gap-3 bg-white px-3 py-2 text-[#b0165e] shadow-[3px_3px_0_0_#ff48b0]`}>Issue: qyl {versionOf("qyl")} · Analysis for agents</p>
               <h1 id="riso-title" className={`${display} text-[clamp(3.6rem,10vw,8.5rem)] leading-[0.88] [text-shadow:5px_4px_0_#ff48b0]`}>Printed in<br />two inks.</h1>
               <p className="mt-8 max-w-xl text-lg leading-relaxed font-medium">Your traces, logs and metrics, pressed onto one local page. qyl collects OpenTelemetry in DuckDB and passes the evidence to your coding agent through MCP.</p>
               <div className="mt-8 flex flex-wrap items-center gap-5">
@@ -63,7 +63,7 @@ export default function Risograph() {
               <div data-command-panel="" className="relative -mt-24 -rotate-1 border-2 border-[#24356f] bg-white p-5 shadow-[6px_6px_0_0_#0078bf] sm:mx-6 sm:p-6">
                 <div className="mb-4 flex items-center justify-between gap-3"><span className={`${mono} text-[#b0165e]`}>Cut here, paste in terminal</span><button type="button" data-copy-command={command} aria-label="Copy qyl install commands" className={`inline-flex min-h-11 shrink-0 items-center gap-2 border-2 border-[#24356f] px-3 text-xs font-bold hover:bg-[#ffe3f1] ${focus}`}><Copy size={14} strokeWidth={2.5} aria-hidden="true" /><span data-copy-label="">Copy</span></button></div>
                 <pre className="overflow-x-auto border-y-2 border-dashed border-[#24356f] py-4 font-mono text-[13px] leading-8 sm:text-sm"><code><span className="text-[#b0165e]">$ </span>dotnet tool install --global qyl{"\n"}<span className="text-[#b0165e]">$ </span>qyl up</code></pre>
-                <p className="mt-4 text-sm font-medium">Then open <code className="font-mono font-bold break-all">http://127.0.0.1:5100</code></p>
+                <p className="mt-4 text-sm font-medium">Then connect <code className="font-mono font-bold break-all">npx qyl-mcp-server --stdio</code></p>
                 <div aria-live="polite" data-copy-status="" className="mt-2 min-h-4 font-mono text-xs text-[#b0165e]" />
               </div>
             </div>
@@ -76,8 +76,8 @@ export default function Risograph() {
         </div>
         <section aria-labelledby="riso-evidence" className="mx-auto max-w-[1240px] px-5 py-16 sm:px-8 lg:py-24">
           <div className="grid gap-6 md:grid-cols-12 md:items-end">
-            <div className="md:col-span-7"><p className={`${mono} mb-4 text-[#b0165e]`}>Inside this issue</p><h2 id="riso-evidence" className={`${display} text-[clamp(2.6rem,6vw,4.75rem)] leading-[0.92] [text-shadow:3px_3px_0_#7fc4ea]`}>Less dashboard tourism.<br />More evidence.</h2></div>
-            <p className="max-w-md text-base leading-relaxed font-medium md:col-span-5">Keep humans and agents on the same facts, from the request that failed to the span that explains why.</p>
+            <div className="md:col-span-7"><p className={`${mono} mb-4 text-[#b0165e]`}>Inside this issue</p><h2 id="riso-evidence" className={`${display} text-[clamp(2.6rem,6vw,4.75rem)] leading-[0.92] [text-shadow:3px_3px_0_#7fc4ea]`}>Less guessing.<br />More evidence.</h2></div>
+            <p className="max-w-md text-base leading-relaxed font-medium md:col-span-5">Keep the agent on the facts, from the request that failed to the span that explains why.</p>
           </div>
           <div className="mt-12 grid gap-10 lg:grid-cols-2">
             {pages.map(({ no, title, text, detail, href, cta, ink: tone, turn }) => <article key={no} className={`relative border-2 border-[#24356f] bg-white p-6 sm:p-8 ${turn} hover:rotate-0 ${tilt}`}>
@@ -92,7 +92,7 @@ export default function Risograph() {
         </section>
         <section aria-labelledby="riso-signals" className="relative border-y-2 border-[#24356f] bg-[#eaf5fb]">
           <div className="mx-auto grid max-w-[1240px] gap-10 px-5 py-14 sm:px-8 lg:grid-cols-12 lg:py-20">
-            <div className="lg:col-span-5"><p className={`${mono} mb-4 text-[#b0165e]`}>Table of contents</p><h2 id="riso-signals" className={`${display} text-5xl leading-[0.92] sm:text-6xl`}>Every signal,<br />in context.</h2><p className="mt-5 max-w-sm text-base leading-relaxed font-medium">Errors stay errors. Demo data is always explicit.</p></div>
+            <div className="lg:col-span-5"><p className={`${mono} mb-4 text-[#b0165e]`}>Table of contents</p><h2 id="riso-signals" className={`${display} text-5xl leading-[0.92] sm:text-6xl`}>Every signal,<br />in context.</h2><p className="mt-5 max-w-sm text-base leading-relaxed font-medium">Errors stay errors. No demo data stands in for evidence.</p></div>
             <ol className="lg:col-span-7">
               {productNavigation.map(({ href, label }, index) => <li key={href}><a href={href} className={`group flex min-h-16 items-center justify-between gap-5 border-b-2 border-dashed border-[#24356f] py-4 hover:bg-white ${index === 0 ? "border-t-2" : ""} ${focus}`}>
                 <span className="flex items-baseline gap-5"><span className="font-mono text-xs font-bold text-[#b0165e]">p. 0{index + 4}</span><span className={`${display} text-2xl sm:text-3xl`}>{label}</span></span>
@@ -105,7 +105,7 @@ export default function Risograph() {
           <Grain id="riso-grain-cta" />
           <div className="relative mx-auto max-w-[1240px] px-5 py-16 sm:px-8 lg:py-24">
             <div className="relative grid gap-8 border-2 border-[#24356f] bg-[#ffe3f1] p-6 shadow-[8px_8px_0_0_#0078bf] sm:p-10 lg:grid-cols-12">
-              <div className="lg:col-span-8"><p className={`${mono} text-[#b0165e]`}>Back cover · one plan, every shipped feature</p><h2 id="riso-start" className={`${display} mt-5 text-[clamp(2.8rem,7vw,5.5rem)] leading-[0.9]`}>Local. Useful. Free.</h2><p className="mt-5 max-w-xl text-base leading-relaxed font-medium">The native collector, embedded dashboard and MCP workbench are included. Your local setup works without a hosted account.</p></div>
+              <div className="lg:col-span-8"><p className={`${mono} text-[#b0165e]`}>Back cover · one plan, every shipped feature</p><h2 id="riso-start" className={`${display} mt-5 text-[clamp(2.8rem,7vw,5.5rem)] leading-[0.9]`}>Local. Useful. Free.</h2><p className="mt-5 max-w-xl text-base leading-relaxed font-medium">The NativeAOT Collector, the hosted endpoint and the qyl plugin are included. Your local setup works without a hosted account.</p></div>
               <div className="flex flex-col items-start justify-end gap-4 lg:col-span-4 lg:items-end"><a href="/docs/getting-started/" className={`inline-flex min-h-13 items-center gap-3 bg-[#24356f] px-6 font-bold text-white shadow-[5px_5px_0_0_#ff48b0] hover:-translate-y-0.5 ${tilt} ${focus}`}>Start locally <ArrowRight size={18} strokeWidth={2.5} aria-hidden="true" /></a><a href="/pricing/" className={`${link} text-sm`}>Read the pricing details</a></div>
             </div>
           </div>

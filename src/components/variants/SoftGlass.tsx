@@ -37,7 +37,7 @@ export default function SoftGlass() {
       <main id="main">
         <section aria-labelledby="glass-title" className="mx-auto max-w-[1120px] px-4 pb-20 pt-16 sm:px-6 sm:pt-24 lg:pb-28">
           <div className="mx-auto max-w-3xl text-center">
-            <p className={`mx-auto inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold text-[#5b3fd1] ${glass}`}><Layers size={14} aria-hidden="true" /> Local observability · qyl {versionOf("qyl")}</p>
+            <p className={`mx-auto inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold text-[#5b3fd1] ${glass}`}><Layers size={14} aria-hidden="true" /> Analysis for agents · qyl {versionOf("qyl")}</p>
             <h1 id="glass-title" className="mt-8 text-[clamp(3rem,8vw,6.5rem)] font-semibold leading-[0.98] tracking-[-0.055em]">Clear, light,<br /><span className="text-[#5b3fd1]">layered.</span></h1>
             <p className="mx-auto mt-7 max-w-[40ch] text-lg leading-relaxed text-[#4a4766] sm:text-xl">Your traces, logs and metrics, collected locally and laid out in calm, readable layers. Ready for you and for your coding agent.</p>
             <div className="mt-9 flex flex-wrap items-center justify-center gap-3"><a href="/docs/getting-started/" className={primary}>Run qyl locally <ArrowRight size={16} aria-hidden="true" /></a><a href="/docs/mcp/" className={secondary}>Connect your agent</a></div>
@@ -47,7 +47,7 @@ export default function SoftGlass() {
             <div data-command-panel="" className={`rounded-[28px] p-5 sm:p-7 lg:col-span-7 ${glass}`}>
               <div className="flex items-center justify-between gap-3"><span className="text-xs font-semibold uppercase tracking-[0.14em] text-[#4a4766]">Start here</span><button type="button" data-copy-command={command} aria-label="Copy qyl install commands" className={`inline-flex min-h-11 items-center gap-2 rounded-full bg-white px-4 text-sm font-semibold text-[#1e1b3a] shadow-sm hover:bg-[#f1ecff] ${focus}`}><Copy size={15} aria-hidden="true" /><span data-copy-label="">Copy</span></button></div>
               <pre className="mt-5 overflow-x-auto rounded-2xl bg-white/80 p-5 font-mono text-[13px] leading-8 sm:text-sm"><code><span className="text-[#5b3fd1]">$ </span>dotnet tool install --global qyl{"\n"}<span className="text-[#5b3fd1]">$ </span>qyl up</code></pre>
-              <div className="mt-5 flex flex-col gap-2 text-sm text-[#4a4766] sm:flex-row sm:items-center sm:justify-between"><span>Then open <code className="break-all font-mono font-semibold text-[#1e1b3a]">http://127.0.0.1:5100</code></span><span aria-live="polite" data-copy-status="" className="min-h-5 font-semibold text-[#5b3fd1]" /></div>
+              <div className="mt-5 flex flex-col gap-2 text-sm text-[#4a4766] sm:flex-row sm:items-center sm:justify-between"><span>Then connect <code className="break-all font-mono font-semibold text-[#1e1b3a]">npx qyl-mcp-server --stdio</code></span><span aria-live="polite" data-copy-status="" className="min-h-5 font-semibold text-[#5b3fd1]" /></div>
             </div>
             <div role="group" aria-label="Signal layers" className="relative lg:col-span-5">
               {[
@@ -68,7 +68,7 @@ export default function SoftGlass() {
             {[
               ["Collect", "Point any OpenTelemetry SDK at qyl. Standard OTLP, nothing proprietary.", ["OTLP / HTTP → 127.0.0.1:4318", "OTLP / gRPC → 127.0.0.1:4317"], "bg-[#ffe3f0]", Activity, "/docs/telemetry/", "Ingestion details"],
               ["Store", "Traces, logs and metrics land in one local DuckDB store with explicit retention.", ["Local DuckDB", "Your machine only"], "bg-[#e3e9ff]", Database, "/product/metrics/", "Explore metrics"],
-              ["Investigate", "Your coding agent reads the same evidence you do, over MCP.", ["list_traces", "get_trace", "display_traces"], "bg-[#dcf5ec]", Bot, "/docs/mcp/", "Set up MCP"],
+              ["Investigate", "Your coding agent asks and the Collector answers with evidence, over MCP.", ["triage", "get_failure_context", "verify_fix"], "bg-[#dcf5ec]", Bot, "/docs/mcp/", "Set up MCP"],
             ].map(([title, copy, lines, tint, Icon, href, cta]) => {
               const Glyph = Icon as typeof Activity;
               return (
@@ -86,7 +86,7 @@ export default function SoftGlass() {
 
         <section aria-labelledby="glass-paths" className="mx-auto max-w-[1120px] px-4 py-20 sm:px-6 lg:py-28">
           <div className={`grid gap-10 rounded-[36px] p-6 sm:p-10 lg:grid-cols-12 ${glass}`}>
-            <div className="lg:col-span-5"><p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#5b3fd1]">Every signal</p><h2 id="glass-paths" className="mt-4 text-4xl font-semibold leading-[1.05] tracking-[-0.045em]">See each layer up close.</h2><p className="mt-5 max-w-[36ch] leading-relaxed text-[#4a4766]">Read the detail behind each evidence path. Errors stay errors, and demo data is always labelled.</p></div>
+            <div className="lg:col-span-5"><p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#5b3fd1]">Every signal</p><h2 id="glass-paths" className="mt-4 text-4xl font-semibold leading-[1.05] tracking-[-0.045em]">See each layer up close.</h2><p className="mt-5 max-w-[36ch] leading-relaxed text-[#4a4766]">Read the detail behind each evidence path. Errors stay errors, and no demo data stands in for evidence.</p></div>
             <nav aria-label="Product details" className="grid gap-3 sm:grid-cols-2 lg:col-span-7">
               {productNavigation.map(({ href, label }) => <a key={href} href={href} className={`group flex min-h-16 items-center justify-between gap-4 rounded-2xl bg-white/80 px-5 font-semibold transition duration-300 hover:bg-white motion-reduce:transition-none ${focus}`}>{label}<ArrowRight size={18} className="text-[#5b3fd1] transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0" aria-hidden="true" /></a>)}
             </nav>
@@ -98,7 +98,7 @@ export default function SoftGlass() {
             <div className="rounded-[35px] bg-white/75 px-6 py-14 text-center backdrop-blur-xl sm:px-12 sm:py-20">
               <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#5b3fd1]">One plan. Every shipped feature.</p>
               <h2 id="glass-start" className="mt-4 text-[clamp(2.5rem,6vw,4.5rem)] font-semibold leading-none tracking-[-0.05em]">Local. Free. Calm.</h2>
-              <p className="mx-auto mt-6 max-w-[42ch] leading-relaxed text-[#4a4766]">The native collector, embedded dashboard and MCP workbench are included. Your local setup works without a hosted account.</p>
+              <p className="mx-auto mt-6 max-w-[42ch] leading-relaxed text-[#4a4766]">The NativeAOT Collector, the hosted endpoint and the qyl plugin are included. Your local setup works without a hosted account.</p>
               <div className="mt-9 flex flex-wrap items-center justify-center gap-3"><a href="/docs/getting-started/" className={primary}>Start locally <ArrowRight size={16} aria-hidden="true" /></a><a href="/pricing/" className={secondary}>Read the pricing details</a></div>
             </div>
           </div>

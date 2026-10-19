@@ -2,13 +2,13 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
-<BaseLayout title="Pricing" description="qyl is free, with the complete local collector, dashboard, workbench, and hosted MCP access included.">
+<BaseLayout title="Pricing" description="qyl is free: the Collector, the hosted MCP endpoint, the qyl plugin and the local MCP server.">
   <section class="page-hero">
     <div class="site-shell pricing-shell">
       <div>
         <span class="eyebrow">One plan · every shipped feature</span>
         <h1 class="page-title">qyl is free.</h1>
-        <p class="lede">No feature matrix and no pretend enterprise tier. Install the local product or authenticate your MCP client for hosted telemetry access.</p>
+        <p class="lede">No feature matrix and no pretend enterprise tier. Run the Collector yourself, or connect your agent to the hosted endpoint.</p>
       </div>
       <article class="pricing-card" aria-labelledby="free-plan">
         <div class="pricing-card__head">
@@ -17,11 +17,11 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         </div>
         <div class="pricing-card__body">
           <ul class="check-list">
-            <li>Native AOT collector and embedded dashboard</li>
-            <li>OTLP trace, log and metric ingestion</li>
-            <li>Local MCP workbench and evaluation evidence</li>
-            <li>Hosted MCP: telemetry reads, annotations and saved queries</li>
-            <li>Tracing and MCP dashboard apps</li>
+            <li>NativeAOT Collector: OTLP trace, log and metric ingestion and analysis</li>
+            <li>Hosted MCP endpoint: every read tool, annotations, saved queries and failure status</li>
+            <li>MCP Events for new error traces</li>
+            <li>The qyl plugin for Claude Code and Codex, and the ChatGPT connector</li>
+            <li>The local stdio MCP server</li>
           </ul>
           <a class="button button--light" href="/docs/getting-started/" id="free-plan">Install qyl</a>
         </div>
@@ -31,7 +31,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   <section class="editorial-section editorial-section--raised">
     <div class="site-shell section-intro">
       <div><span class="eyebrow">The plain answer</span><h2 class="section-title">No billing system is hidden behind this page.</h2></div>
-      <p class="lede">qyl is solo-developed. If pricing ever changes, the terms and limits will be published before anyone is charged. The local product remains useful without a hosted account.</p>
+      <p class="lede">qyl is solo-developed. If pricing ever changes, the terms and limits will be published before anyone is charged. The local Collector remains useful without a hosted account.</p>
     </div>
   </section>
 </BaseLayout>

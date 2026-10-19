@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "astro dev",
     "check": "astro check && tsc --noEmit && node scripts/check-dependencies.mjs && node scripts/check-versions.mjs",
-    "build:site": "astro build && pagefind --site dist && node scripts/finalize-site.mjs",
+    "build:site": "node scripts/schema.mjs && astro build && pagefind --site dist && node scripts/finalize-site.mjs && node scripts/schema.mjs verify",
     "build": "bun run check && bun run build:site",
     "test:unit": "node --test tests/*.test.ts",
     "test:gates": "node scripts/check-artifacts.mjs && bun run test:unit && playwright test --project=surface",
@@ -19,7 +19,8 @@
     "deploy": "bun run test && wrangler deploy --var QYL_SERVICE_VERSION:$(git rev-parse --short HEAD)",
     "deploy:dry": "bun run build && wrangler deploy --dry-run",
     "lint": "oxlint .",
-    "check:mcp": "node scripts/check-mcp.mjs"
+    "check:mcp": "node scripts/check-mcp.mjs",
+    "sync:tools": "node scripts/sync-mcp-tools.mjs"
   },
   "dependencies": {
     "@ancplua/qyl-semantic-conventions": "15.0.2",

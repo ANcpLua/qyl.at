@@ -9,7 +9,7 @@ export const journey = [
   { id: 'perspectives', label: 'Change perspective', direction: 'playful-motion' },
   { id: 'connected', label: 'Connect your agent', direction: 'soft-glass' },
   { id: 'open', label: 'Speak OpenTelemetry', direction: 'bauhaus' },
-  { id: 'workbench', label: 'Keep the investigation', direction: 'lab-notebook' },
+  { id: 'findings', label: 'Record the findings', direction: 'lab-notebook' },
   { id: 'delivery', label: 'Understand the build', direction: 'control-room' },
   { id: 'local', label: 'Stay close to the code', direction: 'zen-ink' },
   { id: 'contracts', label: 'Share one vocabulary', direction: 'risograph' },

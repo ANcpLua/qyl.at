@@ -1,9 +1,9 @@
 // The RFC 9457 problem types a qyl server reports. Every problem body's `type`
 // member is `https://qyl.at/problems/<name>`, and this file is what that URI
 // dereferences to: `src/pages/problems/[name].astro` renders one page per entry
-// and `/problems/` lists them. The qyl-api-schema contract fixes the same names,
-// codes, titles and statuses in `common/errors.tsp`; a type added there is added
-// here before the contract is released, so a URI a server sends never 404s.
+// and `/problems/` lists them. The qyl API contract fixes the same names, codes,
+// titles and statuses in `contracts/common/errors.tsp` in the qyl repository; a type
+// added there is added here before it is released, so a URI a server sends never 404s.
 export const problemTypeBase = "https://qyl.at/problems/";
 
 export interface ProblemMember {
@@ -76,7 +76,7 @@ export const problems: readonly ProblemType[] = [
     status: 401,
     summary: "The request carries no valid credential.",
     members: [],
-    action: "Supply the credential the server expects and retry. The hosted workbench's 401 carries a WWW-Authenticate header naming the scheme it accepts.",
+    action: "Supply the credential the server expects and retry.",
     example: {
       type: "https://qyl.at/problems/unauthorized",
       title: "Unauthorized",

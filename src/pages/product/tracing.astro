@@ -3,15 +3,13 @@ import ProductPage from "../../components/ProductPage.astro";
 ---
 
 <ProductPage
-  title="Tracing"
+  title="Traces"
   eyebrow="Product · traces"
-  intro="Standard OTLP in. Complete trace evidence out—through an MCP tool or a focused human explorer."
-  heading="A waterfall that travels with the investigation."
-  description="The collector retains trace and span data in DuckDB. qyl.mcp maps the generated contract into model tools and an embedded trace explorer, so the same evidence works for automated reasoning and human review."
+  intro="Standard OTLP in. Span trees, comparisons and service maps out, as structured tool results."
+  heading="Every span, with the context around it."
+  description="The Collector stores spans with their resource, instrumentation scope, events, links and status in DuckDB. get_trace returns the spans an investigation selects, such as the errors with their ancestors or the critical path, and names what it omitted and which parents are missing. Spans that carry a session.id group into sessions, one per agent run."
+  tools={["list_traces", "get_trace", "compare_traces", "get_service_map"]}
   capabilities={[
-    { name: "list_traces", description: "Find trace summaries over a bounded time window without loading every span." },
-    { name: "get_trace", description: "Read the complete span tree, events, attributes, status, correlated context, and the annotations on the trace." },
-    { name: "display_traces", description: "Open the shipped trace explorer as an MCP App when the user needs to inspect the waterfall." },
     { name: "OTLP /v1/traces", description: "Ingest binary protobuf or OTLP JSON over HTTP, plus the official OTLP gRPC service." },
   ]}
   command={`qyl up

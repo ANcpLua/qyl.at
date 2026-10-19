@@ -1,0 +1,27 @@
+---
+// The MCP tools, rendered from src/data/mcp-tools.ts (generated from qyl's tool
+// snapshot), so the documentation lists exactly the tools the server registers.
+import { mcpTools } from "../data/mcp-tools";
+
+interface Props {
+  kind: "read" | "write";
+}
+
+const { kind } = Astro.props;
+const tools = mcpTools.filter((tool) => tool.readOnly === (kind === "read"));
+---
+
+<table class="tool-table">
+  <thead>
+    <tr><th scope="col">Tool</th><th scope="col">{kind === "read" ? "Answers" : "Changes"}</th><th scope="col">Scopes</th></tr>
+  </thead>
+  <tbody>
+    {tools.map((tool) => (
+      <tr>
+        <th scope="row"><code>{tool.name}</code></th>
+        <td>{tool.description}</td>
+        <td>{tool.scopes.map((scope, index) => <>{index > 0 && " "}<code>{scope}</code></>)}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>

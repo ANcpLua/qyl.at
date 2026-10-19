@@ -43,13 +43,13 @@ function Window({ title, children, className = "" }: { title: string; children: 
 const steps = [
   { name: "Collect", icon: Inbox, detail: "Point a compliant OpenTelemetry SDK at qyl. One receiver for traces, logs, and metrics.", code: "OTLP → 127.0.0.1:4318", href: "/docs/telemetry/", action: "See ingestion details" },
   { name: "Store", icon: Database, detail: "Everything lands in a local DuckDB store with explicit retention.", code: "DuckDB, on your machine", href: "/product/logs/", action: "Read about logs" },
-  { name: "Ask", icon: MessageSquare, detail: "Your coding agent queries the same evidence through MCP.", code: "MCP → your agent", href: "/docs/mcp/", action: "Connect over MCP" },
+  { name: "Ask", icon: MessageSquare, detail: "Your coding agent asks through MCP; the Collector answers with evidence.", code: "MCP → your agent", href: "/docs/mcp/", action: "Connect over MCP" },
 ] as const;
 
 const tools = [
-  { name: "list_traces", result: "Traces to choose from" },
-  { name: "get_trace", result: "One complete span tree" },
-  { name: "display_traces", result: "Traces opened in an MCP App" },
+  { name: "triage", result: "What changed, ranked" },
+  { name: "get_failure_context", result: "The failure path and its logs" },
+  { name: "verify_fix", result: "Whether the fix held" },
 ] as const;
 
 export default function SystemClassic() {
@@ -98,9 +98,9 @@ export default function SystemClassic() {
               </Window>
               <Window title="qyl Info" className="lg:ml-8">
                 <dl className="divide-y-2 divide-black font-mono text-xs sm:text-[13px]">
-                  {[["Dashboard", "http://127.0.0.1:5100"], ["OTLP / HTTP", "127.0.0.1:4318"], ["OTLP / gRPC", "127.0.0.1:4317"], ["Kind", ".NET tool"]].map(([term, value]) => <div key={term} className="grid grid-cols-[7rem_1fr] gap-3 px-4 py-3"><dt className="font-bold">{term}</dt><dd className="break-all">{value}</dd></div>)}
+                  {[["Collector API", "127.0.0.1:5100"], ["OTLP / HTTP", "127.0.0.1:4318"], ["OTLP / gRPC", "127.0.0.1:4317"], ["Kind", ".NET tool"]].map(([term, value]) => <div key={term} className="grid grid-cols-[7rem_1fr] gap-3 px-4 py-3"><dt className="font-bold">{term}</dt><dd className="break-all">{value}</dd></div>)}
                 </dl>
-                <p className="flex items-center gap-2 border-t-2 border-black px-4 py-3 text-xs font-bold"><Check size={16} strokeWidth={3} aria-hidden="true" /> Collector + dashboard included</p>
+                <p className="flex items-center gap-2 border-t-2 border-black px-4 py-3 text-xs font-bold"><Check size={16} strokeWidth={3} aria-hidden="true" /> No hosted account needed</p>
               </Window>
             </div>
           </div>
@@ -132,8 +132,8 @@ export default function SystemClassic() {
             <div className="lg:col-span-5">
               <p className={eyebrow}>03 / Ask the agent</p>
               <h2 id="sc-agent" className="mt-4 text-4xl leading-[1.02] font-black tracking-[-0.04em] sm:text-5xl">Ask the agent.<br />Keep the proof.</h2>
-              <p className="mt-6 max-w-md text-base leading-relaxed">List traces, inspect a complete span tree, and open an MCP App when you need a closer look. Errors stay errors. Demo data is always explicit.</p>
-              <a href="/docs/workbench/" className={`${link} mt-5`}>Inside the MCP workbench <ArrowRight size={15} strokeWidth={2.5} aria-hidden="true" /></a>
+              <p className="mt-6 max-w-md text-base leading-relaxed">Triage what changed, read the failure with its logs, and verify the fix with traffic. Errors stay errors. No demo data stands in for evidence.</p>
+              <a href="/docs/mcp/" className={`${link} mt-5`}>See every tool <ArrowRight size={15} strokeWidth={2.5} aria-hidden="true" /></a>
             </div>
             <Window title="MCP Tools" className="lg:col-span-7">
               <div className="overflow-x-auto">
@@ -145,7 +145,7 @@ export default function SystemClassic() {
                   </tbody>
                 </table>
               </div>
-              <p className="px-4 py-3 font-mono text-xs font-bold break-all">bunx qyl-mcp-server --stdio</p>
+              <p className="px-4 py-3 font-mono text-xs font-bold break-all">npx qyl-mcp-server --stdio</p>
             </Window>
           </div>
         </section>
@@ -172,7 +172,7 @@ export default function SystemClassic() {
               <div>
                 <p className={eyebrow}>One plan. Every shipped feature.</p>
                 <h2 id="sc-start" className="mt-3 text-4xl leading-none font-black tracking-[-0.04em] sm:text-5xl">Free on your machine.</h2>
-                <p className="mt-4 max-w-xl text-base leading-relaxed">The native collector, embedded dashboard, and MCP workbench are included. Your local setup works without a hosted account.</p>
+                <p className="mt-4 max-w-xl text-base leading-relaxed">The NativeAOT Collector, the hosted endpoint, and the qyl plugin are included. Your local setup works without a hosted account.</p>
                 <div className="mt-8 flex flex-wrap justify-end gap-x-7 gap-y-5"><a href="/pricing/" className={button}>Read pricing</a><a href="/docs/getting-started/" className={defaultButton}>Start locally</a></div>
               </div>
             </div>

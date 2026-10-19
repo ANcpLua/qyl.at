@@ -5,16 +5,15 @@ import ProductPage from "../../components/ProductPage.astro";
 <ProductPage
   title="Logs"
   eyebrow="Product · logs"
-  intro="Search the records around a failure without leaving the code or losing the trace that led you there."
+  intro="The records around a failure, linked to the trace, span and session that produced them."
   heading="Runtime evidence, correlated before it reaches the agent."
-  description="Severity, service and text filters apply to stored records before pagination. Continue through older pages, including errors beyond the live tail. A missing event time uses its observation time for display; historical unknown times stay unknown. Logs retain their trace identity, typed body and named events."
+  description="Severity, service and text filters apply to stored records before pagination, so older pages include errors beyond the live tail. A record without an event time is found by its observation time; historical unknown times stay unknown. Logs retain their trace identity, typed body and named events, and message patterns come with counts and rare variants."
+  tools={["search_logs"]}
   capabilities={[
-    { name: "search_logs", description: "Search collected telemetry by text, severity, session, trace, or time window." },
-    { name: "list_sessions", description: "Find session-scoped runs and their explicit token or cost evidence where the source reports it." },
-    { name: "GET /api/v1/logs", description: "Use the generated Qyl contract directly when MCP is not the right consumer." },
+    { name: "GET /api/v1/logs", description: "The same stored records through the Collector API, for programs rather than agents." },
     { name: "OTLP /v1/logs", description: "Ingest official OTLP protobuf or JSON with optional gzip compression." },
   ]}
   command={`qyl up
-# from an MCP client:
+# from an agent connected to qyl:
 search_logs { "query": "deadline_exceeded" }`}
 />
