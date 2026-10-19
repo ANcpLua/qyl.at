@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { story } from "../data/site";
 ---
 
 <BaseLayout title="Pricing" description="qyl is free: the Collector, the hosted MCP endpoint, the qyl plugin and the local MCP server.">
@@ -30,7 +31,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   <section class="editorial-section editorial-section--raised">
     <div class="site-shell section-intro">
       <div><span class="eyebrow">The plain answer</span><h2 class="section-title">No billing system is hidden behind this page.</h2></div>
-      <p class="lede">One developer built all of it using Anthropic and OpenAI models to the fullest. If pricing ever changes, the terms and limits will be published before anyone is charged. The local Collector works without a hosted account.</p>
+      <p class="lede">{story} If pricing ever changes, the terms and limits will be published before anyone is charged. The local Collector works without a hosted account.</p>
     </div>
   </section>
 </BaseLayout>

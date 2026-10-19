@@ -8,9 +8,10 @@ import ToolTable from "../../components/ToolTable.astro";
 import { mcpSkills } from "../../data/mcp-tools";
 
 export const examplePrompts = [
-  "What changed in my services in the last hour? Rank the new and worsening failures.",
-  "Why are checkout requests failing with database timeouts, and did the fix from the last release hold?",
-  "Compare p95 request latency of the payments service between the eu and us regions over the last day, then save that comparison as \"payments latency by region\".",
+  "What changed in my services in the last 24 hours? Rank the new and worsening failures.",
+  "Why did that checkout request fail with a database timeout, and has the fix from 16:43Z held?",
+  "What distinguishes the failing requests of the regional service from the ones that succeed?",
+  "Compare p95 request latency of /checkout and /cart over the last 24 hours, then save that comparison as \"checkout latency by route\".",
 ];
 
 ## Two ways in
@@ -86,7 +87,7 @@ qyl is added to ChatGPT as a custom MCP server, on the web.
 4. Confirm **I understand and want to continue**, choose **Create as a plugin**, review the tools and sign in with your qyl account.
 5. Mention `@qyl` in a conversation or a Work task.
 
-In Work chats, ChatGPT can subscribe to qyl's [Events](#events).
+In Work chats, ChatGPT can subscribe to qyl's [Events](#events). A [recording of a ChatGPT review session with qyl](https://github.com/ANcpLua/qyl/releases/download/v17.0.1/qyl-reviewer-demo-17.0.1.mp4) (MP4, 2.4 MB) shows it at work.
 
 Try the same prompts:
 

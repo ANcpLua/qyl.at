@@ -45,9 +45,9 @@ export const productNavigation = [
   { href: "/product/ci/", label: "CI runs" },
 ] as const;
 
-// The one sentence of how qyl came to be. The landing page, the header of every page,
-// the FAQ and both plugin listings say it in these words.
-export const story = "One developer built all of it using Anthropic and OpenAI models to the fullest.";
+// The one sentence of how qyl came to be, as the owner states it. The landing page, the
+// header bar of the site's pages, the FAQ and pricing say it in these words.
+export const story = "Built over ten months by one developer, starting with Claude Opus 4.5, using Anthropic and OpenAI models to the fullest.";
 
 export const externalLinks = {
   github: "https://github.com/ANcpLua/qyl",
@@ -55,13 +55,33 @@ export const externalLinks = {
   nuget: "https://www.nuget.org/packages/qyl",
 } as const;
 
-// Every version the site states is written here and nowhere else: pages, tables and
-// the footer call `versionOf`, and scripts/check-versions.mjs fails on a version
-// written anywhere else. Each entry states what its registry serves.
+// Every version the site states comes from here: pages, tables and the footer call
+// `versionOf`, and scripts/check-versions.mjs fails on a version written anywhere else.
+// Each entry states what its registry serves.
 //
-// The qyl repository releases the tool, Qyl.Api.Sdk, Qyl.Orchestration and
-// qyl-mcp-server from one revision at one version (Version.props QylVersion).
-const qylVersion = "17.0.0";
+// The qyl repository releases the tool, Qyl.Api.Sdk, Qyl.Orchestration and qyl-mcp-server
+// from one revision at one version (Version.props QylVersion), and patch releases are
+// frequent, so that version is not written here: the build reads the release npm serves
+// as qyl-mcp-server's latest tag. A build that cannot read it fails rather than state an
+// old one.
+const qylVersion = await latestQylRelease();
+
+async function latestQylRelease(): Promise<string> {
+  const url = "https://registry.npmjs.org/qyl-mcp-server/latest";
+  let failure: unknown;
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      const response = await fetch(url, { headers: { accept: "application/json" }, signal: AbortSignal.timeout(15_000) });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const { version } = (await response.json()) as { version?: unknown };
+      if (typeof version !== "string" || !/^\d+\.\d+\.\d+$/u.test(version)) throw new Error(`no release version in ${JSON.stringify(version)}`);
+      return version;
+    } catch (error) {
+      failure = error;
+    }
+  }
+  throw new Error(`site.ts: cannot read the qyl release from ${url}: ${String(failure)}`);
+}
 
 export const packages = [
   {

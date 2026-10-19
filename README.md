@@ -2,9 +2,9 @@
 
 The public documentation site for [qyl](https://github.com/ANcpLua/qyl), an analytical
 engine for agents, live at [qyl.at](https://qyl.at/). It describes the Collector, the MCP
-server and how an agent connects to them. One developer built all of it using
-Anthropic and OpenAI models to the fullest. This is production: a moved page keeps its old
-URL as a redirect in `public/_redirects`; the page of a removed feature is deleted.
+server and how an agent connects to them. Built over ten months by one developer, starting
+with Claude Opus 4.5, using Anthropic and OpenAI models to the fullest. This is production: a
+moved page keeps its old URL as a redirect in `public/_redirects`; the page of a removed feature is deleted.
 
 The site is Astro 7 with static output, MDX documentation, build-time Shiki syntax
 highlighting, Tailwind CSS 4, and on-demand Pagefind search. Cloudflare Workers Static
@@ -99,10 +99,13 @@ forward viewport dimensions and device memory.
 
 ## The versions the site states
 
-`src/data/site.ts` is the only place a version is written. The footer of every page lists
-the published versions, the getting-started table links each one to its registry, and
-prose calls `versionOf`; copyable lines such as the `Qyl.Api.Sdk` project line are rendered
-by components that call it too. `scripts/check-versions.mjs` (in `bun run check`) fails on a
+Every version the site states comes from `src/data/site.ts`. The qyl release (the qyl tool,
+qyl-mcp-server, Qyl.Api.Sdk and Qyl.Orchestration share one version) is not written down:
+`site.ts` reads it from npm, qyl-mcp-server's `latest` tag, whenever the site is checked or
+built, and the build fails when npm cannot answer. The other packages' versions are written
+in `site.ts`. The footer of every page lists the published versions, the getting-started
+table links each one to its registry, and prose calls `versionOf`; copyable lines such as
+the `Qyl.Api.Sdk` project line are rendered by components that call it too. `scripts/check-versions.mjs` (in `bun run check`) fails on a
 published version written anywhere else in `src/`, `scripts/` or the root documents, and on
 a `<package> <version>` pair whose version `site.ts` does not list. `bun run test` fails on
 an internal link that does not resolve and on a `public/sitemap.xml` that disagrees with

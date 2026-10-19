@@ -1,10 +1,10 @@
-// Version gate: src/data/site.ts is the only place a published version is written.
+// Version gate: every published version the site states comes from src/data/site.ts,
+// which reads the qyl release from npm at build time and lists the others.
 //
-// Pages state a version by calling `versionOf`, so a version change is one edit
-// in site.ts. This gate fails when any other file in src/, scripts/ or the root
-// documents writes a version: a literal equal to one site.ts lists, or a
-// `<package> <version>` pair that names a package with a version site.ts does
-// not list (a stale one). It checks the source, not dist: in built HTML an
+// Pages state a version by calling `versionOf`. This gate fails when any other file in
+// src/, scripts/ or the root documents writes a version: a literal equal to one site.ts
+// lists, or a `<package> <version>` pair that names a package with a version site.ts
+// does not list (a stale one). It checks the source, not dist: in built HTML an
 // interpolated version and a hand-typed one are the same bytes.
 
 import fs from "node:fs";
@@ -64,4 +64,4 @@ if (failures.length > 0) {
   for (const failure of failures) console.error(`  - ${failure}`);
   process.exit(1);
 }
-console.log(`version gate: ${packages.length} published versions, written only in src/data/site.ts`);
+console.log(`version gate: ${packages.length} published versions, stated only through src/data/site.ts`);
