@@ -41,60 +41,60 @@ export const externalLinks = {
 // cannot fall behind the feeds while another page is current. The literals no
 // expression can replace are held to this array by `scripts/check-versions.mjs`,
 // which runs in `bun run check`.
-export const releaseWave = "2026-10-17" as const;
+export const releaseWave = "2026-10-19" as const;
 
 export const release = [
   {
     name: "qyl",
-    version: "16.0.0",
+    version: "16.0.1",
     registry: "https://www.nuget.org/packages/qyl",
     summary: "The .NET tool: collector, embedded dashboard and query API.",
   },
   {
     name: "Qyl.Api.Sdk",
-    version: "16.0.0",
+    version: "16.0.1",
     registry: "https://www.nuget.org/packages/Qyl.Api.Sdk",
     summary: "MSBuild SDK for a Native AOT ASP.NET Core API behind one AddQylApi call.",
   },
   {
     name: "Qyl.Orchestration",
-    version: "16.0.0",
+    version: "16.0.1",
     registry: "https://www.nuget.org/packages/Qyl.Orchestration",
     summary: "Reusable process host with service references, readiness checks and application cleanup.",
   },
   {
     name: "Qyl.Telemetry.AutoInstrumentation",
-    version: "28.2.1",
+    version: "28.2.3",
     registry: "https://www.nuget.org/packages/Qyl.Telemetry.AutoInstrumentation",
     summary: "Compile-time .NET instrumentation; writes generated constants only.",
   },
   {
     name: "Qyl.Telemetry.Hosting",
-    version: "28.2.1",
+    version: "28.2.3",
     registry: "https://www.nuget.org/packages/Qyl.Telemetry.Hosting",
     summary: "The AddQyl() activation line and the attribute-stamping processor.",
   },
   {
     name: "Qyl.Telemetry.SemanticConventions",
-    version: "14.0.0",
+    version: "15.0.2",
     registry: "https://www.nuget.org/packages/Qyl.Telemetry.SemanticConventions",
     summary: "Weaver-generated C# attribute, enum, event and metric constants.",
   },
   {
     name: "Qyl.Telemetry.SemanticConventions.Incubating",
-    version: "14.0.0",
+    version: "15.0.2",
     registry: "https://www.nuget.org/packages/Qyl.Telemetry.SemanticConventions.Incubating",
     summary: "The same generation for conventions upstream has not stabilised.",
   },
   {
     name: "Qyl.Telemetry.SemanticConventions.Analyzers",
-    version: "14.0.0",
+    version: "15.0.2",
     registry: "https://www.nuget.org/packages/Qyl.Telemetry.SemanticConventions.Analyzers",
     summary: "Compile-time diagnostics against the generated vocabulary.",
   },
   {
     name: "@ancplua/qyl-semantic-conventions",
-    version: "14.0.0",
+    version: "15.0.2",
     registry: "https://www.npmjs.com/package/@ancplua/qyl-semantic-conventions",
     summary: "TypeScript attribute, enum, event and metric constants from the same resolved registry as C#.",
   },
@@ -118,7 +118,7 @@ export const release = [
   },
   {
     name: "qyl-mcp-server",
-    version: "11.0.0",
+    version: "11.1.4",
     registry: "https://www.npmjs.com/package/qyl-mcp-server",
     summary: "The MCP server: stdio locally, Streamable HTTP hosted.",
   },
