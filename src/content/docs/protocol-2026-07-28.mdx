@@ -1,16 +1,16 @@
 ---
 title: Protocol 2026-07-28
-description: How qyl's MCP server uses TypeScript SDK v2 to serve protocol 2026-07-28 with modern discovery, the skills extension and Events, and which revisions it answers.
+description: How qyl's MCP server uses TypeScript SDK v2 to serve protocol 2026-07-28 with modern discovery and the skills extension, and which revisions it answers.
 order: 3
 ---
 
 ## SDK v2
 
-The server is built on the MCP TypeScript SDK v2 (`@modelcontextprotocol/server`) and serves protocol revision `2026-07-28`. Streamable HTTP at `https://mcp.qyl.at/mcp` and stdio from `qyl-mcp-server --stdio` create every server instance from the same factory, so both transports expose the same tools and skill; only the hosted endpoint adds OAuth and Events. The hosted HTTP server is stateless: Bun serves the SDK's web-standard handler directly.
+The server is built on the MCP TypeScript SDK v2 (`@modelcontextprotocol/server`) and serves protocol revision `2026-07-28`. Streamable HTTP at `https://mcp.qyl.at/mcp` and stdio from `qyl-mcp-server --stdio` create every server instance from the same factory, so both transports expose the same tools and skill; only the hosted endpoint adds OAuth. The hosted HTTP server is stateless: Bun serves the SDK's web-standard handler directly.
 
 ## Modern requests
 
-`server/discover` returns the server's identity, its eight lines of [instructions](/docs/mcp/#skills) and its capabilities: tools, the resources that carry the skill files, `extensions["io.modelcontextprotocol/skills"]`, and on the hosted endpoint `events`. Requests carry the revision and client capabilities in the reserved `_meta` envelope, and `clientInfo` is optional. Responses carry the server identity under `_meta["io.modelcontextprotocol/serverInfo"]`. `server/discover`, `tools/list`, `resources/list`, `resources/templates/list` and the skills extension's `skills/list` carry a public cache hint of one minute, so a client's cached catalog follows a deploy within a minute.
+`server/discover` returns the server's identity, its eight lines of [instructions](/docs/mcp/#skills) and its capabilities: tools, the resources that carry the skill files and `extensions["io.modelcontextprotocol/skills"]`. Requests carry the revision and client capabilities in the reserved `_meta` envelope, and `clientInfo` is optional. Responses carry the server identity under `_meta["io.modelcontextprotocol/serverInfo"]`. `server/discover`, `tools/list`, `resources/list`, `resources/templates/list` and the skills extension's `skills/list` carry a public cache hint of one minute, so a client's cached catalog follows a deploy within a minute.
 
 ## 2025-era clients
 

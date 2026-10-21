@@ -16,7 +16,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       <p>Write to <a href="mailto:anfh22@outlook.com">anfh22@outlook.com</a>. This address is read by the operator, Alexander Nachtmann (ancplua). Use it for technical issues, questions about the hosted MCP service at <code>https://mcp.qyl.at/mcp</code>, account access, privacy requests and deletion requests.</p>
 
       <h2>Access to the hosted endpoint</h2>
-      <p>The hosted MCP service serves accounts the operator has set up: each account is mapped to one Collector project, and each host signs in with the OAuth client registered for it in qyl's Auth0 tenant. To get access, write to the address above and name the host you use (Claude, Claude Code, ChatGPT, Codex or the Claude or OpenAI API). The local Collector and the local stdio server need no account; <a href="/docs/getting-started/">getting started</a> covers them.</p>
+      <p>The hosted MCP service serves accounts the operator has set up: each account is mapped to one Collector project, and each host registers itself with qyl's Auth0 tenant when it signs in, so no host needs a client ID. To get access, write to the address above. The local Collector and the local stdio server need no account; <a href="/docs/getting-started/">getting started</a> covers them.</p>
 
       <h2>What to include in a technical report</h2>
       <p>Name the client and its version (for example ChatGPT, Claude, Claude Code, Codex or MCP Inspector), the tool or operation you tried, the approximate time with timezone, and what you saw. A small, sanitized reproduction helps most.</p>
@@ -32,7 +32,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       <p>Failure status controls whether triage shows an ignored failure or reports a resolved failure that recurs. It does not change the underlying telemetry. <code>delete_record</code> removes only an annotation or a saved query, not telemetry or copies a connected client already received.</p>
 
       <h2>Source and documentation</h2>
-      <p>The Collector, the MCP server and the qyl plugin are open source at <a href="https://github.com/ANcpLua/qyl">ANcpLua/qyl</a>; this site is at <a href="https://github.com/ANcpLua/qyl.at">ANcpLua/qyl.at</a>. <a href="/docs/mcp/">Connect an agent</a> documents the tools, scopes, skills and Events.</p>
+      <p>The Collector, the MCP server and the qyl plugin are open source at <a href="https://github.com/ANcpLua/qyl">ANcpLua/qyl</a>; this site is at <a href="https://github.com/ANcpLua/qyl.at">ANcpLua/qyl.at</a>. <a href="/docs/mcp/">Connect an agent</a> documents the tools, scopes and skills.</p>
     </article>
   </section>
 </BaseLayout>

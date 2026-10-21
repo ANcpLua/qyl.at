@@ -17,7 +17,7 @@ export const docsNavigation = [
   {
     href: "/docs/mcp/",
     label: "Connect an agent",
-    description: "Claude, Claude Code, ChatGPT, Codex, the Claude and OpenAI APIs and local stdio; sign-in, scopes, tools, skills and Events.",
+    description: "Claude, Claude Code, ChatGPT, Codex, the Claude and OpenAI APIs and local stdio; sign-in, scopes, tools and skills.",
   },
   {
     href: "/docs/protocol-2026-07-28/",

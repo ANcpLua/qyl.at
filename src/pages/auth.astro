@@ -7,7 +7,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     <div class="site-shell">
       <span class="eyebrow">OAuth 2.1 · MCP</span>
       <h1 class="page-title">Sign in from the client already doing the work.</h1>
-      <p class="lede">qyl does not host a second account form here. Add the endpoint to your MCP host; the host discovers Auth0, opens the PKCE flow with the OAuth client registered for it in qyl's tenant, and returns with a scoped access token. The operator maps each account to its Collector project; <a href="/support/">support</a> sets up access.</p>
+      <p class="lede">qyl does not host a second account form here. Add the endpoint to your MCP host; the host discovers Auth0, registers itself in qyl's tenant, opens the PKCE flow and returns with a scoped access token. The operator maps each account to its Collector project; <a href="/support/">support</a> sets up access.</p>
       <div class="hero__actions">
         <a class="button button--light" href="/docs/mcp/">Connection guide</a>
         <a class="button button--ghost" href="https://mcp.qyl.at/.well-known/oauth-protected-resource/mcp">Protected-resource metadata</a>
@@ -22,7 +22,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       </div>
       <div class="auth-flow">
         <article class="auth-step"><span>01 · DISCOVER</span><h2>Add the MCP URL</h2><p>The client reads the protected-resource metadata for the canonical endpoint.</p></article>
-        <article class="auth-step"><span>02 · AUTHORIZE</span><h2>Complete PKCE</h2><p>Auth0 authenticates the person and returns a token for this resource and the scopes granted. The tenant holds the OAuth clients registered for ChatGPT, Claude, Claude Code and Codex.</p></article>
+        <article class="auth-step"><span>02 · AUTHORIZE</span><h2>Complete PKCE</h2><p>Auth0 authenticates the person and returns a token for this resource and the scopes granted. No host needs a client ID: each registers itself through a Client ID Metadata Document or dynamic client registration.</p></article>
         <article class="auth-step"><span>03 · CONNECT</span><h2>Connect with MCP</h2><p>The client presents its token. Modern and supported 2025-era clients use the same authorization checks and tools.</p></article>
       </div>
       <div class="fact-grid">
