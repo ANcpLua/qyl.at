@@ -122,13 +122,13 @@ export const packages = [
   },
   {
     name: "Qyl.Telemetry.SemanticConventions",
-    version: "15.0.2",
+    version: "15.0.4",
     registry: "https://www.nuget.org/packages/Qyl.Telemetry.SemanticConventions",
     summary: "Generated C# attribute, event and metric constants; .Incubating and .Analyzers share its version.",
   },
   {
     name: "@ancplua/qyl-semantic-conventions",
-    version: "15.0.2",
+    version: "15.0.4",
     registry: "https://www.npmjs.com/package/@ancplua/qyl-semantic-conventions",
     summary: "The same constants for TypeScript, from the same resolved registry.",
   },
