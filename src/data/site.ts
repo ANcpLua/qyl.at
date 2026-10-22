@@ -109,6 +109,12 @@ export const packages = [
     summary: "Process host with service references, readiness checks and application cleanup.",
   },
   {
+    name: "Qyl.Api.Contracts",
+    version: qylVersion,
+    registry: "https://www.nuget.org/packages/Qyl.Api.Contracts",
+    summary: "The qyl API contract as C# types, generated from the TypeSpec in contracts/ and shared with the MCP server.",
+  },
+  {
     name: "Qyl.Telemetry.Hosting",
     version: "28.2.3",
     registry: "https://www.nuget.org/packages/Qyl.Telemetry.Hosting",
