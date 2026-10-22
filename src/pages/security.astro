@@ -1,0 +1,26 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Security" description="How to report a vulnerability in qyl or the hosted qyl services, and which release receives fixes.">
+  <section class="page-hero">
+    <div class="reading-shell">
+      <span class="eyebrow">Security · qyl</span>
+      <h1 class="page-title">Report a vulnerability privately.</h1>
+      <p class="lede">This covers the Collector, the MCP server, the packages released from <a href="https://github.com/ANcpLua/qyl">ANcpLua/qyl</a> and the hosted services at <code>mcp.qyl.at</code> and <code>api.qyl.at</code>.</p>
+    </div>
+  </section>
+  <section class="editorial-section editorial-section--raised">
+    <article class="reading-shell docs-content">
+      <h2>How to report</h2>
+      <p>Use GitHub's private vulnerability reporting at <a href="https://github.com/ANcpLua/qyl/security/advisories/new">github.com/ANcpLua/qyl/security/advisories/new</a>. The report stays visible to the maintainer only until an advisory is published. Do not open a public issue or pull request for a security problem, and do not disclose details before a fix ships.</p>
+      <p>Name the affected component, the qyl version or commit, and the steps to reproduce it. Never send credentials, access tokens or private telemetry. qyl has one maintainer, so reports are triaged as time allows, without a guaranteed response window.</p>
+
+      <h2>Which release receives fixes</h2>
+      <p>Fixes land on <code>main</code> and ship in the next release. Only the latest release line receives security fixes; the hosted services run the latest release.</p>
+
+      <h2>Disclosure</h2>
+      <p>A confirmed vulnerability is disclosed in a GitHub Security Advisory on ANcpLua/qyl once the fixed version is published. The full policy is the repository's <a href="https://github.com/ANcpLua/qyl/blob/main/SECURITY.md">SECURITY.md</a>.</p>
+    </article>
+  </section>
+</BaseLayout>
